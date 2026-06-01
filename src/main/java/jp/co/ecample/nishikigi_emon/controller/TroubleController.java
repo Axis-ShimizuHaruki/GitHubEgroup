@@ -41,6 +41,8 @@ public class TroubleController {
 
 		Integer siteId = (Integer) session.getAttribute("siteId");
 
+		System.out.println("siteId = " + siteId);
+
 		Trouble trouble = new Trouble();
 
 		trouble.setPriority(form.getPriority());

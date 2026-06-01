@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Site;
@@ -21,7 +20,6 @@ import jp.co.ecample.nishikigi_emon.service.DailyreportService;
 import jp.co.ecample.nishikigi_emon.service.SiteService; // ★エラー解消のためにインポートを追加
 
 @Controller
-@RequestMapping("/nishikigi")
 public class DailyreportController {
 
     @Autowired

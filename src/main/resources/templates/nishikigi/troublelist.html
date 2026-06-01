@@ -153,9 +153,8 @@
 					<td th:text="${trouble.overview}"></td>
 
 					<td>
-						<span th:if="${trouble.tStatusFlag == 0}"> 未対応 </span>
-						<span th:if="${trouble.tStatusFlag == 1}"> 対応中 </span>
-						<span th:if="${trouble.tStatusFlag == 2}"> 完了 </span>
+						<span th:if="${trouble.tStatusFlag == 0}"> 提出済み </span>
+						<span th:if="${trouble.tStatusFlag == 1}"> 確認完了</span>
 					</td>
 
 					<td> <a class="detail-btn" th:href="@{/trouble/detail(id=${trouble.troubleId})}"> 詳細 </a> </td>

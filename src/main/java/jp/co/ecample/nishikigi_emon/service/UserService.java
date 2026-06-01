@@ -1,5 +1,5 @@
 package jp.co.ecample.nishikigi_emon.service;
 
-public class Service {
+public class UserService {
 
 }

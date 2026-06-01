@@ -9,8 +9,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "safety")
 public class Safety {
 	// 安全点検ID
 	@Id
@@ -61,10 +63,6 @@ public class Safety {
 	// 更新日時
 	@Column(name = "s_updated_at")
 	private LocalDateTime sUpdatedAt;
-
-	// 現場ID
-	@Column(name = "site_id", nullable = false)
-	private Integer siteId;
 	
 	// siteテーブル参照
 	@ManyToOne
@@ -165,14 +163,6 @@ public class Safety {
 
 	public void setsUpdatedAt(LocalDateTime sUpdatedAt) {
 		this.sUpdatedAt = sUpdatedAt;
-	}
-
-	public Integer getSiteId() {
-		return siteId;
-	}
-
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
 	}
 
 	public Site getSite() {

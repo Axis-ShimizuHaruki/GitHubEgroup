@@ -98,9 +98,9 @@ public class LoginController {
 		
 		
 		// 現場ホーム画面の表示
-		@GetMapping("/homesite")
-		public String homesite() {
-			return "nishikigi/home";
-		}
+//		@GetMapping("/homesite")
+//		public String homesite() {
+//			return "nishikigi/home";
+//		}
 		
 }

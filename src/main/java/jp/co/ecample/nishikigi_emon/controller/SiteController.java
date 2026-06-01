@@ -16,7 +16,7 @@ public class SiteController {
 		this.service = service;
 	}
 
-	@GetMapping("/home")
+	@GetMapping("/homesite")
 	public String showNewHome(HttpSession session, Model model) {
 		Integer siteId = (Integer) session.getAttribute("siteId");
 

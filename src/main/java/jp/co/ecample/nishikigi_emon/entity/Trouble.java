@@ -20,9 +20,6 @@ public class Trouble {
 	@Column(name = "trouble_id")
 	private Integer troubleId;
 
-	@Column(name = "site_id", nullable = false)
-	private Integer siteId;
-
 	@ManyToOne
 	@JoinColumn(name = "site_id")
 	private Site site;
@@ -57,14 +54,6 @@ public class Trouble {
 
 	public void setTroubleId(Integer troubleId) {
 		this.troubleId = troubleId;
-	}
-
-	public Integer getSiteId() {
-		return siteId;
-	}
-
-	public void setSiteId(Integer siteId) {
-		this.siteId = siteId;
 	}
 
 	public Integer getPriority() {

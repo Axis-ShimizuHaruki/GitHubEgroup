@@ -2,163 +2,170 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>トラブル登録確認</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>トラブル登録確認</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="portal.html">
+				<a href="portal.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <span class="user-name">
-          ログインユーザ：山田 太郎
-        </span>
+				<span class="user-name">
+					ログインユーザ：山田 太郎
+				</span>
 
-        <button class="logout-btn">
-          ログアウト
-        </button>
+				<button class="logout-btn">
+					ログアウト
+				</button>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      トラブル登録確認
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			トラブル登録確認
+		</div>
 
-  </header>
+	</header>
 
-  <!-- =========================
+	<!-- =========================
        メイン
   ========================= -->
 
-  <div class="container">
+	<div class="container">
 
-    <!-- サマリー -->
-    <div class="section">
+		<!-- サマリー -->
+		<div class="section">
 
-      <div class="section-title">
-        入力内容確認
-      </div>
+			<div class="section-title">
+				入力内容確認
+			</div>
 
-      <div class="summary-box">
-        <div class="summary-title">
-          確認内容
-        </div>
+			<div class="summary-box">
+				<div class="summary-title">
+					確認内容
+				</div>
 
-        登録内容を確認してください。<br>
-        問題がなければ「確認」を押してください。
+				登録内容を確認してください。<br>
+				問題がなければ「確認」を押してください。
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 基本情報 -->
-    <div class="section">
+		<!-- 基本情報 -->
+		<div class="section">
 
-      <div class="section-title">
-        トラブル情報
-      </div>
+			<div class="section-title">
+				トラブル情報
+			</div>
 
-      <div class="item">
+			<div class="item">
 
-        <div class="label">
-          緊急度
-        </div>
+				<!-- 緊急度 -->
+				<div class="item">
+					<div class="label">
+						緊急度
+					</div>
 
-        <div class="value">
-          <span class="badge high">高</span>
-        </div>
+					<div class="value">
+						<span class="badge" th:text="${trouble.priorityName}">
+							高
+						</span>
+					</div>
+				</div>
 
-      </div>
+				<!-- トラブル種別 -->
+				<div class="item">
+					<div class="label">
+						トラブル種別
+					</div>
 
-      <div class="item">
+					<div class="value" th:text="${trouble.troubleTypeName}">
+						納品遅れ
+					</div>
+				</div>
 
-        <div class="label">
-          トラブル種別
-        </div>
+				<!-- 一言 -->
+				<div class="item">
+					<div class="label">
+						一言で表す
+					</div>
 
-        <div class="value">
-          納品遅れ
-        </div>
+					<div class="value" th:text="${form.overview}">
+						サーバに接続できない
+					</div>
+				</div>
 
-      </div>
+			</div>
 
-      <div class="item">
+			<!-- 詳細 -->
+			<div class="section">
 
-        <div class="label">
-          一言で表す
-        </div>
+				<div class="section-title">
+					具体的な内容
+				</div>
 
-        <div class="value">
-          サーバに接続できない
-        </div>
+				<div class="value" th:text="${form.detail}">
+					サーバへのアクセスが断続的に失敗しており、
+					業務システムにログインできない状態。
+				</div>
 
-      </div>
+			</div>
 
-    </div>
+			<!-- ボタン -->
+			<form th:action="@{/trouble/register}" method="post">
 
-    <!-- 詳細 -->
-    <div class="section">
+				<input type="hidden" name="priority" th:value="${form.priority}">
 
-      <div class="section-title">
-        具体的な内容
-      </div>
+				<input type="hidden" name="troubleType" th:value="${form.troubleType}">
 
-      <div class="value">
-        サーバへのアクセスが断続的に失敗しており、
-        業務システムにログインできない状態。
+				<input type="hidden" name="overview" th:value="${form.overview}">
 
-        午前9時頃から発生しており、原因は調査中。
-      </div>
+				<input type="hidden" name="detail" th:value="${form.detail}">
 
-    </div>
+				<div class="btn-area">
 
-    <!-- ボタン -->
-    <div class="btn-area">
+					<button type="button" class="btn btn-secondary" onclick="history.back()">
+						修正する
+					</button>
 
-      <button class="btn btn-secondary" onclick="history.back()">
+					<button type="submit" class="btn">
+						登録
+					</button>
 
-        修正する
+				</div>
 
-      </button>
+			</form>
 
-      <button class="btn" onclick="location.href='complete.html'">
-
-        確認
-
-      </button>
-
-    </div>
-
-  </div>
+		</div>
 
 </body>
 

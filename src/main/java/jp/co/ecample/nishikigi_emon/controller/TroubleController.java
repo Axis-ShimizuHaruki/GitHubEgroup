@@ -1,9 +1,13 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.co.ecample.nishikigi_emon.entity.Trouble;
+import jp.co.ecample.nishikigi_emon.form.TroubleForm;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 
 @Controller
@@ -17,14 +21,30 @@ public class TroubleController {
 
 	// トラブル登録画面表示
 	@GetMapping("/trouble/new")
-	public String TroubleRegist() {
+	public String input(@ModelAttribute TroubleForm form) {
 		return "nishikigi/trouble";
+	}
+
+	// トラブル登録確認画面
+	@PostMapping("/trouble/new/confirm")
+	public String confirm(@ModelAttribute TroubleForm form, Model model) {
+		model.addAttribute("form", form);
+		return "nishikigi/troublecheck";
 	}
 
 	// トラブル登録画面のフォーム送信
 	@PostMapping("/troubles")
-	public String postMethodName() {
-		return "redirect:";
+	public String register(@ModelAttribute TroubleForm form) {
+		Trouble trouble = new Trouble();
+
+		trouble.setPriority(form.getPriority());
+		trouble.setTroubleType(form.getTroubleType());
+		trouble.setOverview(form.getOverview());
+		trouble.setDetail(form.getDetail());
+
+		service.register(trouble);
+
+		return "redirect:/complete";
 	}
 
 }

@@ -1,5 +1,7 @@
 package jp.co.ecample.nishikigi_emon.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,4 +18,9 @@ public class SiteService {
         return siteRepository.findById(siteId)
                 .orElseThrow(() -> new RuntimeException("現場が存在しません"));
     }
+    
+ // DBから社員の情報を全件取得
+ 	public List<Site> selectAll() {
+ 		return siteRepository.findAll();
+ 	}
 }

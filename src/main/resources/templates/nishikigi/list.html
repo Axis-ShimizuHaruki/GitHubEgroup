@@ -77,11 +77,14 @@
 
     <div class="site-list">
 
+		
+		
+	<tr th:each="site : ${site}">	
       <div class="site-card high">
 
         <div>
-          <a th:href="@{/portal/{}}" class="site-name">
-            長崎民家解体
+          <a th:href="@{/portal/${site.siteId}}" class="site-name">
+			<td th:text="${site.siteName}"></td>
           </a>
         </div>
 
@@ -121,6 +124,8 @@
 
       </div>
 
+	  
+	  
       <div class="site-card high">
 
         <div>

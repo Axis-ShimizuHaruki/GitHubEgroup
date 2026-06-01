@@ -27,33 +27,33 @@ public class SiteController {
 		return "nishikigi/home";
 	}
 	
-	@GetMapping("/dailyreport")
-	public String showNewDailyreport() {
-		return "nishikigi/dailyreport";
-	}
+//	@GetMapping("/dailyreport/new/confirm")
+//	public String showNewDailyreport() {
+//		return "nishikigi/dailyreport";
+//	}
 	
-	@GetMapping("/dailylist")
-	public String showNewDailyList() {
-		return "nishikigi/dailylist";
-	}
-	
-	@GetMapping("/safetycheck")
-	public String showNewSafetyCheck() {
-		return "nishikigi/safetycheck";
-	}
-	
-	@GetMapping("/safetylist")
-	public String showNewSafetyList() {
-		return "nishikigi/safetylist";
-	}
-	@GetMapping("/trouble")
-	public String showNewTrouble() {
-		return "nishikigi/trouble";
-	}
-	
-	@GetMapping("/troublelist")
-	public String showNewTroubleList() {
-		return "nishikigi/troublelist";
-	}
-	
+//	@GetMapping("/dailyreport/list")
+//	public String showNewDailyList() {
+//		return "nishikigi/dailylist";
+//	}
+//	
+//	@GetMapping("/safetycheck")
+//	public String showNewSafetyCheck() {
+//		return "nishikigi/safetycheck";
+//	}
+//	
+//	@GetMapping("/safetylist")
+//	public String showNewSafetyList() {
+//		return "nishikigi/safetylist";
+//	}
+//	@GetMapping("/trouble")
+//	public String showNewTrouble() {
+//		return "nishikigi/trouble";
+//	}
+//	
+//	@GetMapping("/troublelist")
+//	public String showNewTroubleList() {
+//		return "nishikigi/troublelist";
+//	}
+//	
 }

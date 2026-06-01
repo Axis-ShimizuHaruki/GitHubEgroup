@@ -80,7 +80,7 @@
 			<div th:each="site : ${site}">
 				<div th:each="trouble : ${trouble}">
 
-					<div class="site-card high" th:if="${site.officecheck.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 3}">
+					<div class="site-card high" th:if="${site.officecheck != 1.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 3}">
 
 						<div>
 							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
@@ -135,7 +135,7 @@
 				<div th:each="trouble : ${trouble}">
 
 					<div class="site-card medium"
-						th:if="${site.officecheck.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 2}">
+						th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 2}">
 
 						<div>
 							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
@@ -189,7 +189,7 @@
 			<div th:each="site : ${site}">
 				<div th:each="trouble : ${trouble}">
 
-					<div class="site-card low" th:if="${site.officecheck.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 1}">
+					<div class="site-card low" th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 1}">
 
 						<div>
 							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
@@ -243,7 +243,7 @@
 			<div th:each="site : ${site}">
 				<div th:each="trouble : ${trouble}">
 
-					<div class="site-card none" th:if="${site.officecheck.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 0}">
+					<div class="site-card none" th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 0}">
 
 						<div>
 							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">

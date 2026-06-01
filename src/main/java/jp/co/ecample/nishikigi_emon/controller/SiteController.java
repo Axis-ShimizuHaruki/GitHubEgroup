@@ -55,4 +55,5 @@ public class SiteController {
 	public String showNewTroubleList() {
 		return "nishikigi/troublelist";
 	}
+	
 }

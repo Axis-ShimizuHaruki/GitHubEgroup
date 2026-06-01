@@ -20,41 +20,62 @@
 
   <header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+     <!-- 上段 -->
+     <div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+       <!-- 左：ロゴ -->
+       <div class="logo-area">
 
-        <a href="home.html">
+         <a href="home.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+           <img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+         </a>
 
-      </div>
+       </div>
 
-      <!-- 右 -->
-      <div class="user-area">
+       <!-- 右：ユーザー -->
+       <div class="user-area">
 
-        <div>
-          ログインユーザ：田中 太郎
-        </div>
+  	<div>
+  		<!-- ログイン中の場合 -->
+  		<span th:if="${session.loginUser != null}">
+  			<span th:text="${session.loginUser.username}">ゲスト</span>さん
+  				<form th:action="@{/logout}" method="post" class="logout-form">
+  					<button type="submit">ログアウト</button>
+  				</form>
+  			</span>
+  		<!-- 未ログインの場合 -->
+  			<span th:unless="${session.loginUser != null}">
+  				<a th:href="@{/login}">ログイン</a>
+  			</span>
+  	</div>
+       </div>
 
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
+     </div>
 
-      </div>
+     <!-- 下段 -->
+     <div class="page-title-bar">
 
-    </div>
+       <a th:href="@{/dailyreport/list}">
+         日報一覧
+       </a>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      <p th:text="${site.siteName}"></p>
-    </div>
+       <a th:href="@{/safetyinspection/list}">
+         安全点検一覧
+       </a>
 
-  </header>
+       <a th:href="@{/trouble/list}">
+         トラブル一覧
+       </a>
+
+     </div>
+	 
+	 <div class="page-title-bar">
+	   <p th:text="${site.siteName}"></p>
+	 </div>
+
+   </header>
 
   <!-- メイン -->
   <main>

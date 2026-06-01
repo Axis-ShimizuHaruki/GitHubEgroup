@@ -16,12 +16,6 @@ public class Manager {
 	@GeneratedValue /* 自動生成 */(strategy = GenerationType.IDENTITY)
 	@Column(name = "manager_id")
 	private Integer managerid;
-
-	@Column(name = "site_id", nullable = false)
-	private Integer siteid;
-	
-	@Column(name = "user_id", nullable = false)
-	private Integer userid;
 	
 	
 	// 外部キー(子側)
@@ -40,22 +34,6 @@ public class Manager {
 
 	public void setManagerid(Integer managerid) {
 		this.managerid = managerid;
-	}
-
-	public Integer getSiteid() {
-		return siteid;
-	}
-
-	public void setSiteid(Integer siteid) {
-		this.siteid = siteid;
-	}
-
-	public Integer getUserid() {
-		return userid;
-	}
-
-	public void setUserid(Integer userid) {
-		this.userid = userid;
 	}
 
 	public Site getSite() {

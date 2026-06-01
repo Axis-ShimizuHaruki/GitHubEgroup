@@ -12,5 +12,5 @@ public class Safety {
 
 	private Integer safetyHarness;
 	
-	
+	private Integer equipmentInspection;
 }

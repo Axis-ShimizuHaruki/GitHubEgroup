@@ -1,5 +1,7 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.List;
+
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -58,6 +60,14 @@ public class TroubleController {
 		service.register(trouble);
 
 		return "redirect:/complete";
+	}
+
+	// トラブル一覧表示
+	@GetMapping("/trouble/list")
+	public String list(Model model) {
+		List<Trouble> troubleList = service.selectAll();
+		model.addAttribute("troubleList", troubleList);
+		return "nishikigi/troublelist";
 	}
 
 }

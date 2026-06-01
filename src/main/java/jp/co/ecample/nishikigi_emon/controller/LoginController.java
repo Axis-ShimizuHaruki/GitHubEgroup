@@ -10,16 +10,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.User;
+import jp.co.ecample.nishikigi_emon.repository.ManagerRepository;
 import jp.co.ecample.nishikigi_emon.service.UserService;
 
 
 @Controller
 public class LoginController {
 	private final UserService service;
+	private final ManagerRepository managerRepository;
 
-	public LoginController(UserService service) {
+	public LoginController(UserService service,
+			ManagerRepository managerRepository) {
 		this.service = service;
+		this.managerRepository = managerRepository;
 	}
 
 	// ログイン画面の表示
@@ -37,6 +42,19 @@ public class LoginController {
 			if (result.isPresent()) {
 				User user = result.get(); // 値を取り出す
 				session.setAttribute("loginUser", user);
+				
+				// Manager取得
+				Optional<Manager> managerOpt =
+						managerRepository.findByUser_Userid(user.getUserid());
+
+				// 現場IDをsession保存
+				if(managerOpt.isPresent()) {
+					Manager manager = managerOpt.get();
+
+					Integer siteId = manager.getSite().getSiteId();
+
+					session.setAttribute("siteId", siteId);
+				}
 				
 				// 権限により遷移先ページを変更
 				if(user.getRoll() == 0) {

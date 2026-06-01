@@ -69,5 +69,7 @@ public class TroubleController {
 		model.addAttribute("troubleList", troubleList);
 		return "nishikigi/troublelist";
 	}
+	
+	
 
 }

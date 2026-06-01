@@ -1,5 +1,56 @@
 package jp.co.ecample.nishikigi_emon.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "site")
 public class Site {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "site_id")
+    private Integer siteId;
+
+    /**
+     * 本社(0) / 現場(1)
+     */
+    @Column(name = "officecheck", nullable = false)
+    private Boolean officecheck;
+
+    @Column(name = "site_name", nullable = false, length = 100)
+    private String siteName;
+
+    // コンストラクタ
+    public Site() {
+    }
+
+    // getter setter
+    public Integer getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(Integer siteId) {
+        this.siteId = siteId;
+    }
+
+    public Boolean getOfficecheck() {
+        return officecheck;
+    }
+
+    public void setOfficecheck(Boolean officecheck) {
+        this.officecheck = officecheck;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
 }

@@ -28,6 +28,8 @@ public class Manager {
 	@ManyToOne
     @JoinColumn(name = "site_id")
     private Site site;
+	
+	@ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

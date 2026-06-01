@@ -1,13 +1,29 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import jp.co.ecample.nishikigi_emon.entity.Site;
+import jp.co.ecample.nishikigi_emon.service.SiteService;
 
 @Controller
 public class SiteController {
+	private final SiteService service;
+	public SiteController(SiteService service) {
+		this.service = service;
+	}
 
 	@GetMapping("/home")
-	public String showNewHome() {	
+	public String showNewHome(HttpSession session, Model model) {
+		Integer siteId = (Integer) session.getAttribute("siteId");
+
+	    Site site = service.findById(siteId);
+
+	    model.addAttribute("site", site);
+		
 		return "nishikigi/home";
 	}
 	

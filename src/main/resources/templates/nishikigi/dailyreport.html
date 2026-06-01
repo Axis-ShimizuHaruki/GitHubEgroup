@@ -1,254 +1,225 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日報登録</title>
-
-  <style>
-
-  </style>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-  <!-- ===== ヘッダー ===== -->
-
   <header>
-
-    <!-- 上段 -->
     <div class="header-top">
-
-      <!-- 左：ロゴ -->
       <div class="logo-area">
-        <a href="home.html">
-
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+        <a th:href="@{/nishikigi/dailyreport/list}">
+          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
         </a>
       </div>
 
-      <!-- 右：ユーザ -->
       <div class="user-area">
-
-        <div>
-          ログインユーザ：田中 太郎
+        <div th:if="${session.loginUser}">
+          ログインユーザ：<span th:text="${session.loginUser.empName}">田中 太郎</span>
         </div>
-
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
-
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+          <button type="submit" class="logout-btn" style="background:none; border:none; color:inherit; cursor:pointer;">
+            ログアウト
+          </button>
+        </form>
       </div>
-
     </div>
 
-    <!-- 下段 -->
     <div class="page-title-bar">
       日報登録
     </div>
-
   </header>
-
-  <!-- ===== コンテンツ ===== -->
 
   <div class="container">
 
-    <!-- 作業実績 -->
-    <div class="section">
+    <form th:action="@{/nishikigi/dailyreport/new/confirm}" th:object="${dailyreport}" method="post" id="reportForm">
 
-      <div class="section-title">
-        作業実績
-      </div>
+      <div class="section">
+        <div class="section-title">作業実績</div>
 
-      <div class="grid-2">
+        <div class="grid-2">
+          <div>
+            <label>現場名</label>
+            <select th:field="*{site.siteId}" required>
+              <option value="">-- 現場を選択してください --</option>
+              <option th:each="site : ${siteList}" 
+                      th:value="${site.siteId}" 
+                      th:text="${site.siteName}"
+                      th:selected="${site.siteId == session.siteId}">
+              </option>
+            </select>
+          </div>
 
-        <div>
-          <label>現場名</label>
-          <input type="text" placeholder="例：新宿ビル新築工事">
+          <div>
+            <label for="projectNumber">工事番号</label>
+            <input type="text" id="projectNumber" th:field="*{projectNumber}" placeholder="例：A-1024" required maxlength="10">
+          </div>
+
+          <div>
+            <label for="targetDate">日付</label>
+            <input type="date" id="targetDate" th:field="*{targetDate}" required>
+          </div>
+
+          <div>
+            <label for="weather">天候</label>
+            <select id="weather" th:field="*{weather}" required>
+              <option value="">-- 選択してください --</option>
+              <option value="1">晴れ</option>
+              <option value="2">曇り</option>
+              <option value="3">雨</option>
+              <option value="4">雪</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="temperature">気温 (℃)</label>
+            <input type="number" id="temperature" th:field="*{temperature}" placeholder="例：25" required>
+          </div>
         </div>
 
-        <div>
-          <label>工事番号</label>
-          <input type="text" placeholder="例：A-1024">
+        <label for="workDetails">当日作業内容（工種別）</label>
+        <textarea id="workDetails" th:field="*{workDetails}" placeholder="鉄筋・型枠・コンクリ打設・設備などの作業内容" required maxlength="500"></textarea>
+      </div>
+
+      <div class="section">
+        <div class="section-title">出面（協力会社別）</div>
+
+        <input type="hidden" th:field="*{workerDetails}" id="workerDetails">
+
+        <div class="sub-box" id="worker-rows">
+          <div class="worker-row">
+            <label>会社名</label>
+            <input type="text" class="input-company" placeholder="例：錦木組">
+            <label>職人数</label>
+            <input type="number" class="input-count" placeholder="例：3">
+            <label>氏名</label>
+            <input type="text" class="input-names" placeholder="例：山田、佐藤">
+          </div>
         </div>
 
-        <div>
-          <label>日付</label>
-          <input type="date">
+        <button type="button" class="btn" onclick="addWorkerRow()">＋ 追加</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title">工程進捗</div>
+        <label for="progressPercent">全体進捗（%）</label>
+        <input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
+        <span id="rangeVal">50%</span>
+      </div>
+
+      <div class="section">
+        <div class="section-title">写真記録（ファイル名を入力）</div>
+
+        <div class="check-item">
+          <label for="photoBefore">写真_着工前</label>
+          <input type="text" id="photoBefore" th:field="*{photoBefore}" placeholder="例：before.jpg">
         </div>
-
-        <div>
-          <label>天候</label>
-          <input type="text" placeholder="晴れ/雨/曇り">
+        <div class="check-item">
+          <label for="photoDuring">写真_施工中</label>
+          <input type="text" id="photoDuring" th:field="*{photoDuring}" placeholder="例：during.jpg">
         </div>
-
-        <div>
-          <label>気温</label>
-          <input type="text" placeholder="例：25℃">
+        <div class="check-item">
+          <label for="photoAfter">写真_完了</label>
+          <input type="text" id="photoAfter" th:field="*{photoAfter}" placeholder="例：after.jpg">
         </div>
-
+        <div class="check-item">
+          <label for="photoInspection">配筋検査写真（必須）</label>
+          <input type="text" id="photoInspection" th:field="*{photoInspection}" placeholder="例：inspection.jpg" required>
+        </div>
+        <div class="check-item">
+          <label for="photoSafety">安全帯使用状況写真（必須）</label>
+          <input type="text" id="photoSafety" th:field="*{photoSafety}" placeholder="例：safety.jpg" required>
+        </div>
       </div>
 
-      <label>
-        当日作業内容（工種別）
-      </label>
+      <div class="section">
+        <div class="section-title">安全管理</div>
 
-      <textarea placeholder="鉄筋・型枠・コンクリ打設・設備などの作業内容"></textarea>
+        <label for="safetyKy">KY項目</label>
+        <textarea id="safetyKy" th:field="*{safetyKy}" required maxlength="500"></textarea>
 
-    </div>
+        <label for="safetyMeasure">対策</label>
+        <textarea id="safetyMeasure" th:field="*{safetyMeasure}" required maxlength="500"></textarea>
 
-    <!-- 出面 -->
-    <div class="section">
+        <label for="safetyEducation">新規入場者教育</label>
+        <textarea id="safetyEducation" th:field="*{safetyEducation}" required maxlength="500"></textarea>
 
-      <div class="section-title">
-        出面（協力会社別）
+        <label for="nearMiss">ヒヤリハット</label>
+        <textarea id="nearMiss" th:field="*{nearMiss}" required maxlength="500"></textarea>
       </div>
 
-      <div class="sub-box">
+      <div class="section">
+        <div class="section-title">資材・機材</div>
 
-        <label>会社名</label>
-        <input type="text">
+        <label for="materials">搬入物</label>
+        <textarea id="materials" th:field="*{materials}" required maxlength="500"></textarea>
 
-        <label>職人数</label>
-        <input type="number">
-
-        <label>氏名</label>
-        <input type="text">
-
+        <label for="equipments">レンタル機材稼働</label>
+        <textarea id="equipments" th:field="*{equipments}" required maxlength="500"></textarea>
       </div>
 
-      <button class="btn">
-        ＋ 追加
-      </button>
+      <div class="section">
+        <div class="section-title">問題・調整事項</div>
 
-    </div>
+        <label for="designChange">設計変更指示</label>
+        <textarea id="designChange" th:field="*{designChange}" placeholder="設計変更指示の内容" required maxlength="500"></textarea>
 
-    <!-- 工程進捗 -->
-    <div class="section">
+        <label for="customerRequest">客先追加要望</label>
+        <textarea id="customerRequest" th:field="*{customerRequest}" placeholder="客先追加要望の内容" required maxlength="500"></textarea>
 
-      <div class="section-title">
-        工程進捗
+        <label for="partnerCoordination">協力会社調整</label>
+        <textarea id="partnerCoordination" th:field="*{partnerCoordination}" placeholder="協力会社調整の内容" required maxlength="500"></textarea>
+
+        <label for="nextDaySchedule">翌日予定</label>
+        <textarea id="nextDaySchedule" th:field="*{nextDaySchedule}" placeholder="翌日の作業予定" required maxlength="500"></textarea>
       </div>
 
-      <label>全体進捗（%）</label>
-      <input type="range" min="0" max="100">
-
-    </div>
-
-    <!-- 写真記録 -->
-    <div class="section">
-
-      <div class="section-title">
-        写真記録
+      <div class="section">
+        <div class="section-title">コメント</div>
+        <textarea id="notes" th:field="*{notes}" placeholder="一日の総括（任意のコメント）" maxlength="500"></textarea>
       </div>
 
-      <!-- 画像アップロード -->
-      <div class="check-item">
-        <label for="photo-upload">施工前</label>
-
-        <input type="file" id="photo-upload" accept="image/*">
-      </div>
-      <!-- 画像アップロード -->
-      <div class="check-item">
-        <label for="photo-upload">施工中</label>
-
-        <input type="file" id="photo-upload" accept="image/*">
-      </div>
-      <!-- 画像アップロード -->
-      <div class="check-item">
-        <label for="photo-upload">完了</label>
-
-        <input type="file" id="photo-upload" accept="image/*">
-      </div>
-      <!-- 画像アップロード -->
-      <div class="check-item">
-        <label for="photo-upload">配筋検査</label>
-
-        <input type="file" id="photo-upload" accept="image/*">
-      </div>
-      <!-- 画像アップロード -->
-      <div class="check-item">
-        <label for="photo-upload">安全帯使用状況</label>
-
-        <input type="file" id="photo-upload" accept="image/*">
+      <div class="btn-area">
+        <a th:href="@{/nishikigi/dailyreport/list}" class="btn">戻る</a>
+        <button type="submit" class="btn">確認</button>
       </div>
 
-    </div>
-
-    <!-- 安全管理 -->
-    <div class="section">
-
-      <div class="section-title">
-        安全管理
-      </div>
-
-      <label>KY項目</label>
-      <textarea></textarea>
-
-      <label>対策</label>
-      <textarea></textarea>
-
-      <label>新規入場者教育</label>
-      <textarea></textarea>
-
-      <label>ヒヤリハット</label>
-      <textarea></textarea>
-
-    </div>
-
-    <!-- 資材・機材 -->
-    <div class="section">
-
-      <div class="section-title">
-        資材・機材
-      </div>
-
-      <label>搬入物</label>
-      <textarea></textarea>
-
-      <label>レンタル機材稼働</label>
-      <textarea></textarea>
-
-    </div>
-
-    <!-- 問題・調整 -->
-    <div class="section">
-
-      <div class="section-title">
-        問題・調整事項
-      </div>
-
-      <textarea placeholder="設計変更・追加要望・協力会社調整・翌日予定など"></textarea>
-
-    </div>
-
-    <!-- コメント -->
-    <div class="section">
-
-      <div class="section-title">
-        コメント
-      </div>
-
-      <textarea placeholder="一日の総括"></textarea>
-
-    </div>
-
-    <!-- ボタン -->
-    <div class="btn-area">
-
-      <button class="btn" onclick="location.href='home.html'">
-        戻る
-      </button>
-
-      <button class="btn" onclick="location.href='dailyreportcheck.html'">
-        登録
-      </button>
-
-    </div>
-
+    </form>
   </div>
 
-</body>
+  <script>
+    function serializeWorkerDetails() {
+      const rows = document.querySelectorAll('.worker-row');
+      const workerList = [];
+      
+      rows.forEach(row => {
+        const company = row.querySelector('.input-company').value;
+        const count = row.querySelector('.input-count').value;
+        const names = row.querySelector('.input-names').value;
+        
+        if (company || count || names) {
+          workerList.push({
+            company: company,
+            count: count,
+            names: names
+          });
+        }
+      });
+      
+      // JSON形式の文字列に変換してhiddenに格納し、Java側に送る
+      document.getElementById('workerDetails').value = JSON.stringify(workerList);
+    }
 
+    // フォーム送信（確認ボタン押下）の瞬間にJSONを組み立てる
+    document.getElementById('reportForm').addEventListener('submit', function(e) {
+      serializeWorkerDetails();
+    });
+  </script>
+
+</body>
 </html>

@@ -2,154 +2,176 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>安全点検登録</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>安全点検登録</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="home.html">
+				<a href="home.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <div>
-          ログインユーザ：田中 太郎
-        </div>
+				<div>
+					ログインユーザ：田中 太郎
+				</div>
 
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
+				<a href="logout.html" class="logout-btn">
+					ログアウト
+				</a>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      安全点検登録
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			安全点検登録
+		</div>
 
-  </header>
+	</header>
 
-  <!-- =========================
+	<!-- =========================
        メイン
   ========================= -->
 
-  <div class="container">
+	<form class="container" th:action="@{/safetyinspection/new/confirm}" th:object="${safety}" method="post">
 
-    <!-- 点検項目 -->
-    <div class="section">
+		<!-- 点検項目 -->
+		<div class="section">
 
-      <div class="section-title">
-        点検項目
-      </div>
+			<div class="section-title">
+				点検項目
+			</div>
+			<div class="check-item">
+				<label>足場（手すり・幅木・滑り止め）</label>
 
-      <div class="check-item">
-        <label>足場（手すり・幅木・滑り止め）</label>
+				<select th:field="*{scaffolding}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('scaffolding')}" th:errors="*{scaffolding}" style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>開口部養生</label>
 
-      <div class="check-item">
-        <label>開口部養生</label>
+				<select th:field="*{protectingOpenings}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('protectingOpenings')}" th:errors="*{protectingOpenings}"
+					style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>高所作業の安全帯使用</label>
 
-      <div class="check-item">
-        <label>高所作業の安全帯使用</label>
+				<select th:field="*{safetyHarness}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('safetyHarness')}" th:errors="*{safetyHarness}" style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>重機点検記録</label>
 
-      <div class="check-item">
-        <label>重機点検記録</label>
+				<select th:field="*{equipmentInspection}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('equipmentInspection')}" th:errors="*{equipmentInspection}"
+					style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>火気使用時の消火器配置</label>
 
-      <div class="check-item">
-        <label>火気使用時の消火器配置</label>
+				<select th:field="*{fireExtinguisher}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('fireExtinguisher')}" th:errors="*{fireExtinguisher}" style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>整理整頓（つまずきリスク）</label>
 
-      <div class="check-item">
-        <label>整理整頓（つまずきリスク）</label>
+				<select th:field="*{organization}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}" style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
+			<div class="check-item">
+				<label>仮設電気の絶縁</label>
 
-      <div class="check-item">
-        <label>仮設電気の絶縁</label>
+				<select th:field="*{electricalInsulation}">
+					<option value="">選択してください</option>
+					<option value="0">良好</option>
+					<option value="1">不備</option>
+				</select>
+				<div th:if="${#fields.hasErrors('electricalInsulation')}" th:errors="*{electricalInsulation}"
+					style="color:red">
+				</div>
+			</div>
 
-        <select>
-          <option>良好</option>
-          <option>不備</option>
-        </select>
-      </div>
-
-      <!-- 画像アップロード -->
-      <!-- <div class="check-item">
+			<!-- 画像アップロード -->
+			<!-- <div class="check-item">
         <label for="photo-upload">点検写真アップロード</label>
 
         <input type="file" id="photo-upload" accept="image/*">
       </div> -->
 
-    </div>
+		</div>
 
-    <!-- 登録 -->
-    <div class="btn-area">
+		<!-- 登録 -->
+		<div class="btn-area">
 
-      <button class="btn" onclick="location.href='safetycheckcheck.html'">
-        登録
-      </button>
+			<button class="btn" type="submit">
+				登録
+			</button>
 
-    </div>
-
-  </div>
+		</div>
+	</form>
 
 </body>
 

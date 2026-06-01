@@ -94,11 +94,9 @@
 					<div class="label">
 						緊急度
 					</div>
-
-					<div class="value">
-						<span class="badge" th:text="${trouble.priorityName}">
-							高
-						</span>
+					<div class="value" th:text="${form.priority == 1 ? '高' :
+					               form.priority == 2 ? '中' :
+					               form.priority == 3 ? '低' : ''}">
 					</div>
 				</div>
 
@@ -108,8 +106,11 @@
 						トラブル種別
 					</div>
 
-					<div class="value" th:text="${trouble.troubleTypeName}">
-						納品遅れ
+					<div class="value" th:text="${form.troubleType == 1 ? '事故' :
+					               form.troubleType == 2 ? '資材不足' :
+					               form.troubleType == 3 ? '納品遅れ' :
+					               form.troubleType == 4 ? '工程遅延' :
+					               form.troubleType == 5 ? 'その他' : ''}">
 					</div>
 				</div>
 
@@ -141,7 +142,7 @@
 			</div>
 
 			<!-- ボタン -->
-			<form th:action="@{/trouble/register}" method="post">
+			<form th:action="@{/troubles}" method="post">
 
 				<input type="hidden" name="priority" th:value="${form.priority}">
 

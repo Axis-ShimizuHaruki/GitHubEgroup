@@ -1,11 +1,14 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.form.TroubleForm;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
@@ -34,13 +37,21 @@ public class TroubleController {
 
 	// トラブル登録画面のフォーム送信
 	@PostMapping("/troubles")
-	public String register(@ModelAttribute TroubleForm form) {
+	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
+
+		Integer siteId = (Integer) session.getAttribute("siteId");
+
 		Trouble trouble = new Trouble();
 
 		trouble.setPriority(form.getPriority());
 		trouble.setTroubleType(form.getTroubleType());
 		trouble.setOverview(form.getOverview());
 		trouble.setDetail(form.getDetail());
+
+		Site site = new Site();
+		site.setSiteId(siteId);
+
+		trouble.setSite(site);
 
 		service.register(trouble);
 

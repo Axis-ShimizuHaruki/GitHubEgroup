@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>業務管理システム</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+
+  <header>
+
+    <!-- 上段 -->
+
+    <div class="header-top">
+
+      <!-- 左：ロゴ -->
+
+      <div class="logo-area">
+
+        <a href="home.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+          <div class="site-system-name">
+            現場管理システム
+          </div>
+
+        </a>
+
+      </div>
+
+      <!-- 右：ユーザー -->
+
+      <div class="user-area">
+
+        <div class="username">
+          ログインユーザ：田中 太郎
+        </div>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+
+    <div class="page-title-bar">
+
+      <a href="dailylist.html">
+        日報一覧
+      </a>
+
+      <a href="safetylist.html">
+        安全点検一覧
+      </a>
+
+      <a href="troublelist.html">
+        トラブル一覧
+      </a>
+
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- ===== 左メニュー ===== -->
+
+    <div class="button-area">
+
+      <!-- タイトルカード -->
+
+      <div class="portal-header-card">
+
+        <div class="portal-label">
+          現場ポータル
+        </div>
+
+        <div class="portal-site-name">
+          新宿ビル建設工事
+        </div>
+
+      </div>
+
+      <!-- 日報 -->
+
+      <div class="menu-group">
+
+        <a href="dailyreportdetail.html" class="menu-button">
+          今日の日報
+        </a>
+
+        <a href="dailylist.html" class="sub-button">
+          日報一覧
+        </a>
+
+      </div>
+
+      <!-- 安全点検 -->
+
+      <div class="menu-group">
+
+        <a href="safetycheckdetail.html" class="menu-button">
+          今日の安全点検
+        </a>
+
+        <a href="safetylist.html" class="sub-button">
+          安全点検一覧
+        </a>
+
+      </div>
+
+      <!-- トラブル -->
+
+      <div class="menu-group">
+
+        <a href="troubledetail.html" class="menu-button">
+          今日のトラブル
+        </a>
+
+        <a href="troublelist.html" class="sub-button">
+          トラブル一覧
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- ===== 右側チャット ===== -->
+
+    <div class="chat-panel">
+
+      <div class="chat-header">
+        現場チャット
+      </div>
+
+      <div class="chat-messages">
+
+        <div class="message-row me">
+          <div class="message">
+            本日の安全点検まだです。
+          </div>
+        </div>
+
+        <div class="message-row other">
+          <div class="message">
+            15時までに提出します。
+          </div>
+        </div>
+
+        <div class="message-row me">
+          <div class="message">
+            了解しました。
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chat-input">
+        <input type="text" placeholder="メッセージを入力">
+        <button>送信</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ===== 左下ステータス吹き出し ===== -->
+
+  <div class="status-bubble">
+
+    <div class="status-item">
+      <span class="status-title">日報</span>
+      <span class="done">✔ 作成済み</span>
+    </div>
+
+    <div class="status-item">
+      <span class="status-title">安全点検</span>
+      <span class="not-done blinking">⚠ 未作成</span>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>トラブル登録画面</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="portal.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <span class="user-name">
+          ログインユーザ：山田 太郎
+        </span>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      トラブル登録
+    </div>
+
+  </header>
+
+  <!-- =========================
+       メイン
+  ========================= -->
+
+  <div class="container">
+
+    <h1>トラブル登録</h1>
+
+    <form>
+
+      <!-- 緊急度 -->
+      <div class="form-group">
+        <label for="priority">緊急度</label>
+
+        <select id="priority" name="priority">
+          <option value="">選択してください</option>
+          <option value="high">高</option>
+          <option value="middle">中</option>
+          <option value="low">低</option>
+        </select>
+      </div>
+
+      <!-- トラブル種別 -->
+      <div class="form-group">
+        <label for="type">トラブル種別</label>
+
+        <select id="type" name="type">
+          <option value="">選択してください</option>
+          <option value="accident">事故</option>
+          <option value="material_shortage">資材不足</option>
+          <option value="delivery_delay">納品遅れ</option>
+        </select>
+      </div>
+
+      <!-- 一言 -->
+      <div class="form-group">
+        <label for="summary">一言で表す</label>
+
+        <input type="text" id="summary" name="summary" placeholder="例：サーバに接続できない" />
+      </div>
+
+      <!-- 詳細 -->
+      <div class="form-group">
+        <label for="detail">具体的な内容</label>
+
+        <textarea id="detail" name="detail" placeholder="発生状況やエラー内容を詳しく入力してください"></textarea>
+      </div>
+
+      <!-- ボタン -->
+      <button type="button" class="submit-btn" onclick="location.href='troublecheck.html';">
+
+        登録
+
+      </button>
+
+    </form>
+
+  </div>
+
+</body>
+
+</html>

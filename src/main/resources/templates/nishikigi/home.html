@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>業務管理システム</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="home.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      ○○建設｜新宿ビル新築工事
+    </div>
+
+  </header>
+
+  <!-- メイン -->
+  <main>
+
+    <!-- 左メニュー -->
+    <div class="button-area">
+
+      <!-- 日報 -->
+      <div class="menu-group">
+        <a href="dailyreport.html" class="menu-button">
+          日報作成
+        </a>
+
+        <a href="dailylist.html" class="sub-button">
+          日報一覧
+        </a>
+      </div>
+
+      <!-- 安全点検 -->
+      <div class="menu-group">
+        <a href="safetycheck.html" class="menu-button">
+          安全点検作成
+        </a>
+
+        <a href="safetylist.html" class="sub-button">
+          安全点検一覧
+        </a>
+      </div>
+
+      <!-- トラブル -->
+      <div class="menu-group">
+        <a href="trouble.html" class="menu-button">
+          トラブル報告作成
+        </a>
+
+        <a href="troublelist.html" class="sub-button">
+          トラブル一覧
+        </a>
+      </div>
+
+    </div>
+
+    <!-- チャット -->
+    <div class="chat-panel">
+
+      <div class="chat-header">
+        現場チャット
+      </div>
+
+      <div class="chat-messages">
+
+        <div class="message-row other">
+          <div class="message">
+            本日の安全点検は15時までに提出してください。
+          </div>
+        </div>
+
+        <div class="message-row me">
+          <div class="message">
+            了解しました。確認後提出します。
+          </div>
+        </div>
+
+        <div class="message-row other">
+          <div class="message">
+            本日午後から資材搬入があります。
+          </div>
+        </div>
+
+        <div class="message-row me">
+          <div class="message">
+            作業員へ共有済みです。
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 入力欄 -->
+      <div class="chat-input">
+        <input type="text" placeholder="メッセージを入力">
+        <button>送信</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 左下ステータス -->
+  <div class="status-bubble">
+
+    <div class="status-item">
+      <span class="status-title">日報</span>
+      <span class="done">✔ 作成済み</span>
+    </div>
+
+    <div class="status-item">
+      <span class="status-title">安全点検</span>
+      <span class="not-done blinking">⚠ 未作成</span>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

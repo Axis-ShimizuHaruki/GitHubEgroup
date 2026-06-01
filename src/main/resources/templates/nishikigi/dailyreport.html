@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日報登録</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左：ロゴ -->
+      <div class="logo-area">
+        <a href="home.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+        </a>
+      </div>
+
+      <!-- 右：ユーザ -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      日報登録
+    </div>
+
+  </header>
+
+  <!-- ===== コンテンツ ===== -->
+
+  <div class="container">
+
+    <!-- 作業実績 -->
+    <div class="section">
+
+      <div class="section-title">
+        作業実績
+      </div>
+
+      <div class="grid-2">
+
+        <div>
+          <label>現場名</label>
+          <input type="text" placeholder="例：新宿ビル新築工事">
+        </div>
+
+        <div>
+          <label>工事番号</label>
+          <input type="text" placeholder="例：A-1024">
+        </div>
+
+        <div>
+          <label>日付</label>
+          <input type="date">
+        </div>
+
+        <div>
+          <label>天候</label>
+          <input type="text" placeholder="晴れ/雨/曇り">
+        </div>
+
+        <div>
+          <label>気温</label>
+          <input type="text" placeholder="例：25℃">
+        </div>
+
+      </div>
+
+      <label>
+        当日作業内容（工種別）
+      </label>
+
+      <textarea placeholder="鉄筋・型枠・コンクリ打設・設備などの作業内容"></textarea>
+
+    </div>
+
+    <!-- 出面 -->
+    <div class="section">
+
+      <div class="section-title">
+        出面（協力会社別）
+      </div>
+
+      <div class="sub-box">
+
+        <label>会社名</label>
+        <input type="text">
+
+        <label>職人数</label>
+        <input type="number">
+
+        <label>氏名</label>
+        <input type="text">
+
+      </div>
+
+      <button class="btn">
+        ＋ 追加
+      </button>
+
+    </div>
+
+    <!-- 工程進捗 -->
+    <div class="section">
+
+      <div class="section-title">
+        工程進捗
+      </div>
+
+      <label>全体進捗（%）</label>
+      <input type="range" min="0" max="100">
+
+    </div>
+
+    <!-- 写真記録 -->
+    <div class="section">
+
+      <div class="section-title">
+        写真記録
+      </div>
+
+      <!-- 画像アップロード -->
+      <div class="check-item">
+        <label for="photo-upload">施工前</label>
+
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <!-- 画像アップロード -->
+      <div class="check-item">
+        <label for="photo-upload">施工中</label>
+
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <!-- 画像アップロード -->
+      <div class="check-item">
+        <label for="photo-upload">完了</label>
+
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <!-- 画像アップロード -->
+      <div class="check-item">
+        <label for="photo-upload">配筋検査</label>
+
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+      <!-- 画像アップロード -->
+      <div class="check-item">
+        <label for="photo-upload">安全帯使用状況</label>
+
+        <input type="file" id="photo-upload" accept="image/*">
+      </div>
+
+    </div>
+
+    <!-- 安全管理 -->
+    <div class="section">
+
+      <div class="section-title">
+        安全管理
+      </div>
+
+      <label>KY項目</label>
+      <textarea></textarea>
+
+      <label>対策</label>
+      <textarea></textarea>
+
+      <label>新規入場者教育</label>
+      <textarea></textarea>
+
+      <label>ヒヤリハット</label>
+      <textarea></textarea>
+
+    </div>
+
+    <!-- 資材・機材 -->
+    <div class="section">
+
+      <div class="section-title">
+        資材・機材
+      </div>
+
+      <label>搬入物</label>
+      <textarea></textarea>
+
+      <label>レンタル機材稼働</label>
+      <textarea></textarea>
+
+    </div>
+
+    <!-- 問題・調整 -->
+    <div class="section">
+
+      <div class="section-title">
+        問題・調整事項
+      </div>
+
+      <textarea placeholder="設計変更・追加要望・協力会社調整・翌日予定など"></textarea>
+
+    </div>
+
+    <!-- コメント -->
+    <div class="section">
+
+      <div class="section-title">
+        コメント
+      </div>
+
+      <textarea placeholder="一日の総括"></textarea>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn" onclick="location.href='home.html'">
+        戻る
+      </button>
+
+      <button class="btn" onclick="location.href='dailyreportcheck.html'">
+        登録
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

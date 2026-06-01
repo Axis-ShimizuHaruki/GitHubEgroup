@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日報確認</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      日報詳細
+    </div>
+
+  </header>
+
+  <!-- =========================
+       メイン
+  ========================= -->
+
+  <div class="container">
+
+    <!-- 基本情報 -->
+    <div class="section">
+
+      <div class="section-title">
+        基本情報
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">現場名</div>
+          <div class="value">新宿ビル新築工事</div>
+        </div>
+
+        <div class="item">
+          <div class="label">工事番号</div>
+          <div class="value">A-1024</div>
+        </div>
+
+        <div class="item">
+          <div class="label">日付</div>
+          <div class="value">2026-05-26</div>
+        </div>
+
+        <div class="item">
+          <div class="label">天候</div>
+          <div class="value">晴れ</div>
+        </div>
+
+        <div class="item">
+          <div class="label">気温</div>
+          <div class="value">25℃</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 作業内容 -->
+    <div class="section">
+
+      <div class="section-title">
+        作業内容
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          本日の作業
+        </div>
+
+        <div class="value">
+          鉄筋組立作業
+          型枠設置
+          コンクリート打設
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 出面 -->
+    <div class="section">
+
+      <div class="section-title">
+        出面情報
+      </div>
+
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th>協力会社</th>
+            <th>人数</th>
+            <th>作業員</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>株式会社A工業</td>
+            <td>5名</td>
+            <td>田中・佐藤・山田</td>
+          </tr>
+
+          <tr>
+            <td>株式会社B建設</td>
+            <td>3名</td>
+            <td>高橋・伊藤</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- 工程進捗 -->
+    <div class="section">
+
+      <div class="section-title">
+        工程進捗
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          全体進捗率
+        </div>
+
+        <div class="value">
+          65%
+        </div>
+
+      </div>
+
+      <div class="status-box">
+
+        <div class="status"></div>
+
+        <div>
+          工程は予定通り進行しています
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 写真 -->
+    <div class="section">
+
+      <div class="section-title">
+        写真記録
+      </div>
+
+      <div class="tag-area">
+
+        <div class="tag">施工状況</div>
+        <div class="tag">安全帯使用</div>
+        <div class="tag">資材搬入</div>
+        <div class="tag">型枠施工</div>
+
+      </div>
+
+    </div>
+
+    <!-- 安全管理 -->
+    <div class="section">
+
+      <div class="section-title">
+        安全管理
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">KY項目</div>
+          <div class="value">足場からの墜落防止</div>
+        </div>
+
+        <div class="item">
+          <div class="label">安全対策</div>
+          <div class="value">フルハーネス着用徹底</div>
+        </div>
+
+        <div class="item">
+          <div class="label">新規入場者教育</div>
+          <div class="value">実施済み</div>
+        </div>
+
+        <div class="item">
+          <div class="label">ヒヤリハット</div>
+          <div class="value">特になし</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 資材 -->
+    <div class="section">
+
+      <div class="section-title">
+        資材・機材
+      </div>
+
+      <div class="item">
+        <div class="label">搬入物</div>
+        <div class="value">鉄筋 5t</div>
+      </div>
+
+      <div class="item">
+        <div class="label">使用機材</div>
+        <div class="value">クレーン・高所作業車</div>
+      </div>
+
+    </div>
+
+    <!-- 問題 -->
+    <div class="section">
+
+      <div class="section-title">
+        問題・調整事項
+      </div>
+
+      <div class="value">
+        翌日のコンクリート打設開始時間について調整中。
+        午前8時開始予定。
+      </div>
+
+    </div>
+
+    <!-- コメント -->
+    <div class="section">
+
+      <div class="section-title">
+        現場コメント
+      </div>
+
+      <div class="value">
+        本日も無事故で作業完了。
+        引き続き安全第一で作業を実施する。
+      </div>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn_h" onclick="location.href='portal.html';">
+        一覧へ
+      </button>
+
+      <button class="btn_h" onclick="location.href='portal.html';">
+        現場ポータルへ
+      </button>
+
+      <button class="btn_h" onclick="location.href='dailyedit.html';">
+        編集
+      </button>
+
+      <button class="btn" onclick="alert('確認が完了しました'); location.href='list.html';">
+        確認完了
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

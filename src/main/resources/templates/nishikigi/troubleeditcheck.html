@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>トラブル編集確認</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <span class="user-name">
+          ログインユーザ：山田 太郎
+        </span>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      トラブル編集確認
+    </div>
+
+  </header>
+
+  <div class="container">
+
+    <!-- サマリー -->
+    <div class="section">
+
+      <div class="section-title">
+        編集内容確認
+      </div>
+
+      <div class="summary-box">
+        以下の内容でトラブル情報を更新します。<br>
+        内容をご確認のうえ、「この内容で更新する」を押してください。
+      </div>
+
+    </div>
+
+    <!-- 基本情報 -->
+    <div class="section">
+
+      <div class="section-title">
+        トラブル基本情報
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">受付番号</div>
+          <div class="value">TR-20260526-001</div>
+        </div>
+
+        <div class="item">
+          <div class="label">発生日</div>
+          <div class="value">2026-05-26</div>
+        </div>
+
+        <div class="item">
+          <div class="label">報告者</div>
+          <div class="value">山田 太郎</div>
+        </div>
+
+        <div class="item">
+          <div class="label">対象部署</div>
+          <div class="value">情報システム部</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- トラブル内容 -->
+    <div class="section">
+
+      <div class="section-title">
+        トラブル内容
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">緊急度</div>
+
+          <div class="value">
+            <span class="badge high">高</span>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">トラブル種別</div>
+
+          <div class="value">
+            納品遅れ
+          </div>
+        </div>
+
+      </div>
+
+      <div class="item">
+        <div class="label">一言で表す</div>
+
+        <div class="value">
+          サーバに接続できない
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 詳細 -->
+    <div class="section">
+
+      <div class="section-title">
+        詳細内容
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          トラブル詳細
+        </div>
+
+        <div class="value">
+          サーバへの接続が不安定で、
+          社内システムにログインできない状態が発生。
+
+          午前9時頃から継続しており、
+          現在システム担当が原因を調査中。
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 対応状況 -->
+    <div class="section">
+
+      <div class="section-title">
+        対応状況
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">現在の対応状況</div>
+
+          <div class="value">
+            調査中
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="label">管理者共有</div>
+
+          <div class="value">
+            共有済み
+          </div>
+        </div>
+
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          対応メモ
+        </div>
+
+        <div class="value">
+          ネットワーク機器およびサーバログを確認中。
+          午前中に一次報告予定。
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- コメント -->
+    <div class="section">
+
+      <div class="section-title">
+        確認ステータス
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          コメント
+        </div>
+
+        <div class="value">
+          登録内容に問題がないことを確認してください。
+          必要に応じて管理者へ共有されます。
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn btn-secondary" onclick="history.back()">
+        修正する
+      </button>
+
+      <button class="btn" onclick="location.href='complete.html';">
+        確認
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

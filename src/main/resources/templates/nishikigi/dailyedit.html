@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日報編集</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左：ロゴ -->
+      <div class="logo-area">
+        <a href="home.html">
+
+          <img src="icon.png" alt="アイコン" class="logo-img">
+
+        </a>
+      </div>
+
+      <!-- 右：ユーザ -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      日報編集
+    </div>
+
+  </header>
+
+  <div class="container">
+
+    <!-- 基本情報 -->
+    <div class="section">
+      <div class="section-title">基本情報</div>
+
+      <div class="grid-2">
+        <div class="item">
+          <div class="label">現場名</div>
+          <input type="text" value="新宿ビル新築工事">
+        </div>
+
+        <div class="item">
+          <div class="label">工事番号</div>
+          <input type="text" value="A-1024">
+        </div>
+
+        <div class="item">
+          <div class="label">日付</div>
+          <input type="date" value="2026-05-26">
+        </div>
+
+        <div class="item">
+          <div class="label">天候</div>
+          <input type="text" value="晴れ">
+        </div>
+
+        <div class="item">
+          <div class="label">気温</div>
+          <input type="text" value="25℃">
+        </div>
+      </div>
+    </div>
+
+    <!-- 作業内容 -->
+    <div class="section">
+      <div class="section-title">作業内容</div>
+
+      <div class="item">
+        <div class="label">本日の作業</div>
+        <textarea>鉄筋組立作業
+型枠設置
+コンクリート打設</textarea>
+      </div>
+    </div>
+
+    <!-- 出面 -->
+    <div class="section">
+      <div class="section-title">出面情報</div>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>協力会社</th>
+            <th>人数</th>
+            <th>作業員</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><input type="text" value="株式会社A工業"></td>
+            <td><input type="text" value="5名"></td>
+            <td><input type="text" value="田中・佐藤・山田"></td>
+          </tr>
+
+          <tr>
+            <td><input type="text" value="株式会社B建設"></td>
+            <td><input type="text" value="3名"></td>
+            <td><input type="text" value="高橋・伊藤"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 進捗 -->
+    <div class="section">
+      <div class="section-title">工程進捗</div>
+
+      <div class="item">
+        <div class="label">全体進捗率</div>
+        <input type="text" value="65%">
+      </div>
+
+      <div class="item">
+        <div class="label">状況</div>
+        <input type="text" value="予定通り進行しています">
+      </div>
+    </div>
+
+    <!-- 写真タグ -->
+    <div class="section">
+      <div class="section-title">写真記録タグ</div>
+      <input type="text" value="施工状況, 安全帯使用, 資材搬入, 型枠施工">
+    </div>
+
+    <!-- 安全管理 -->
+    <div class="section">
+      <div class="section-title">安全管理</div>
+
+      <div class="grid-2">
+        <div class="item">
+          <div class="label">KY項目</div>
+          <input type="text" value="足場からの墜落防止">
+        </div>
+
+        <div class="item">
+          <div class="label">安全対策</div>
+          <input type="text" value="フルハーネス着用徹底">
+        </div>
+
+        <div class="item">
+          <div class="label">新規入場者教育</div>
+          <input type="text" value="実施済み">
+        </div>
+
+        <div class="item">
+          <div class="label">ヒヤリハット</div>
+          <input type="text" value="特になし">
+        </div>
+      </div>
+    </div>
+
+    <!-- 資材 -->
+    <div class="section">
+      <div class="section-title">資材・機材</div>
+
+      <div class="item">
+        <div class="label">搬入物</div>
+        <input type="text" value="鉄筋 5t">
+      </div>
+
+      <div class="item">
+        <div class="label">使用機材</div>
+        <input type="text" value="クレーン・高所作業車">
+      </div>
+    </div>
+
+    <!-- 問題 -->
+    <div class="section">
+      <div class="section-title">問題・調整事項</div>
+      <textarea>翌日のコンクリート打設開始時間について調整中。
+午前8時開始予定。</textarea>
+    </div>
+
+    <!-- コメント -->
+    <div class="section">
+      <div class="section-title">現場コメント</div>
+      <textarea>本日も無事故で作業完了。
+引き続き安全第一で作業を実施する。</textarea>
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn btn-gray" onclick="location.href='dailyreportdetail.html';">
+        キャンセル
+      </button>
+
+      <button class="btn" onclick="location.href='dailyeditcheck.html';">
+        保存
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

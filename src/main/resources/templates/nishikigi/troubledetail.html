@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>トラブル詳細</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <span class="user-name">
+          ログインユーザ：田中 太郎
+        </span>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      トラブル詳細
+    </div>
+
+  </header>
+
+  <!-- コンテナ -->
+  <div class="container">
+
+    <!-- サマリー -->
+    <div class="section">
+
+      <div class="section-title">
+        登録内容サマリー
+      </div>
+
+      <div class="summary-box">
+
+        <div class="summary-title">
+          入力内容
+        </div>
+
+        登録されたトラブル内容を確認してください。<br>
+        問題がなければ「確認完了」を押してください。
+
+      </div>
+
+    </div>
+
+    <!-- トラブル情報 -->
+    <div class="section">
+
+      <div class="section-title">
+        トラブル情報
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          緊急度
+        </div>
+
+        <div class="value">
+          <span class="badge high">高</span>
+        </div>
+
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          トラブル種別
+        </div>
+
+        <div class="value">
+          納品遅れ
+        </div>
+
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          一言で表す
+        </div>
+
+        <div class="value">
+          サーバに接続できない
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- 詳細 -->
+    <div class="section">
+
+      <div class="section-title">
+        詳細内容
+      </div>
+
+      <div class="value">
+        サーバへの接続が不安定で、
+        社内システムにログインできない状態が発生。
+
+        午前9時頃から継続しており、
+        現在システム担当が原因を調査中。
+      </div>
+
+    </div>
+
+    <!-- 確認ステータス -->
+    <div class="section">
+
+      <div class="section-title">
+        確認ステータス
+      </div>
+
+      <div class="value">
+        登録内容に問題がないことを確認してください。
+        必要に応じて管理者へ共有されます。
+      </div>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn btn-green" onclick="alert('確認が完了しました'); location.href='list.html';">
+        確認完了
+      </button>
+
+      <button class="btn btn-gray" onclick="location.href='troubleedit.html';">
+        編集
+      </button>
+
+      <button class="btn btn-gray" onclick="location.href='troublelist.html';">
+        トラブル一覧へ
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>トラブル編集</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <span class="user-name">
+          ログインユーザ：山田 太郎
+        </span>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      トラブル編集
+    </div>
+
+  </header>
+
+  <div class="container">
+
+    <!-- サマリー -->
+    <div class="section">
+
+      <div class="section-title">
+        編集内容サマリー
+      </div>
+
+      <div class="summary-box">
+        登録済みのトラブル内容を編集できます。<br>
+        内容確認後、「保存」を押してください。
+      </div>
+
+    </div>
+
+
+
+    <!-- トラブル内容 -->
+    <div class="section">
+
+      <div class="section-title">
+        トラブル内容編集
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">緊急度</div>
+
+          <select>
+            <option selected>高</option>
+            <option>中</option>
+            <option>低</option>
+          </select>
+
+          <span class="badge-preview high">
+            高
+          </span>
+        </div>
+
+        <div class="item">
+          <div class="label">トラブル種別</div>
+
+          <select>
+            <option>システム障害</option>
+            <option selected>納品遅れ</option>
+            <option>機器故障</option>
+            <option>品質不良</option>
+            <option>人的ミス</option>
+            <option>その他</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="item">
+        <div class="label">一言で表す</div>
+
+        <input type="text" value="サーバに接続できない">
+      </div>
+
+    </div>
+
+    <!-- 詳細 -->
+    <div class="section">
+
+      <div class="section-title">
+        詳細内容
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          トラブル詳細
+        </div>
+
+        <textarea>
+サーバへの接続が不安定で、
+社内システムにログインできない状態が発生。
+
+午前9時頃から継続しており、
+現在システム担当が原因を調査中。
+        </textarea>
+
+      </div>
+
+    </div>
+
+    <!-- 対応状況 -->
+    <div class="section">
+
+      <div class="section-title">
+        対応状況
+      </div>
+
+      <div class="grid-2">
+
+        <div class="item">
+          <div class="label">現在の対応状況</div>
+
+          <select>
+            <option selected>調査中</option>
+            <option>対応中</option>
+            <option>復旧済み</option>
+            <option>完了</option>
+          </select>
+        </div>
+
+        <div class="item">
+          <div class="label">管理者共有</div>
+
+          <select>
+            <option selected>共有済み</option>
+            <option>未共有</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          対応メモ
+        </div>
+
+        <textarea>
+ネットワーク機器およびサーバログを確認中。
+午前中に一次報告予定。
+        </textarea>
+
+      </div>
+
+    </div>
+
+    <!-- 確認ステータス -->
+    <div class="section">
+
+      <div class="section-title">
+        確認ステータス
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          コメント
+        </div>
+
+        <textarea>
+登録内容に問題がないことを確認してください。
+必要に応じて管理者へ共有されます。
+        </textarea>
+
+      </div>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+
+
+      <button class="btn btn-gray" onclick="location.href='troubledetail.html';">
+        キャンセル
+      </button>
+      <button class="btn" onclick="location.href='troubleeditcheck.html';">
+        保存
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

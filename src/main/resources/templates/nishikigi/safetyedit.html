@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>安全点検編集</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="portal.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      安全点検編集
+    </div>
+
+  </header>
+
+  <!-- =========================
+       コンテンツ
+  ========================= -->
+
+  <div class="container">
+
+    <!-- 点検結果サマリー -->
+    <div class="section">
+
+      <div class="section-title">
+        点検結果サマリー
+      </div>
+
+      <div class="summary-box">
+        点検項目：7件<br>
+        良好：5件<br>
+        不備：2件
+      </div>
+
+    </div>
+
+    <!-- 点検項目 -->
+    <div class="section">
+
+      <div class="section-title">
+        点検項目編集
+      </div>
+
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th>点検項目</th>
+            <th>判定</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>足場（手すり・幅木・滑り止め）</td>
+
+            <td>
+              <select>
+                <option selected>良好</option>
+                <option>不備</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>開口部養生</td>
+
+            <td>
+              <select>
+                <option selected>良好</option>
+                <option>不備</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>高所作業の安全帯使用</td>
+
+            <td>
+              <select>
+                <option>良好</option>
+                <option selected>不備</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>重機点検記録</td>
+
+            <td>
+              <select>
+                <option selected>良好</option>
+                <option>不備</option>
+              </select>
+            </td>
+
+          </tr>
+
+          <tr>
+            <td>火気使用時の消火器配置</td>
+
+            <td>
+              <select>
+                <option>良好</option>
+                <option selected>不備</option>
+              </select>
+            </td>
+          </tr>
+
+          <tr>
+            <td>整理整頓（つまずきリスク）</td>
+
+            <td>
+              <select>
+                <option selected>良好</option>
+                <option>不備</option>
+              </select>
+            </td>
+
+          </tr>
+
+          <tr>
+            <td>仮設電気の絶縁</td>
+
+            <td>
+              <select>
+                <option selected>良好</option>
+                <option>不備</option>
+              </select>
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <!-- 点検写真 -->
+    <div class="section">
+
+      <div class="section-title">
+        点検写真編集
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          点検写真アップロード
+        </div>
+
+        <input type="file" accept="image/*">
+
+      </div>
+
+    </div>
+
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn btn-gray" onclick="location.href='safetydetail.html';">
+        キャンセル
+      </button>
+
+      <button class="btn" onclick="location.href='safetyeditcheck.html';">
+        確認
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

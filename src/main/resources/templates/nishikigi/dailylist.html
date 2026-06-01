@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日報一覧</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左：ロゴ -->
+      <div class="logo-area">
+        <a href="home.html">
+
+          <img src="icon.png" alt="アイコン" class="logo-img">
+
+        </a>
+      </div>
+
+      <!-- 右：ユーザ -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      日報一覧
+    </div>
+
+  </header>
+
+  <!-- ===== メイン ===== -->
+
+  <main>
+
+    <!-- 検索エリア -->
+    <div class="search-area">
+
+      <div class="search-item">
+        <label class="search-label">日付</label>
+        <input type="date" class="search-input">
+      </div>
+
+      <div class="search-item">
+        <label class="search-label">現場名</label>
+        <input type="text" class="search-input">
+      </div>
+
+      <div class="search-item">
+        <label class="search-label">判定</label>
+
+        <select class="search-select">
+          <option value="">すべて</option>
+          <option value="complete">確認済み</option>
+          <option value="progress">未確認</option>
+        </select>
+      </div>
+
+      <div class="search-btn-area">
+        <button class="search-btn">
+          検索
+        </button>
+        <button class="search-btn">
+          リセット
+        </button>
+      </div>
+
+    </div>
+
+    <!-- テーブル -->
+    <table class="report-table">
+
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>現場名</th>
+          <th>判定</th>
+          <th>詳細</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr>
+          <td>2026/05/26</td>
+          <td>新宿ビル建設工事</td>
+          <td class="status-progress">未確認</td>
+          <td>
+            <a href="dailyreportdetail.html" class="detail-btn">
+              詳細
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td>2026/05/25</td>
+          <td>池袋外壁補修</td>
+          <td class="status-complete">確認済み</td>
+          <td>
+            <a href="dailyreportdetail.html" class="detail-btn">
+              詳細
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td>2026/05/24</td>
+          <td>新橋</td>
+          <td class="status-complete">確認済み</td>
+          <td>
+            <a href="dailyreportdetail.html" class="detail-btn">
+              詳細
+            </a>
+          </td>
+        </tr>
+
+        <tr>
+          <td>2026/05/23</td>
+          <td>上野</td>
+          <td class="status-complete">確認済み</td>
+          <td>
+            <a href="dailyreportdetail.html" class="detail-btn">
+              詳細
+            </a>
+          </td>
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </main>
+
+  <!-- ===== 左下ステータス吹き出し ===== -->
+
+  <div class="status-bubble">
+
+    <div class="status-item">
+      <span class="status-title">日報</span>
+      <span class="done">✔ 作成済み</span>
+    </div>
+
+    <div class="status-item">
+      <span class="status-title">安全点検</span>
+      <span class="not-done blinking">
+        ⚠ 未作成
+      </span>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

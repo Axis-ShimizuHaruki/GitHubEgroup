@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安全点検一覧</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <span class="user-name">
+          ログインユーザ：田中 太郎
+        </span>
+
+        <button class="logout-btn">
+          ログアウト
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      安全点検一覧
+    </div>
+
+  </header>
+
+  <!-- =========================
+       メイン
+  ========================= -->
+
+  <main>
+
+    <!-- 検索 -->
+    <div class="search-box">
+
+      <div class="search-title">
+        検索条件
+      </div>
+
+      <div class="search-grid">
+
+        <!-- 登録日 -->
+        <div class="search-item">
+          <label>登録日</label>
+          <input type="date">
+        </div>
+
+        <!-- 現場名 -->
+        <div class="search-item">
+          <label>現場名</label>
+          <input type="text" placeholder="現場名を入力">
+        </div>
+
+        <!-- 判定 -->
+        <div class="search-item">
+          <label>判定</label>
+
+          <select>
+            <option value="">すべて</option>
+            <option>良好</option>
+            <option>要対応</option>
+            <option>不備あり</option>
+          </select>
+        </div>
+
+        <!-- ボタン -->
+        <button class="search-btn">
+          検索
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- テーブル -->
+    <div class="table-wrap">
+
+      <table class="check-table">
+
+        <thead>
+          <tr>
+            <th>登録日</th>
+            <th>現場名</th>
+            <th>点検項目数</th>
+            <th>良好</th>
+            <th>不備</th>
+            <th>特記事項</th>
+            <th>判定</th>
+            <th>詳細</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr>
+            <td>2026/05/26</td>
+            <td>新宿建築現場</td>
+            <td>7件</td>
+            <td class="status-ok">5件</td>
+            <td class="status-ng">1件</td>
+            <td>あり</td>
+            <td class="status-warn">要対応</td>
+            <td>
+              <a href="safetycheckdetail.html" class="detail-btn">
+                詳細
+              </a>
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </main>
+
+  <!-- 左下ステータス吹き出し -->
+  <div class="status-bubble">
+
+    <div class="status-item">
+      <span class="status-title">日報</span>
+      <span class="done">✔ 作成済み</span>
+    </div>
+
+    <div class="status-item">
+      <span class="status-title">安全点検</span>
+      <span class="not-done blinking">⚠ 未作成</span>
+    </div>
+
+  </div>
+
+</body>
+
+</html>

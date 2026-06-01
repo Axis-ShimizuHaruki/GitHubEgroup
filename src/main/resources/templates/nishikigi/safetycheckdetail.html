@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>安全点検確認</title>
+
+  <style>
+
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       ヘッダー
+  ========================= -->
+
+  <header>
+
+    <!-- 上段 -->
+    <div class="header-top">
+
+      <!-- 左 -->
+      <div class="logo-area">
+
+        <a href="list.html">
+
+          <img src="icon.png" alt="ロゴ" class="logo-img">
+
+        </a>
+
+      </div>
+
+      <!-- 右 -->
+      <div class="user-area">
+
+        <div>
+          ログインユーザ：田中 太郎
+        </div>
+
+        <a href="logout.html" class="logout-btn">
+          ログアウト
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- 下段 -->
+    <div class="page-title-bar">
+      安全点検詳細
+    </div>
+
+  </header>
+
+  <!-- =========================
+       コンテンツ
+  ========================= -->
+
+  <div class="container">
+
+    <!-- サマリー -->
+    <div class="section">
+
+      <div class="section-title">
+        点検結果サマリー
+      </div>
+
+      <div class="summary-box">
+
+        <div class="summary-title">
+          確認内容
+        </div>
+
+        点検項目：7件<br>
+        良好：5件<br>
+        注意：1件<br>
+        不備：1件
+
+      </div>
+
+    </div>
+
+    <!-- 点検項目 -->
+    <div class="section">
+
+      <div class="section-title">
+        点検項目確認
+      </div>
+
+      <div class="check-list">
+
+        <div class="check-card">
+          <div class="check-name">
+            足場（手すり・幅木・滑り止め）
+          </div>
+
+          <div class="check-status ok">
+            良好
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            開口部養生
+          </div>
+
+          <div class="check-status ok">
+            良好
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            高所作業の安全帯使用
+          </div>
+
+          <div class="check-status ng">
+            不備
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            重機点検記録
+          </div>
+
+          <div class="check-status ok">
+            良好
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            火気使用時の消火器配置
+          </div>
+
+          <div class="check-status ng">
+            不備
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            整理整頓（つまずきリスク）
+          </div>
+
+          <div class="check-status ok">
+            良好
+          </div>
+        </div>
+
+        <div class="check-card">
+          <div class="check-name">
+            仮設電気の絶縁
+          </div>
+
+          <div class="check-status ok">
+            良好
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+     添付画像
+========================= -->
+
+    <div class="section">
+
+      <div class="section-title">
+        添付画像
+      </div>
+
+      <div class="item">
+
+        <div class="label">
+          点検時の画像
+        </div>
+
+        <div class="value">
+
+          <img src="sample.jpg" alt="点検画像" style="
+          width:100%;
+          max-width:400px;
+          border-radius:10px;
+          border:1px solid #dfe6f7;
+        ">
+
+        </div>
+
+      </div>
+
+    </div>
+    <!-- ボタン -->
+    <div class="btn-area">
+
+      <button class="btn_h" onclick="location.href='safetyedit.html';">
+        編集
+      </button>
+
+      <button class="btn" onclick="alert('確認が完了しました'); location.href='list.html';">
+        確認完了
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>

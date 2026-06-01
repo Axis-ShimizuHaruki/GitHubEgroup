@@ -10,61 +10,6 @@ body {
     color: #333;
 }
 
-/* ===== ヘッダー ===== */
-header {
-    background-color: #1f3c88;
-    color: white;
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 8px;
-    padding: 4px;
-}
-
-.site-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
 
 /* ===== 現場名表示 ===== */
 .site-info {
@@ -153,74 +98,6 @@ main {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
-
-body {
-    background: #f4f6f9;
-    color: #333;
-}
-
-/* ===== ヘッダー ===== */
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 8px;
-    padding: 4px;
-}
-
-.site-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
 
 /* ===== サブヘッダー ===== */
 .page-title-bar {
@@ -365,74 +242,7 @@ textarea {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
-
-/* ===== ヘッダー ===== */
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
 
 /* ===== 下段タイトル ===== */
 .page-title-bar {
@@ -558,75 +368,7 @@ header {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background-color: #f5f6fa;
-    color: #333;
-}
-
-/* ===== ヘッダー ===== */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
 
 /* ===== 下段タイトル ===== */
 
@@ -904,86 +646,8 @@ main {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* ===== ヘッダー ===== */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段タイトル ===== */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* ===== コンテナ ===== */
 
@@ -1125,86 +789,8 @@ textarea {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* ===== ヘッダー ===== */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段タイトル ===== */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* ===== コンテナ ===== */
 
@@ -1328,89 +914,9 @@ header {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
 
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* 右側 */
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -1599,89 +1105,9 @@ header {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background-color: #f5f6fa;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
 
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* 右側 */
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        メイン
@@ -2028,99 +1454,9 @@ main {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    padding: 20px;
-    color: #333;
-}
 
-/* ===== ヘッダー ===== */
-header {
-    background-color: #1f8488;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
 
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段タイトル ===== */
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.page-title-bar a {
-    color: #1f3c88;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.page-title-bar a:hover {
-    text-decoration: underline;
-}
 
 /* セクション */
 .section {
@@ -2288,12 +1624,7 @@ header {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+
 
 body {
     height: 100vh;
@@ -2359,113 +1690,9 @@ body {
     background: #2196f3;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-    padding: 20px;
-}
 
-/* ===== ヘッダー ===== */
 
-header {
-    background-color: #1f8488;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 32px;
-    border-radius: 14px;
-    overflow: hidden;
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.site-system-name {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-    flex-wrap: wrap;
-}
-
-.username {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段ナビ ===== */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.page-title-bar a {
-    color: #1f3c88;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.page-title-bar a:hover {
-    text-decoration: underline;
-}
 
 /* ===== メイン ===== */
 
@@ -2822,89 +2049,9 @@ main {
     }
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
 
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテナ
@@ -3059,89 +2206,7 @@ input[type="file"] {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
-
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテナ
@@ -3339,89 +2404,7 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
-
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテナ
@@ -3625,89 +2608,7 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
-
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテナ
@@ -3913,89 +2814,9 @@ input[type="file"] {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
 
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -4193,89 +3014,8 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background-color: #f5f6fa;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段タイトル ===== */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        メイン
@@ -4545,93 +3285,8 @@ main {
     }
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background-color: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -4730,93 +3385,8 @@ textarea {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -4960,93 +3530,8 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* ===============================
        コンテナ
@@ -5219,93 +3704,8 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -5459,93 +3859,8 @@ textarea {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Yu Gothic", "Meiryo", sans-serif;
-}
 
-body {
-    background: #f4f6f9;
-    color: #333;
-}
 
-/* =========================
-       ヘッダー
-    ========================= */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-/* 左側 */
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-/* 右側 */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.user-name {
-    font-weight: bold;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* 下段タイトル */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* =========================
        コンテンツ
@@ -5693,81 +4008,8 @@ header {
 
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-}
 
-body {
-    background-color: #f5f6fa;
-    color: #333;
-}
 
-/* ===== ヘッダー ===== */
-
-header {
-    background-color: #1f3c88;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-}
-
-.logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
-}
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-}
-
-.logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #dfe6f7;
-}
-
-/* ===== 下段タイトル ===== */
-
-.page-title-bar {
-    background-color: #e9eefc;
-    color: #1f3c88;
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
 
 /* ===== メイン ===== */
 

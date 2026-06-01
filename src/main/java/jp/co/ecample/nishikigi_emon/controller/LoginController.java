@@ -1,16 +1,75 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.Optional;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import jp.co.ecample.nishikigi_emon.entity.User;
+import jp.co.ecample.nishikigi_emon.service.UserService;
+
 
 @Controller
 public class LoginController {
-	
+	private final UserService service;
+
+	public LoginController(UserService service) {
+		this.service = service;
+	}
 
 	// ログイン画面の表示
 		@GetMapping("/login")
 		public String loginForm() {
 			return "nishikigi/login";
-			
 		}
+		
+		
+	// IDとパスワードを取得、DBに存在すればsessionに情報を保存しリストへ、存在しなければloginへredirect
+		@PostMapping("/login")
+		public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model, HttpSession session) {
+			Optional<User> result = service.login(userid, password);
+
+			if (result.isPresent()) {
+				User user = result.get(); // 値を取り出す
+				session.setAttribute("loginUser", user);
+				
+				// 権限により遷移先ページを変更
+				if(user.getRoll() == 0) {
+					return "redirect:/homeoffice";
+				}else {
+					return "redirect:/homesite";
+				}
+
+			} else {
+				// 該当ユーザーが存在しなかった場合の処理
+				model.addAttribute("error", "ユーザーが見つかりません");
+				return "redirect:login";
+			}
+
+
+		}
+
+	// ログアウト、sessionを空にしlogin画面へ
+		@PostMapping("/logout")
+		public String logoutForm(HttpSession session) {
+			session.invalidate();
+			return "redirect:/login";
+		}
+		
+		// 本社ホーム画面の表示
+		@GetMapping("/homeoffice")
+		public String homeoffice() {
+			return "nishikigi/list";
+		}
+		// 現場ホーム画面の表示
+		@GetMapping("/homesite")
+		public String homesite() {
+			return "nishikigi/home";
+		}
+		
 }

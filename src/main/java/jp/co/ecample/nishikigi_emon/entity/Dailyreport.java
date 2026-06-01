@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 @Table(name = "dailyreport")
 public class Dailyreport {
 
+	//日報ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id")

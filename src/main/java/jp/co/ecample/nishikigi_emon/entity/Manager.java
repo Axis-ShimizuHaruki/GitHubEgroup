@@ -27,9 +27,51 @@ public class Manager {
 	// 外部キー(子側)
 	@ManyToOne
     @JoinColumn(name = "site_id")
-    private Site siteid;
-	
-	@ManyToOne
+    private Site site;
     @JoinColumn(name = "user_id")
-    private User userid;
+    private User user;
+
+	
+	public Integer getManagerid() {
+		return managerid;
+	}
+
+	public void setManagerid(Integer managerid) {
+		this.managerid = managerid;
+	}
+
+	public Integer getSiteid() {
+		return siteid;
+	}
+
+	public void setSiteid(Integer siteid) {
+		this.siteid = siteid;
+	}
+
+	public Integer getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+
+	public Site getSite() {
+		return site;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
+	
 }

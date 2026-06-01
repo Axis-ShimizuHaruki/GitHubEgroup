@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.Site;
+import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ManagerRepository;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
+import jp.co.ecample.nishikigi_emon.service.TroubleService;
 import jp.co.ecample.nishikigi_emon.service.UserService;
 
 
@@ -23,13 +25,16 @@ import jp.co.ecample.nishikigi_emon.service.UserService;
 public class LoginController {
 	private final UserService Uservice;
 	private final SiteService Sservice;
+	private final TroubleService Tservice;
 	private final ManagerRepository managerRepository;
 
 	public LoginController(UserService Uservice,
 			SiteService Sservice,
+			TroubleService Tservice,
 			ManagerRepository managerRepository) {
 		this.Uservice = Uservice;
 		this.Sservice = Sservice;
+		this.Tservice = Tservice;
 		this.managerRepository = managerRepository;
 	}
 
@@ -92,6 +97,9 @@ public class LoginController {
 			// 全件取得
 			List<Site> site = Sservice.selectAll();
 			model.addAttribute("site", site);
+			
+			List<Trouble> trouble = Tservice.selectAll();
+			model.addAttribute("trouble", trouble);
 			
 			return "nishikigi/list";
 		}

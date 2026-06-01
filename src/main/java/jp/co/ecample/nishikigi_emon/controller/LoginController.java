@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
@@ -11,19 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.entity.Manager;
+import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ManagerRepository;
+import jp.co.ecample.nishikigi_emon.service.SiteService;
 import jp.co.ecample.nishikigi_emon.service.UserService;
 
 
 @Controller
 public class LoginController {
-	private final UserService service;
+	private final UserService Uservice;
+	private final SiteService Sservice;
 	private final ManagerRepository managerRepository;
 
-	public LoginController(UserService service,
+	public LoginController(UserService Uservice,
+			SiteService Sservice,
 			ManagerRepository managerRepository) {
-		this.service = service;
+		this.Uservice = Uservice;
+		this.Sservice = Sservice;
 		this.managerRepository = managerRepository;
 	}
 
@@ -37,7 +43,7 @@ public class LoginController {
 	// IDとパスワードを取得、DBに存在すればsessionに情報を保存しリストへ、存在しなければloginへredirect
 		@PostMapping("/login")
 		public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model, HttpSession session) {
-			Optional<User> result = service.login(userid, password);
+			Optional<User> result = Uservice.login(userid, password);
 
 			if (result.isPresent()) {
 				User user = result.get(); // 値を取り出す
@@ -81,9 +87,16 @@ public class LoginController {
 		
 		// 本社ホーム画面の表示
 		@GetMapping("/homeoffice")
-		public String homeoffice() {
+		public String homeoffice(Model model) {
+			
+			// 全件取得
+			List<Site> site = Sservice.selectAll();
+			model.addAttribute("site", site);
+			
 			return "nishikigi/list";
 		}
+		
+		
 		// 現場ホーム画面の表示
 		@GetMapping("/homesite")
 		public String homesite() {

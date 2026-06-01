@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>現場一覧</title>
 
-  <style>
-
-  </style>
 </head>
 
 <body>
@@ -33,14 +30,19 @@
       <!-- 右：ユーザー -->
       <div class="user-area">
 
-        <div>
-          ログインユーザ：山田 太郎
-        </div>
-
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
-
+		<div>
+			<!-- ログイン中の場合 -->
+			<span th:if="${session.loginUser != null}">
+				<span th:text="${session.loginUser.username}">ゲスト</span>さん
+					<form th:action="@{/logout}" method="post" class="logout-form">
+						<button type="submit">ログアウト</button>
+					</form>
+				</span>
+			<!-- 未ログインの場合 -->
+				<span th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}">ログイン</a>
+				</span>
+		</div>
       </div>
 
     </div>
@@ -48,15 +50,15 @@
     <!-- 下段 -->
     <div class="page-title-bar">
 
-      <a href="dailylist.html">
+      <a th:href="@{/dailyreport/list}">
         日報一覧
       </a>
 
-      <a href="safetylist.html">
+      <a th:href="@{/safetyinspection/list}">
         安全点検一覧
       </a>
 
-      <a href="troublelist.html">
+      <a th:href="@{/trouble/list}">
         トラブル一覧
       </a>
 
@@ -78,7 +80,7 @@
       <div class="site-card high">
 
         <div>
-          <a href="portal.html" class="site-name">
+          <a th:href="@{/portal/{}}" class="site-name">
             長崎民家解体
           </a>
         </div>

@@ -2,217 +2,263 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>安全点検編集</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>安全点検編集</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="portal.html">
+				<a href="portal.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <div>
-          ログインユーザ：田中 太郎
-        </div>
+				<div>
+					ログインユーザ：田中 太郎
+				</div>
 
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
+				<a href="logout.html" class="logout-btn">
+					ログアウト
+				</a>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      安全点検編集
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			安全点検編集
+		</div>
 
-  </header>
+	</header>
 
-  <!-- =========================
+	<!-- =========================
        コンテンツ
   ========================= -->
 
-  <div class="container">
+	<div class="container">
+		<!-- 基本情報 -->
+		<div class="section">
+			<div class="section-title">
+				点検情報
+			</div>
 
-    <!-- 点検結果サマリー -->
-    <div class="section">
+			<div class="summary-box">
+				<div>
+					登録日：
+					<span th:text="${#temporals.format(safety.sCreatedAt,'yyyy/MM/dd')}">
+					</span>
+				</div>
+				<div>
+					現場名：
+					<span th:text="${safety.site.siteName}">
+					</span>
+				</div>
+			</div>
+		</div>
 
-      <div class="section-title">
-        点検結果サマリー
-      </div>
+		<!-- サマリー -->
+		<div class="section">
 
-      <div class="summary-box">
-        点検項目：7件<br>
-        良好：5件<br>
-        不備：2件
-      </div>
+			<div class="section-title">
+				点検結果サマリー
+			</div>
 
-    </div>
+			<div class="summary-box">
 
-    <!-- 点検項目 -->
-    <div class="section">
+				<!--				<div class="summary-title">-->
+				<!--					確認内容-->
+				<!--				</div>-->
 
-      <div class="section-title">
-        点検項目編集
-      </div>
+				点検項目：7件<br>
 
-      <table class="table">
+				良好：
+				<span th:text="${
+		      (safety.scaffolding == 0 ? 1 : 0) +
+		      (safety.protectingOpenings == 0 ? 1 : 0) +
+		      (safety.safetyHarness == 0 ? 1 : 0) +
+		      (safety.equipmentInspection == 0 ? 1 : 0) +
+		      (safety.fireExtinguisher == 0 ? 1 : 0) +
+		      (safety.organization == 0 ? 1 : 0) +
+		      (safety.electricalInsulation == 0 ? 1 : 0)
+		  }"></span>件
+				<br>
 
-        <thead>
-          <tr>
-            <th>点検項目</th>
-            <th>判定</th>
-          </tr>
-        </thead>
+				不備：
+				<span th:text="${
+		      (safety.scaffolding == 1 ? 1 : 0) +
+		      (safety.protectingOpenings == 1 ? 1 : 0) +
+		      (safety.safetyHarness == 1 ? 1 : 0) +
+		      (safety.equipmentInspection == 1 ? 1 : 0) +
+		      (safety.fireExtinguisher == 1 ? 1 : 0) +
+		      (safety.organization == 1 ? 1 : 0) +
+		      (safety.electricalInsulation == 1 ? 1 : 0)
+		  }"></span>件
 
-        <tbody>
+			</div>
+		</div>
 
-          <tr>
-            <td>足場（手すり・幅木・滑り止め）</td>
+		<!-- 点検項目 -->
+		<div class="section">
 
-            <td>
-              <select>
-                <option selected>良好</option>
-                <option>不備</option>
-              </select>
-            </td>
-          </tr>
+			<div class="section-title">
+				点検項目編集
+			</div>
 
-          <tr>
-            <td>開口部養生</td>
+			<form th:action="@{/safetyinspection/{id}/edit/confirmed}" 
+					method="post" 
+					th:object="${safety}">
 
-            <td>
-              <select>
-                <option selected>良好</option>
-                <option>不備</option>
-              </select>
-            </td>
-          </tr>
+				<input type="hidden" th:field="*{safetyId}">
 
-          <tr>
-            <td>高所作業の安全帯使用</td>
+				<table class="table">
 
-            <td>
-              <select>
-                <option>良好</option>
-                <option selected>不備</option>
-              </select>
-            </td>
-          </tr>
+					<thead>
+						<tr>
+							<th>点検項目</th>
+							<th>判定</th>
+						</tr>
+					</thead>
 
-          <tr>
-            <td>重機点検記録</td>
+					<tbody>
 
-            <td>
-              <select>
-                <option selected>良好</option>
-                <option>不備</option>
-              </select>
-            </td>
+						<tr>
+							<td>足場（手すり・幅木・滑り止め）</td>
+							<td>
+								<select th:field="*{scaffolding}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-          </tr>
+						<tr>
+							<td>開口部養生</td>
+							<td>
+								<select th:field="*{protectingOpenings}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-          <tr>
-            <td>火気使用時の消火器配置</td>
+						<tr>
+							<td>高所作業の安全帯使用</td>
+							<td>
+								<select th:field="*{safetyHarness}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-            <td>
-              <select>
-                <option>良好</option>
-                <option selected>不備</option>
-              </select>
-            </td>
-          </tr>
+						<tr>
+							<td>重機点検記録</td>
+							<td>
+								<select th:field="*{equipmentInspection}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-          <tr>
-            <td>整理整頓（つまずきリスク）</td>
+						<tr>
+							<td>火気使用時の消火器配置</td>
+							<td>
+								<select th:field="*{fireExtinguisher}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-            <td>
-              <select>
-                <option selected>良好</option>
-                <option>不備</option>
-              </select>
-            </td>
+						<tr>
+							<td>整理整頓（つまずきリスク）</td>
+							<td>
+								<select th:field="*{organization}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-          </tr>
+						<tr>
+							<td>仮設電気の絶縁</td>
+							<td>
+								<select th:field="*{electricalInsulation}">
+									<option value="0">良好</option>
+									<option value="1">不備</option>
+								</select>
+							</td>
+						</tr>
 
-          <tr>
-            <td>仮設電気の絶縁</td>
+					</tbody>
 
-            <td>
-              <select>
-                <option selected>良好</option>
-                <option>不備</option>
-              </select>
-            </td>
+				</table>
 
-          </tr>
+				<!-- 点検写真 -->
+				<div class="section">
 
-        </tbody>
+					<div class="section-title">
+						点検写真編集
+					</div>
 
-      </table>
+					<div class="item">
 
-    </div>
+						<div class="label">
+							点検写真アップロード
+						</div>
 
-    <!-- 点検写真 -->
-    <div class="section">
+						<!-- 現在の画像表示 -->
+						<div th:if="${safety.photo != null}">
+							<img th:src="@{${safety.photo}}" width="300">
+						</div>
 
-      <div class="section-title">
-        点検写真編集
-      </div>
+						<input type="file" name="photoFile" accept="image/*">
 
-      <div class="item">
+					</div>
 
-        <div class="label">
-          点検写真アップロード
-        </div>
+				</div>
 
-        <input type="file" accept="image/*">
+				<!-- ボタン -->
+				<div class="btn-area">
 
-      </div>
+					<button type="button" class="btn btn-gray"
+						th:onclick="|location.href='@{/safetyinspection/{id}(id=${safety.safetyId})}'|">
+						キャンセル
+					</button>
 
-    </div>
+					<button type="submit" class="btn">
+						確認
+					</button>
 
-    <!-- ボタン -->
-    <div class="btn-area">
+				</div>
 
-      <button class="btn btn-gray" onclick="location.href='safetydetail.html';">
-        キャンセル
-      </button>
-
-      <button class="btn" onclick="location.href='safetyeditcheck.html';">
-        確認
-      </button>
-
-    </div>
-
-  </div>
+			</form>
+		</div>
 
 </body>
 

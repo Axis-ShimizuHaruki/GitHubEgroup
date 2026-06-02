@@ -126,4 +126,30 @@ public class SafetyController {
 		
 		return "redirect:/complete";
 	}
+	
+	// 編集画面表示
+	@PostMapping("/safetyinspection/{id}/edit")
+	public String showSafetyEdit(
+			@PathVariable Integer id,
+			Model model,
+			HttpSession session
+			) {
+		Optional<Safety> result = service.findById(id);
+		Safety safety = result.get();
+		
+		model.addAttribute("safety", safety);
+		
+		return "nishikigi/safetyedit";
+	}
+	
+	// 編集確認画面表示
+	@PostMapping("/safetyinspection/{id}/edit/confirm")
+	public String showSafetyEditConfirm(
+//			@Valid @ModelAttribute Safety ,
+			Model model, 
+			HttpSession session) {
+		
+		
+		return "nishikigi/safetyeditcheck";
+	}
 }

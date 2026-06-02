@@ -112,7 +112,7 @@
         現場チャット
       </div>
 
-      <div class="chat-messages">
+      <div class="chat-messages" id="chatMessages">
 
         <div class="message-row other">
           <div class="message">
@@ -141,10 +141,16 @@
       </div>
 
       <!-- 入力欄 -->
-      <div class="chat-input">
-        <input type="text" placeholder="メッセージを入力">
-        <button>送信</button>
-      </div>
+	  <div class="chat-input">
+	      <input type="text"
+	             id="messageInput"
+	             placeholder="メッセージを入力">
+
+	      <button type="button"
+	              onclick="sendMessage()">
+	          送信
+	      </button>
+	  </div>
 
     </div>
 
@@ -165,6 +171,91 @@
 
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+  
+  <script th:inline="javascript">
+      const siteId = /*[[${site.siteId}]]*/ 0;
+      const senderSiteId = /*[[${site.siteId}]]*/ 0;
+  </script>
+  <script>
+
+  const socket = new SockJS('/nishikigi/chat');
+  const stompClient = Stomp.over(socket);
+
+  stompClient.connect({}, function() {
+
+      console.log("接続成功");
+
+      stompClient.subscribe(
+          '/topic/chat/' + siteId,
+          function(message) {
+
+              const msg =
+                  JSON.parse(message.body);
+
+              addMessage(msg.message, false);
+          }
+      );
+  });
+
+  </script>
+  <script>
+
+  function addMessage(text, isMe) {
+
+      const row =
+          document.createElement("div");
+
+      row.className =
+          isMe ? "message-row me"
+               : "message-row other";
+
+      const message =
+          document.createElement("div");
+
+      message.className = "message";
+      message.textContent = text;
+
+      row.appendChild(message);
+
+      document
+          .getElementById("chatMessages")
+          .appendChild(row);
+  }
+
+  </script>
+  <script>
+
+  function sendMessage() {
+
+      const input =
+          document.getElementById("messageInput");
+
+      const text = input.value.trim();
+
+      if (text === "") {
+          return;
+      }
+
+      stompClient.send(
+          "/app/send",
+          {},
+          JSON.stringify({
+              siteId: siteId,
+              senderSiteId: senderSiteId,
+              message: text
+          })
+      );
+
+      
+
+      input.value = "";
+  }
+
+  </script>
+ 
+ 
 </body>
 
 </html>

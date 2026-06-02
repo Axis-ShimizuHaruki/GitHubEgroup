@@ -48,6 +48,12 @@ public class Trouble {
 	@Column(name = "t_updated_at", nullable = false)
 	private LocalDateTime tUpdatedAt;
 
+	@Column(name = "site_memo")
+	private String siteMemo;
+
+	@Column(name = "hq_memo")
+	private String hqMemo;
+
 	public Integer getTroubleId() {
 		return troubleId;
 	}
@@ -126,6 +132,22 @@ public class Trouble {
 
 	public void setSite(Site site) {
 		this.site = site;
+	}
+
+	public String getSiteMemo() {
+		return siteMemo;
+	}
+
+	public void setSiteMemo(String siteMemo) {
+		this.siteMemo = siteMemo;
+	}
+
+	public String getHqMemo() {
+		return hqMemo;
+	}
+
+	public void setHqMemo(String hqMemo) {
+		this.hqMemo = hqMemo;
 	}
 
 }

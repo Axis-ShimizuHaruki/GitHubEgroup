@@ -12,6 +12,10 @@ public class TroubleForm {
 
 	private String detail;
 
+	private String siteMemo;
+
+	private String hqMemo;
+
 	public Integer getTroubleId() {
 		return troubleId;
 	}
@@ -50,6 +54,22 @@ public class TroubleForm {
 
 	public void setDetail(String detail) {
 		this.detail = detail;
+	}
+
+	public String getSiteMemo() {
+		return siteMemo;
+	}
+
+	public void setSiteMemo(String siteMemo) {
+		this.siteMemo = siteMemo;
+	}
+
+	public String getHqMemo() {
+		return hqMemo;
+	}
+
+	public void setHqMemo(String hqMemo) {
+		this.hqMemo = hqMemo;
 	}
 
 }

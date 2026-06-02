@@ -77,47 +77,16 @@
 
 		<div class="site-list">
 
-			<div th:each="site : ${site}">
-				<div th:each="trouble : ${trouble}">
+			<div th:each="view : ${siteViews}">
 
-					<div class="site-card high" th:if="${site.officecheck != 1.equals(0) && site.siteId == trouble.site.siteId && trouble.priority == 3}">
+				<div class="site-card high" th:if="${view.maxPriority == 3}">
 
-						<div>
-							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
-								<td th:text="${site.siteName}"></td>
-							</a>
-						</div>
+					<a th:href="@{/portal/{id}(id=${view.site.siteId})}">
+						<span th:text="${view.site.siteName}"></span>
+					</a>
 
-						<div class="status">
-
-							<div class="status-item">
-								<a th:href="@{/dailyreport/{id}(id=${site.siteId})}">日報確認</a>
-								<span class="checked">✔ 確認済</span>
-							</div>
-
-							<div class="status-item">
-								<a th:href="@{/safetyinspection/{id}(id=${site.siteId})}">安全点検確認</a>
-								<span class="unchecked">✖ 未提出</span>
-							</div>
-
-						</div>
-
-						<div class="trouble-section">
-
-							<div class="trouble-title">
-								⚠ トラブル報告
-							</div>
-
-							<div class="trouble-item">
-								<a href="troubledetail.html">
-									・足場資材の搬入遅延
-								</a>
-							</div>
-
-						</div>
-
-					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -131,48 +100,16 @@
 		</div>
 
 		<div class="site-list">
-			<div th:each="site : ${site}">
-				<div th:each="trouble : ${trouble}">
+			<div th:each="view : ${siteViews}">
 
-					<div class="site-card medium"
-						th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 2}">
+				<div class="site-card high" th:if="${view.maxPriority == 2}">
 
-						<div>
-							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
-								<td th:text="${site.siteName}"></td>
-							</a>
-						</div>
+					<a th:href="@{/portal/{id}(id=${view.site.siteId})}">
+						<span th:text="${view.site.siteName}"></span>
+					</a>
 
-						<div class="status">
-
-							<div class="status-item">
-								<a th:href="@{/dailyreport/{id}(id=${site.siteId})}">日報確認</a>
-								<span class="checked">✔ 確認済</span>
-							</div>
-
-							<div class="status-item">
-								<a th:href="@{/safetyinspection/{id}(id=${site.siteId})}">安全点検確認</a>
-								<span class="unchecked">✖ 未提出</span>
-							</div>
-
-						</div>
-
-						<div class="trouble-section">
-
-							<div class="trouble-title">
-								⚠ トラブル報告
-							</div>
-
-							<div class="trouble-item">
-								<a href="troubledetail.html">
-									・足場資材の搬入遅延
-								</a>
-							</div>
-
-						</div>
-
-					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -186,48 +123,23 @@
 		</div>
 		<div class="site-list">
 
-			<div th:each="site : ${site}">
-				<div th:each="trouble : ${trouble}">
+			<div th:each="view : ${siteViews}">
 
-					<div class="site-card low" th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 1}">
+				<div class="site-card high" th:if="${view.maxPriority == 1}">
 
+					<a th:href="@{/portal/{id}(id=${view.site.siteId})}">
+						<span th:text="${view.site.siteName}"></span>
+					</a>
+					<div th:each="trouble : ${view.site.troubleList}">
 						<div>
-							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
-								<td th:text="${site.siteName}"></td>
-							</a>
-						</div>
-
-						<div class="status">
-
-							<div class="status-item">
-								<a th:href="@{/dailyreport/{id}(id=${site.siteId})}">日報確認</a>
-								<span class="checked">✔ 確認済</span>
-							</div>
-
-							<div class="status-item">
-								<a th:href="@{/safetyinspection/{id}(id=${site.siteId})}">安全点検確認</a>
-								<span class="unchecked">✖ 未提出</span>
-							</div>
-
-						</div>
-
-						<div class="trouble-section">
-
-							<div class="trouble-title">
-								⚠ トラブル報告
-							</div>
-
-							<div class="trouble-item">
-								<a href="troubledetail.html">
-									・足場資材の搬入遅延
-								</a>
-							</div>
-
+							<span th:text="${trouble.overview}"></span>
 						</div>
 
 					</div>
 				</div>
+
 			</div>
+
 		</div>
 	</div>
 
@@ -240,46 +152,28 @@
 
 		<div class="site-list">
 
-			<div th:each="site : ${site}">
-				<div th:each="trouble : ${trouble}">
+			<div th:each="view : ${siteViews}">
 
-					<div class="site-card none" th:if="${site.officecheck != 1 && site.siteId == trouble.site.siteId && trouble.priority == 0}">
+				<div class="site-card high" th:if="${view.maxPriority == 0}">
+
+					<a th:href="@{/portal/{id}(id=${view.site.siteId})}">
+						<span th:text="${view.site.siteName}"></span>
+					</a>
+
+					<div th:each="trouble : ${view.site.troubleList}">
+						<div>
+							<span th:text="${trouble.overview}"></span>
+						</div>
 
 						<div>
-							<a th:href="@{/portal/{id}(id=${site.siteId})}" class="site-name">
-								<td th:text="${site.siteName}"></td>
-							</a>
+							優先度：
+							<span th:text="${trouble.priority}"></span>
 						</div>
 
-						<div class="status">
-
-							<div class="status-item">
-								<a th:href="@{/dailyreport/{id}(id=${site.siteId})}">日報確認</a>
-								<span class="checked">✔ 確認済</span>
-							</div>
-
-							<div class="status-item">
-								<a th:href="@{/safetyinspection/{id}(id=${site.siteId})}">安全点検確認</a>
-								<span class="unchecked">✖ 未提出</span>
-							</div>
-
-						</div>
-
-						<div class="trouble-section">
-
-							<div class="trouble-title">
-								⚠ トラブル報告
-							</div>
-
-							<div class="trouble-item">
-								<a href="troubledetail.html">
-									・足場資材の搬入遅延
-								</a>
-							</div>
-
-						</div>
 					</div>
+
 				</div>
+
 			</div>
 		</div>
 	</div>

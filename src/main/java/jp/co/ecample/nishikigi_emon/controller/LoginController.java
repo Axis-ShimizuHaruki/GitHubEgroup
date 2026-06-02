@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.dto.SiteView;
+import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
@@ -101,6 +103,8 @@ public class LoginController {
 
 		List<SiteView> siteViews = new ArrayList<>();
 
+		LocalDate today = LocalDate.now();
+
 		for (Site site : siteList) {
 
 			// 本社除外
@@ -117,8 +121,28 @@ public class LoginController {
 				}
 			}
 
+			// 日報状態
+			String dailyStatus = "未提出";
+
+			for (Dailyreport report : site.getDailyreportList()) {
+
+				// 今日の日報か
+				if (today.equals(report.getTargetDate())) {
+
+					// 今日の日報は存在
+					dailyStatus = "未確認";
+
+					// 確認済
+					if (report.getDStatusFlag() == 1) {
+
+						dailyStatus = "確認済";
+						break;
+					}
+				}
+			}
+
 			siteViews.add(
-					new SiteView(site, maxPriority));
+					new SiteView(site, maxPriority, dailyStatus));
 		}
 
 		model.addAttribute("siteViews", siteViews);

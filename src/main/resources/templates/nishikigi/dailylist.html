@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日報一覧</title>
-  <link rel="stylesheet" th:href="@{/css/home.css}">
   <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
 
   <style></style>
@@ -17,7 +16,7 @@
 				    <div class="header-top">
 
 				      <div class="logo-area">
-				        <a th:href="@{/homesite}">
+						<a th:href="${#strings.equals(session.loginUser.roll, '0') ? '/homeoffice' : '/homesite'}" class="btn btn-gray">
 				          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				        </a>
 				        <div class="site-system-name">
@@ -106,7 +105,7 @@
             </span>
           </td>
           <td>
-            <a th:href="@{/dailyreport/{id}(id=${report.reportId})}" class="detail-btn">詳細</a>
+            <a th:href="@{/dailyreport/{id}(id=${report.reportId}, from='list')}" class="detail-btn">詳細</a>
           </td>
         </tr>
         

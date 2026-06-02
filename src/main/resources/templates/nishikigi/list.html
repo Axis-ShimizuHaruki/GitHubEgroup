@@ -96,8 +96,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
-								日報確認
+							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+							   日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -195,8 +195,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
-								日報確認
+							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+							   日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -294,8 +294,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
-								日報確認
+							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+							   日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -392,8 +392,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
-								日報確認
+							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+							   日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">

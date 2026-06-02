@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日報詳細</title>
-  <link rel="stylesheet" th:href="@{/css/home.css}">
   <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
 
 <style></style>
@@ -19,7 +18,7 @@
 	    <div class="header-top">
 
 	      <div class="logo-area">
-	        <a th:href="@{/homesite}">
+			<a th:href="${#strings.equals(session.loginUser.roll, '0') ? '/homeoffice' : '/homesite'}" class="btn btn-gray">
 	          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 	        </a>
 	        <div class="site-system-name">
@@ -168,20 +167,25 @@
       <div class="value" style="white-space: pre-wrap;" th:text="*{notes}"></div>
     </div>
 
-    <div class="btn-area" th:if="${session.loginUser != null}">
-		<span th:if="${#strings.equals(session.loginUser.roll, '0')}" style="display: flex; gap: 15px;">
-		  <a th:href="@{/homesite}" class="btn_h">現場ポータルへ</a>
-		  <form th:action="@{/dailyreport/{id}/confirm(id=*{reportId})}" method="post" style="display: inline;">
-		    <button type="submit" class="btn">確認完了</button>
-		  </form>
-		</span>
+	<div class="btn-area" th:if="${session.loginUser != null}">
 
-		<span th:if="${#strings.equals(session.loginUser.roll, '1')}" style="display: flex; gap: 15px;">
-		  <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
-		  <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn_h" style="background-color: #3182ce;">編集</a>
-		</span>
+	      <span th:if="${#strings.equals(session.loginUser.roll, '0')}" style="display: flex; gap: 15px;">
+	        
+	        <a th:href="@{/homeoffice}" th:if="${from == 'home'}" class="btn_h">本社ホームへ</a>
+	        
+	        <a th:href="@{/dailyreport/list}" th:if="${from == 'list'}" class="btn_h">一覧画面へ戻る</a>
+	        
+	        <form th:action="@{/dailyreport/{id}/confirm(id=*{reportId}, from=${from})}" method="post" style="display: inline;">
+	          <button type="submit" class="btn">確認完了</button>
+	        </form>
+	      </span>
 
-      </div>
+	      <span th:if="${#strings.equals(session.loginUser.roll, '1')}" style="display: flex; gap: 15px;">
+	        <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
+	        <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn_h" style="background-color: #3182ce;">編集</a>
+	      </span>
+
+	    </div>
 
   </div>
 

@@ -5,7 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日報編集</title>
-  <link rel="stylesheet" th:href="@{/css/home.css}">
   <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
 
   <style></style>
@@ -189,7 +188,7 @@
       </div>
 
       <div class="btn-area">
-        <a th:href="@{/dailyreport/{id}(id=${dailyreport.reportId})}" class="btn-gray">キャンセル</a>
+        <a th:href="@{/dailyreport/{id}(id=${dailyreport.reportId})}" class="btn btn-gray">キャンセル</a>
         <button type="submit" class="btn">保存</button>
       </div>
 

@@ -142,12 +142,16 @@ public class DailyreportController {
      * 画面：nishikigi/dailyreportdetail.html
      */
     @GetMapping("/{id}")
-    public String showDetail(@PathVariable("id") Integer reportId, Model model) {
+    public String showDetail(@PathVariable("id") Integer reportId,
+            // 目印を受け取る（届かなかった場合は安全のため list にする）
+            @RequestParam(name = "from", required = false, defaultValue = "list") String from,
+            HttpSession session, Model model) {
         Dailyreport report = dailyreportService.getReportById(reportId);
         if (report == null) {
             return "error/404";
         }
         model.addAttribute("report", report);
+        model.addAttribute("from", from);
         return "nishikigi/dailyreportdetail";
     }
 
@@ -215,13 +219,18 @@ public class DailyreportController {
      * 遷移：redirect:/nishikigi/dailyreport/list
      */
     @PostMapping("/{id}/confirm")
-    public String confirmReport(@PathVariable("id") Integer reportId) {
+    public String confirmReport(@PathVariable("id") Integer reportId,
+    							@RequestParam(name = "from", required = false, defaultValue = "list") String from) {
         boolean isSuccess = dailyreportService.confirmReport(reportId);
         if (!isSuccess) {
             return "error/404";
         }
         // ★ 詳細に戻るのではなく、一覧画面（/dailyreport/list）に引き戻してあげる
+        if ("home".equals(from)) {
+            return "redirect:/homeoffice";
+        } else {
         return "redirect:/dailyreport/list";
+        }
     }
 }
 

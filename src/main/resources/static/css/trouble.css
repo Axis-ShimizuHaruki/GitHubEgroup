@@ -1,0 +1,195 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+}
+
+body {
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* =========================
+       ヘッダー
+    ========================= */
+
+header {
+    background-color: #1f3c88;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.logo-area a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    background-color: white;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.site-system-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.logout-btn {
+    background-color: white;
+    color: #1f3c88;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #dfe6f7;
+}
+
+.logout-btn:hover {
+    background-color: #dfe6f7;
+}
+
+/* 下段タイトル */
+
+.page-title-bar {
+    background-color: #e9eefc;
+    color: #1f3c88;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* =========================
+       コンテンツ
+    ========================= */
+
+.container {
+    width: 90%;
+    max-width: 700px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+    margin-bottom: 25px;
+    color: #1f3c88;
+    text-align: center;
+    font-size: 28px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #555;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    background: #fff;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.6;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: #1f3c88;
+    color: white;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #162d66;
+    transform: translateY(-2px);
+}
+
+/* =========================
+       レスポンシブ
+    ========================= */
+
+@media(max-width:768px) {
+
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .user-area {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .container {
+        width: calc(100% - 30px);
+        padding: 24px 20px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+}

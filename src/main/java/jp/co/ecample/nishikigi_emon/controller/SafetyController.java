@@ -145,7 +145,7 @@ public class SafetyController {
 	// 編集確認画面表示
 	@PostMapping("/safetyinspection/{id}/edit/confirm")
 	public String showSafetyEditConfirm(
-//			@Valid @ModelAttribute Safety ,
+			@Valid @ModelAttribute SafetyForm safetyForm,
 			Model model, 
 			HttpSession session) {
 		

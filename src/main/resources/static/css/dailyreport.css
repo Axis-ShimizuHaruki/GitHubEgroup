@@ -1,0 +1,231 @@
+@charset "UTF-8";@charset "UTF-8";
+
+/* =======================================================
+   1. home.css のヘッダーデザインを日報画面用に綺麗に上書きリセット
+======================================================= */
+header.system-header {
+    display: block !important;
+    width: 100% !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background-color: #ffffff !important; /* 青から「白背景」へ変更 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    color: #333333 !important;
+}
+
+header.system-header .header-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 30px !important;
+    box-sizing: border-box !important;
+}
+
+/* ロゴエリアの横並び配置 */
+header.system-header .logo-area {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+
+header.system-header .logo-img {
+    height: 45px !important;
+    width: auto !important;
+}
+
+header.system-header .site-system-name {
+    font-size: 1.3rem !important;
+    font-weight: bold !important;
+    color: #1f3c88 !important; /* 濃い青色のアクセント */
+}
+
+/* 右側ユーザー・ログアウトエリア */
+header.system-header .user-area {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+header.system-header .user-info-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+    color: #2d3748 !important;
+}
+
+header.system-header .logout-btn {
+    background-color: #e2e8f0 !important;
+    color: #4a5568 !important;
+    padding: 6px 14px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    cursor: pointer !important;
+    font-size: 0.9rem !important;
+    font-weight: bold !important;
+    transition: background 0.2s !important;
+}
+header.system-header .logout-btn:hover {
+    background-color: #cbd5e0 !important;
+}
+
+/* 🌟 下段ナビゲーションバー（home.css の position: absolute を安全に破壊して再構築） */
+header.system-header .page-title-bar {
+    position: static !important; /* 絶対配置を解除！ */
+    background-color: #1f3c88 !important; /* ナビゲーションバーを濃い青に */
+    padding: 0 30px !important;
+    display: flex !important;
+    gap: 5px !important;
+}
+
+header.system-header .page-title-bar a.nav-link {
+    display: inline-block !important;
+    color: #e2e8f0 !important;
+    text-decoration: none !important;
+    padding: 12px 20px !important;
+    font-size: 0.95rem !important;
+    font-weight: bold !important;
+    transition: all 0.2s !important;
+    border-bottom: 3px solid transparent !important;
+}
+
+header.system-header .page-title-bar a.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+/* 現在アクティブな画面のメニューの底に白い線を引いて目立たせる装飾 */
+header.system-header .page-title-bar a.nav-link.active {
+    color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-bottom: 3px solid #ffffff !important;
+}
+
+
+/* =======================================================
+   2. 日報コンテンツ専用のデザイン（コンテナ・検索・テーブル等）
+======================================================= */
+.container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 1100px;
+    margin: 30px auto !important;
+    padding: 0 20px 80px 20px;
+    box-sizing: border-box;
+}
+
+/* 一覧・検索エリア */
+.search-area {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.search-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 180px;
+}
+
+.search-label {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.search-input, .search-select {
+    padding: 8px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search-btn-area {
+    display: flex;
+    gap: 10px;
+}
+
+.search-btn {
+    padding: 9px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+.btn-submit { background-color: #3182ce; color: white; }
+.btn-reset { background-color: #718096; color: white; text-decoration: none; padding: 9px 20px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; text-align: center;}
+
+/* テーブル共通 */
+.report-table, .table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-top: 10px;
+}
+
+.report-table th, .report-table td, .table th, .table td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* テーブルヘッダーを真っ黒な太字にする設定 */
+.report-table th, .table th {
+    background-color: #edf2f7;
+    color: #1a202c !important;   
+    font-weight: bold !important; 
+    font-size: 0.95rem;
+}
+
+/* 判定バッジ */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+}
+.status-progress { background-color: #feebc8; color: #c05621; }
+.status-complete { background-color: #c6f6d5; color: #22543d; }
+
+.detail-btn {
+    background-color: #4a5568;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+.detail-btn:hover { background-color: #2d3748; }
+
+/* キャンセル・編集補助ボタン */
+.btn-gray {
+    display: inline-block;
+    background-color: #718096;
+    color: white;
+    padding: 10px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.worker-row {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}

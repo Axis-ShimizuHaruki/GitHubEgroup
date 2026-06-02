@@ -5,105 +5,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日報登録確認</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
 
-  <style>
-    /* 1. 左右分割を完全に解除し、上から下へ流れる縦並びに強制上書き */
-    html, body {
-      display: block !important; /* 左右分割のCSSを無効化 */
-      height: auto !important;
-      overflow-y: auto !important;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f7fa;
-    }
-
-    /* 2. ヘッダーを一番上に全幅で横いっぱいに表示 */
-    header {
-      display: block !important;
-      width: 100% !important;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .header-top {
-      display: flex !important;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      box-sizing: border-box;
-    }
-
-    .page-title-center {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #1a202c;
-    }
-
-    .user-area {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logout-btn {
-      background-color: #e2e8f0;
-      color: #4a5568;
-      padding: 6px 12px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    /* 3. 入力欄（コンテンツ）をヘッダーの下に配置 */
-    .container {
-      display: block !important; /* 左右配置の解除 */
-      width: 100% !important;
-      max-width: 900px;
-      margin: 30px auto !important; /* 上下に余白を持たせて中央配置 */
-      padding: 0 20px 80px 20px;
-      box-sizing: border-box;
-    }
-
-    /* 出面追加行の簡易デザイン調整 */
-    .worker-row {
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-    }
-  </style>
+  <style></style>
 </head>
 
 <body>
+	<header class="system-header">
 
-  <header>
-    <div class="header-top">
-      <div class="logo-area">
-        <a th:href="@{/nishikigi/dailyreport/list}">
-          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
-        </a>
-      </div>
+		    <div class="header-top">
 
-      <div class="user-area">
-        <div th:if="${session.loginUser}">
-          ログインユーザ：<span th:text="${session.loginUser.username}">田中 太郎</span>
-        </div>
-        <form th:action="@{/logout}" method="post" style="display: inline;">
-          <button type="submit" class="logout-btn" style="background:none; border:none; color:inherit; cursor:pointer;">
-            ログアウト
-          </button>
-        </form>
-      </div>
-    </div>
+		      <div class="logo-area">
+		        <a th:href="@{/homesite}">
+		          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+		        </a>
+		        <div class="site-system-name">
+		          日報登録確認
+		        </div>
+		      </div>
 
-	
-    <div class="page-title-bar">
-      日報登録確認
-    </div>
-  </header>
+		      <div class="user-area">
+		        <div th:if="${session.loginUser != null}" class="user-info-box">
+		          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
+		          <form th:action="@{/logout}" method="post" style="display: inline;">
+		            <button type="submit" class="logout-btn">ログアウト</button>
+		          </form>
+		        </div>
+
+		        <div th:unless="${session.loginUser != null}">
+		          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
+		        </div>
+		      </div>
+
+		    </div>
+
+		    <div class="page-title-bar">
+		      <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
+		    </div>
+
+		  </header>
 
   <div class="container">
 

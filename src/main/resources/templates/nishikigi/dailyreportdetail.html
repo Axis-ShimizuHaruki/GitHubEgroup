@@ -5,195 +5,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日報詳細</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+  <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
 
-<style>
-    /* 1. 左右分割を完全に解除し、上から下へ流れる縦並びに強制上書き */
-    html, body {
-      display: block !important;
-      height: auto !important;
-      overflow-y: auto !important;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f7fa;
-    }
+<style></style>
 
-
-    /* 2. ヘッダーを一番上に全幅で横いっぱいに表示 */
-    header {
-      display: block !important;
-      width: 100% !important;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .header-top {
-      display: flex !important;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 30px;
-      box-sizing: border-box;
-    }
-
-    .page-title-center {
-      font-size: 1.6rem;
-      font-weight: bold;
-      color: #1a202c;
-    }
-
-    .user-area {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logout-btn {
-      background-color: #e2e8f0;
-      color: #4a5568;
-      padding: 6px 12px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    /* 3. コンテンツを中央配置 */
-    .container {
-      display: block !important;
-      width: 100% !important;
-      max-width: 1100px; /* 横幅をテーブル用に少し広げました */
-      margin: 30px auto !important;
-      padding: 0 20px 80px 20px;
-      box-sizing: border-box;
-    }
-
-    /* ===== 一覧・検索エリア専用のスタイル調整 ===== */
-    .search-area {
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin-bottom: 25px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      align-items: flex-end;
-    }
-
-    .search-item {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      flex: 1;
-      min-width: 180px;
-    }
-
-    .search-label {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: #4a5568;
-    }
-
-    .search-input, .search-select {
-      padding: 8px;
-      border: 1px solid #cbd5e0;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .search-btn-area {
-      display: flex;
-      gap: 10px;
-    }
-
-    .search-btn {
-      padding: 9px 20px;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 0.9rem;
-    }
-    .btn-submit { background-color: #3182ce; color: white; }
-    .btn-reset { background-color: #718096; color: white; text-decoration: none; padding: 9px 20px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; text-align: center;}
-
-    .report-table, .table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      margin-top: 10px;
-    }
-
-    .report-table th, .report-table td, .table th, .table td {
-      padding: 14px 16px;
-      text-align: left;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    /* 一覧画面、および詳細画面のテーブルヘッダー(th)を真っ黒な太字にする強制設定 */
-    .report-table th, .table th {
-      background-color: #edf2f7;
-      color: #1a202c !important;   /* ★ 文字色をハッキリとした濃い色に固定 */
-      font-weight: bold !important; /* ★ 確実に太字（ボールド）にする */
-      font-size: 0.95rem;
-    }
-
-    /* 判定バッジの装飾 */
-    .status-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      display: inline-block;
-    }
-    .status-progress { background-color: #feebc8; color: #c05621; } /* 未確認：オレンジ */
-    .status-complete { background-color: #c6f6d5; color: #22543d; } /* 確認済：緑 */
-
-    .detail-btn {
-      background-color: #4a5568;
-      color: white;
-      padding: 6px 14px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: background 0.2s;
-    }
-    .detail-btn:hover { background-color: #2d3748; }
-  </style>
 </head>
 
 <body>
 
-  <header>
-    <div class="header-top">
-      <div class="logo-area">
-        <a th:href="@{/dailyreport/list}">
-          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img" style="height: 45px; width: auto;">
-        </a>
-      </div>
+	<header class="system-header">
 
-      <div class="page-title-center">
-        日報詳細
-      </div>
+	    <div class="header-top">
 
-      <div class="user-area">
-        <div th:if="${session.loginUser}">
-          ログインユーザ：<strong th:text="${session.loginUser.username}">田中 太郎</strong> さん
-        </div>
-        <form th:action="@{/logout}" method="post" style="display: inline;">
-          <button type="submit" class="logout-btn">ログアウト</button>
-        </form>
-      </div>
-    </div>
-  </header>
+	      <div class="logo-area">
+	        <a th:href="@{/homesite}">
+	          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+	        </a>
+	        <div class="site-system-name">
+	          日報詳細
+	        </div>
+	      </div>
+
+	      <div class="user-area">
+	        <div th:if="${session.loginUser != null}" class="user-info-box">
+	          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
+	          <form th:action="@{/logout}" method="post" style="display: inline;">
+	            <button type="submit" class="logout-btn">ログアウト</button>
+	          </form>
+	        </div>
+
+	        <div th:unless="${session.loginUser != null}">
+	          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
+	        </div>
+	      </div>
+
+	    </div>
+
+	    <div class="page-title-bar">
+	      <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
+	    </div>
+
+	  </header>
 
   <div class="container" th:object="${report}">
 

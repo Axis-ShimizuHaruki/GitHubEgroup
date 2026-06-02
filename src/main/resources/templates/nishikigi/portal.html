@@ -124,13 +124,15 @@
             <div class="menu-group">
 
                 <a th:if="${view.todayReport != null}"
-                   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
+                   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}"
+				   class="menu-button">
 
                     今日の日報
 
                 </a>
 
-                <span th:if="${view.todayReport == null}">
+                <span th:if="${view.todayReport == null}"
+				class="menu-button">
                     今日の日報
                 </span>
 
@@ -147,13 +149,15 @@
             <div class="menu-group">
 
                 <a th:if="${view.todaySafety != null}"
-                   th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
+                   th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}"
+				    class="menu-button">
 
                     今日の安全点検
 
                 </a>
 
-                <span th:if="${view.todaySafety == null}">
+                <span th:if="${view.todaySafety == null}"
+				class="menu-button">
                     今日の安全点検
                 </span>
 
@@ -171,9 +175,7 @@
 
                 <a th:href="@{/trouble/list}"
                    class="menu-button">
-
                     今日のトラブル
-
                 </a>
 
                 <a th:href="@{/trouble/list}"

@@ -11,9 +11,9 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig
         implements WebSocketMessageBrokerConfigurer {
 
-    public WebSocketConfig() {
-        System.out.println("★★★★ WebSocketConfig Loaded ★★★★");
-    }
+//    public WebSocketConfig() {
+//        System.out.println("★★★★ WebSocketConfig Loaded ★★★★");
+//    }
 
     @Override
     public void registerStompEndpoints(

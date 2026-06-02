@@ -7,9 +7,8 @@
 
   <title>業務管理システム</title>
 
-  <style>
-
-  </style>
+  <link rel="stylesheet"
+            th:href="@{/css/home.css}">
 </head>
 
 <body>
@@ -111,7 +110,7 @@
       <div class="chat-header">
         現場チャット
       </div>
-
+	  <!-- チャットログ -->
 	  <div class="chat-messages" id="chatMessages">
 
 	      <div th:each="chat : ${chatList}"
@@ -123,7 +122,7 @@
 
 	      </div>
 
-	  </div>
+	  
 
       </div>
 
@@ -140,6 +139,7 @@
 	  </div>
 
     </div>
+	</div>
 
   </main>
 

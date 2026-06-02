@@ -1,0 +1,462 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Yu Gothic", sans-serif;
+}
+
+body {
+    background: #f4f6f9;
+    color: #333;
+    padding: 20px;
+}
+
+/* ===== ヘッダー ===== */
+
+header {
+    background-color: #1f8488;
+    color: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 32px;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.logo-area a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-img {
+    width: 62px;
+    height: 62px;
+    object-fit: contain;
+    background-color: white;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.site-system-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    flex-wrap: wrap;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.logout-btn {
+    background-color: white;
+    color: #1f3c88;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #dfe6f7;
+}
+
+/* ===== 下段ナビ ===== */
+
+.page-title-bar {
+    background-color: #e9eefc;
+    color: #1f3c88;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.page-title-bar a {
+    color: #1f3c88;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.page-title-bar a:hover {
+    text-decoration: underline;
+}
+
+/* ===== メイン ===== */
+
+main {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+}
+
+/* ===== 左メニュー ===== */
+
+.button-area {
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ===== ポータルタイトル ===== */
+
+.portal-header-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+    border-left: 6px solid #1f3c88;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.portal-label {
+    font-size: 15px;
+    font-weight: bold;
+    color: #1f3c88;
+    letter-spacing: 1px;
+}
+
+.portal-site-name {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* ===== グループ ===== */
+
+.menu-group {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border-top: 6px solid #1f3c88;
+    width: 100%;
+}
+
+/* ===== メインボタン ===== */
+
+.menu-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: #f5f7ff;
+    color: #1f3c88;
+    height: 140px;
+    border-radius: 14px;
+    font-size: 28px;
+    font-weight: bold;
+    transition: 0.25s;
+    border: 2px solid #dbe4ff;
+}
+
+.menu-button:hover {
+    background: #1f3c88;
+    color: white;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(31, 60, 136, 0.2);
+}
+
+/* ===== サブボタン ===== */
+
+.sub-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    background: white;
+    color: #1f3c88;
+    border: 2px solid #1f3c88;
+    border-radius: 10px;
+    height: 56px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.sub-button:hover {
+    background: #1f3c88;
+    color: white;
+}
+
+/* =========================
+       LINE風チャット画面
+    ========================= */
+
+.chat-panel {
+    flex: 1;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    height: 760px;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* チャット上部 */
+
+.chat-header {
+    background: #1f3c88;
+    color: white;
+    padding: 18px 24px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* メッセージエリア */
+
+.chat-messages {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background: #f5f7fb;
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* メッセージ */
+
+.message-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* 自分 */
+
+.me .message {
+    background: white;
+    border: 1px solid #dfe5f0;
+    border-bottom-left-radius: 4px;
+}
+
+.me {
+    justify-content: flex-end;
+}
+
+/* 相手 */
+
+.other .message {
+    background: #1f3c88;
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* 入力欄 */
+
+.chat-input {
+    border-top: 1px solid #e0e0e0;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    background: white;
+}
+
+.chat-input input {
+    flex: 1;
+    height: 52px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    padding: 0 18px;
+    font-size: 16px;
+    outline: none;
+}
+
+.chat-input button {
+    width: 100px;
+    border: none;
+    border-radius: 999px;
+    background: #1f3c88;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ===== 左下ステータス吹き出し ===== */
+
+.status-bubble {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 26px 30px;
+
+    min-width: 340px;
+
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.20);
+
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    z-index: 999;
+
+    animation: slideIn 0.4s ease-out;
+}
+
+.status-bubble::before {
+    content: "";
+    position: absolute;
+    left: 28px;
+    bottom: -10px;
+
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    transform: rotate(45deg);
+
+    box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.10);
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 18px;
+    padding: 6px 0;
+}
+
+.status-title {
+    font-size: 16px;
+    opacity: 0.75;
+}
+
+.done {
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.not-done {
+    color: #e67e22;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.blinking {
+    animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ===== スマホ対応 ===== */
+
+@media(max-width:768px) {
+
+    body {
+        padding: 14px;
+    }
+
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .user-area {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    main {
+        flex-direction: column;
+    }
+
+    .button-area {
+        width: 100%;
+    }
+
+    .menu-button {
+        font-size: 22px;
+        height: 120px;
+    }
+
+    .chat-panel {
+        width: 100%;
+        height: 600px;
+    }
+
+    .status-bubble {
+        min-width: auto;
+        width: calc(100% - 28px);
+        left: 14px;
+        bottom: 14px;
+    }
+
+    .portal-site-name {
+        font-size: 24px;
+    }
+}

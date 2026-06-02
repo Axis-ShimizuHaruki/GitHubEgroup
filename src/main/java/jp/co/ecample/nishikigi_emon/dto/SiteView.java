@@ -22,17 +22,6 @@ public class SiteView {
     
     private boolean mySite;
     
-    public SiteView(Site site, Integer maxPriority) {
-        this.site = site;
-        this.maxPriority = maxPriority;
-    }
-    
-    public SiteView(Site site, int maxPriority, boolean dailyChecked) {
-        this.site = site;
-        this.maxPriority = maxPriority;
-        this.dailyChecked = dailyChecked;
-    }
-    
     public SiteView(
             Site site,
             int maxPriority,

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>現場一覧</title>
+	<title>本社ホーム</title>
 	<link rel="stylesheet" href="css/list.css" />
 </head>
 
@@ -20,11 +20,11 @@
 			<div class="logo-area">
 
 				<a th:href="@{/homeoffice}">
-					<img src="icon.png" alt="ロゴ" class="logo-img">
-					<div class="site-system-name">
-						現場管理システム
-					</div>
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
+				<div class="site-system-name">
+					現場管理システム
+				</div>
 
 			</div>
 

@@ -91,4 +91,22 @@ public class TroubleController {
 		return "nishikigi/troubledetail";
 	}
 
+	// トラブル対応状況を一段進める
+	@PostMapping("/trouble/status/{id}")
+	public String updateStatus(@PathVariable Integer id) {
+
+		service.updateStatus(id);
+
+		return "redirect:/trouble/" + id;
+	}
+
+	// トラブル対応状況を一段戻す
+	@PostMapping("/trouble/status/back/{id}")
+	public String backStatus(@PathVariable Integer id) {
+
+		service.backStatus(id);
+
+		return "redirect:/trouble/" + id;
+	}
+
 }

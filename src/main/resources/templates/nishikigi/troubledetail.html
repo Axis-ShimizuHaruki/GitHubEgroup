@@ -201,9 +201,28 @@
 		<!-- ボタン -->
 		<div class="btn-area">
 
-			<button class="btn btn-green" onclick="alert('確認が完了しました'); location.href='list.html';">
-				確認完了
-			</button>
+			<!-- 対応状況を進める -->
+			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post">
+
+				<button type="submit" th:if="${trouble.tStatusFlag == 0}">
+					確認完了
+				</button>
+
+				<button type="submit" th:if="${trouble.tStatusFlag == 1}">
+					対応完了
+				</button>
+
+			</form>
+
+			<!-- 対応状況を戻す -->
+			<form th:if="${trouble.tStatusFlag > 0}" th:action="@{/trouble/status/back/{id}(id=${trouble.troubleId})}"
+				method="post">
+
+				<button type="submit">
+					一段階戻す
+				</button>
+
+			</form>
 
 			<button class="btn btn-gray" onclick="location.href='troubleedit.html';">
 				編集

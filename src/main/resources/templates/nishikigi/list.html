@@ -107,6 +107,22 @@
 									✖ 未提出
 								</span>
 
+
+								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+									安全点検認
+								</a>
+								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+									✔ 確認済
+								</span>
+
+								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+									▲ 未確認
+								</span>
+
+								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+									✖ 未提出
+								</span>
+
 							</div>
 
 						</div>
@@ -165,6 +181,20 @@
 									✖ 未提出
 								</span>
 
+								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+									安全点検認
+								</a>
+								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+									✔ 確認済
+								</span>
+
+								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+									▲ 未確認
+								</span>
+
+								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+									✖ 未提出
+								</span>
 							</div>
 
 						</div>
@@ -222,6 +252,20 @@
 									✖ 未提出
 								</span>
 
+								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+									安全点検認
+								</a>
+								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+									✔ 確認済
+								</span>
+
+								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+									▲ 未確認
+								</span>
+
+								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+									✖ 未提出
+								</span>
 							</div>
 						</div>
 
@@ -278,6 +322,20 @@
 									✖ 未提出
 								</span>
 
+								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+									安全点検認
+								</a>
+								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+									✔ 確認済
+								</span>
+
+								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+									▲ 未確認
+								</span>
+
+								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+									✖ 未提出
+								</span>
 							</div>
 
 						</div>

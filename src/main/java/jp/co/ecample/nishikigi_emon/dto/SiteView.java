@@ -12,6 +12,8 @@ public class SiteView {
 
     private String dailyStatus;
     
+    private String safetyStatus;
+    
     public SiteView(Site site, Integer maxPriority) {
         this.site = site;
         this.maxPriority = maxPriority;
@@ -23,11 +25,18 @@ public class SiteView {
         this.dailyChecked = dailyChecked;
     }
     
-    public SiteView(Site site, int maxPriority, String dailyStatus) {
+    public SiteView(
+            Site site,
+            int maxPriority,
+            String dailyStatus,
+            String safetyStatus) {
+
         this.site = site;
         this.maxPriority = maxPriority;
         this.dailyStatus = dailyStatus;
+        this.safetyStatus = safetyStatus;
     }
+    
     
     public Site getSite() {
         return site;
@@ -59,5 +68,13 @@ public class SiteView {
 
 	public void setDailyStatus(String dailyStatus) {
 	    this.dailyStatus = dailyStatus;
+	}
+	
+	public String getSafetyStatus() {
+	    return safetyStatus;
+	}
+
+	public void setSafetyStatus(String safetyStatus) {
+	    this.safetyStatus = safetyStatus;
 	}
 }

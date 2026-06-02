@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jp.co.ecample.nishikigi_emon.dto.SiteView;
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Manager;
+import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
@@ -99,55 +100,83 @@ public class LoginController {
 	@GetMapping("/homeoffice")
 	public String homeoffice(Model model) {
 
-		List<Site> siteList = siteRepository.findAll();
+	    List<Site> siteList = siteRepository.findAll();
 
-		List<SiteView> siteViews = new ArrayList<>();
+	    List<SiteView> siteViews = new ArrayList<>();
 
-		LocalDate today = LocalDate.now();
+	    LocalDate today = LocalDate.now();
 
-		for (Site site : siteList) {
+	    for (Site site : siteList) {
 
-			// 本社除外
-			if (site.getOfficecheck()) {
-				continue;
-			}
+	        // 本社除外
+	        if (site.getOfficecheck()) {
+	            continue;
+	        }
 
-			int maxPriority = 0;
+	        int maxPriority = 0;
 
-			for (Trouble trouble : site.getTroubleList()) {
+	        for (Trouble trouble : site.getTroubleList()) {
 
-				if (trouble.getPriority() > maxPriority) {
-					maxPriority = trouble.getPriority();
-				}
-			}
+	            if (trouble.getPriority() > maxPriority) {
+	                maxPriority = trouble.getPriority();
+	            }
+	        }
 
-			// 日報状態
-			String dailyStatus = "未提出";
+	        // ====================
+	        // 日報状態
+	        // ====================
 
-			for (Dailyreport report : site.getDailyreportList()) {
+	        String dailyStatus = "未提出";
 
-				// 今日の日報か
-				if (today.equals(report.getTargetDate())) {
+	        for (Dailyreport report : site.getDailyreportList()) {
 
-					// 今日の日報は存在
-					dailyStatus = "未確認";
+	            if (today.equals(report.getTargetDate())) {
 
-					// 確認済
-					if (report.getDStatusFlag() == 1) {
+	                dailyStatus = "未確認";
 
-						dailyStatus = "確認済";
-						break;
-					}
-				}
-			}
+	                if (report.getDStatusFlag() == 1) {
 
-			siteViews.add(
-					new SiteView(site, maxPriority, dailyStatus));
-		}
+	                    dailyStatus = "確認済";
+	                    break;
+	                }
+	            }
+	        }
 
-		model.addAttribute("siteViews", siteViews);
+	        // ====================
+	        // 安全点検状態
+	        // ====================
 
-		return "nishikigi/list";
+	        String safetyStatus = "未提出";
+
+	        for (Safety safety : site.getSafetyList()) {
+
+	            // 今日の安全点検か判定
+	            if (today.equals(
+	                    safety.getsCreatedAt().toLocalDate())) {
+
+	                safetyStatus = "未確認";
+
+	                if ("1".equals(safety.getsStatusFlag())) {
+
+	                    safetyStatus = "確認済";
+	                    break;
+	                }
+	            }
+	        }
+
+	        siteViews.add(
+	            new SiteView(
+	                site,
+	                maxPriority,
+	                dailyStatus,
+	                safetyStatus
+	            )
+	        );
+	    }
+
+	    model.addAttribute("siteViews", siteViews);
+
+	    return "nishikigi/list";
 	}
 
 	//完了画面の表示

@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,13 +17,12 @@ public class TroubleService {
 	public TroubleService(TroubleRepository troubleRepository) {
 		this.troubleRepository = troubleRepository;
 	}
-	
-	 // DBから社員の情報を全件取得
- 	public List<Trouble> selectAll() {
- 		return troubleRepository.findAll();
- 	}
- 	
- 	
+
+	// DBから社員の情報を全件取得
+	public List<Trouble> selectAll() {
+		return troubleRepository.findAll();
+	}
+
 	// トラブル登録処理
 	public void register(Trouble trouble) {
 
@@ -32,6 +32,22 @@ public class TroubleService {
 		trouble.settUpdatedAt(LocalDateTime.now());
 
 		troubleRepository.save(trouble);
+	}
+
+	// トラブル検索処理
+	public List<Trouble> search(
+			LocalDate occurredDate,
+			String siteName,
+			Integer priority,
+			Integer troubleType,
+			Integer statusFlag) {
+
+		return troubleRepository.search(
+				occurredDate,
+				siteName,
+				priority,
+				troubleType,
+				statusFlag);
 	}
 
 }

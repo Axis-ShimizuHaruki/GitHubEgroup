@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.form.TroubleForm;
+import jp.co.ecample.nishikigi_emon.form.TroubleSearchForm;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 
 @Controller
@@ -64,12 +65,16 @@ public class TroubleController {
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")
-	public String list(Model model) {
-		List<Trouble> troubleList = service.selectAll();
+	public String list(@ModelAttribute TroubleSearchForm form, Model model) {
+		List<Trouble> troubleList = service.search(
+				form.getOccurredDate(),
+				form.getSiteName(),
+				form.getPriority(),
+				form.getTroubleType(),
+				form.getStatusFlag());
 		model.addAttribute("troubleList", troubleList);
+		model.addAttribute("troubleSearchForm", form);
 		return "nishikigi/troublelist";
 	}
-	
-	
 
 }

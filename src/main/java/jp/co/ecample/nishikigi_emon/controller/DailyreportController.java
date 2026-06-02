@@ -50,21 +50,21 @@ public class DailyreportController {
         // 検索プルダウン用に、現場マスタ一覧（siteList）をModelに乗せる
         model.addAttribute("siteList", siteService.selectAll());
 
-        // 1. 画面から送られてきた日付文字列(String)を LocalDate 型に変換する
+        // 画面から送られてきた日付文字列(String)を LocalDate 型に変換する
         java.time.LocalDate targetDate = null;
         if (targetDateStr != null && !targetDateStr.isEmpty()) {
             targetDate = java.time.LocalDate.parse(targetDateStr);
         }
 
-        // 2. 権限に応じた現場IDのコントロール
+        // 権限に応じた現場IDのコントロール
         if (loginUser.getRoll() != 0) {
-            // 現場所長・一般ユーザーの場合は、画面からの現場検索を無視して「自分の現場ID」で強制固定！
+            // 現場所長・一般ユーザーの場合は、画面からの現場検索を無視して「自分の現場ID」で強制固定
             siteId = userSiteId;
-            
-            
         }
+        
+        
 
-        // 3. 検索処理の実行
+        // 検索処理の実行
         List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag);
 
         model.addAttribute("reportList", reportList);
@@ -72,15 +72,31 @@ public class DailyreportController {
     }
     
     /**
-     * 動作：日報新規登録画面を表示する（現場マスタリストも一緒に画面に送る）
-     * URL：GET /nishikigi/dailyreport/new
-     * 画面：nishikigi/dailyreport.html
+     * 動作：日報新規登録画面を表示する
+     * URL：GET /dailyreport/new
      */
     @GetMapping("/new")
     public String showCreateForm(HttpSession session, Model model) {
-        model.addAttribute("dailyreport", new Dailyreport());
+        User loginUser = (User) session.getAttribute("loginUser");
+        Integer userSiteId = (Integer) session.getAttribute("siteId");
+
+        if (loginUser == null) return "redirect:/login";
+
+        Dailyreport newReport = new Dailyreport();
         
-        // ★エラー解消：LoginControllerの仕様に合わせ、メソッド名を「selectAll()」に修正して全現場を取得
+        // 日付の初期値に「今日(LocalDate.now())」をセット
+        newReport.setTargetDate(java.time.LocalDate.now());
+        
+        //  現場ユーザー(roll != 0)なら、初期現場に「自分の現場ID」をセット
+        if (loginUser.getRoll() != 0 && userSiteId != null) {
+            jp.co.ecample.nishikigi_emon.entity.Site currentSite = new jp.co.ecample.nishikigi_emon.entity.Site();
+            currentSite.setSiteId(userSiteId);
+            newReport.setSite(currentSite);
+        }
+        
+        model.addAttribute("dailyreport", newReport);
+
+        // プルダウン表示用に現場マスタ一覧を送る
         List<Site> siteList = siteService.selectAll(); 
         model.addAttribute("siteList", siteList);
         
@@ -90,11 +106,21 @@ public class DailyreportController {
     
     /**
      * 動作：日報登録画面からの入力を受け取り、登録確認画面を表示する
-     * URL：POST /nishikigi/dailyreport/new/confirm
-     * 画面：nishikigi/dailyreportcheck.html
+     * URL：POST /dailyreport/new/confirm
      */
     @PostMapping("/new/confirm")
     public String confirmCreate(@ModelAttribute("dailyreport") Dailyreport report, Model model) {
+        
+        // 登録画面から届いた現場IDを元に、完全な現場情報（現場名含む）をドッキングする
+        if (report.getSite() != null && report.getSite().getSiteId() != null) {
+            for (Site s : siteService.selectAll()) {
+                if (s.getSiteId().equals(report.getSite().getSiteId())) {
+                    report.setSite(s); 
+                    break;
+                }
+            }
+        }
+        
         model.addAttribute("dailyreport", report);
         return "nishikigi/dailyreportcheck";
     }

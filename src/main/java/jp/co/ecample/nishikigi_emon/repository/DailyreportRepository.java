@@ -14,7 +14,8 @@ import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 public interface DailyreportRepository extends JpaRepository<Dailyreport, Integer> {
     
 	// 同じ日付の日報は登録されない
-	boolean existsBySiteSiteIdAndTargetDate(Integer siteId, LocalDate targetDate);
+	boolean existsBySiteSiteIdAndTargetDate(Integer siteId, java.time.LocalDate targetDate);
+	
 	
     // 全現場用：対象日付の新しい順で全取得
     List<Dailyreport> findAllByOrderByTargetDateDesc();

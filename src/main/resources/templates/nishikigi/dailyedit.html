@@ -147,7 +147,8 @@
           <div>
             <label for="targetDate">日付</label>
 			<input type="date" id="targetDate" name="targetDate" 
-			       th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" required>
+			       th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" 
+			       readonly style="background-color: #e2e8f0; cursor: not-allowed;" required>
           </div>
 
           <div>

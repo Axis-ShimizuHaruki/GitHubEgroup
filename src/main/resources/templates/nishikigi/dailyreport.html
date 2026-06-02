@@ -109,29 +109,29 @@
       <div class="section">
         <div class="section-title">作業実績</div>
 
-        <div class="grid-2">
-          <div>
-            <label>現場名</label>
-            <select th:field="*{site.siteId}" required>
-              <option value="">-- 現場を選択してください --</option>
-              <option th:each="site : ${siteList}" 
-                      th:if="${site.siteId != 1}"
-                      th:value="${site.siteId}" 
-                      th:text="${site.siteName}"
-                      th:selected="${site.siteId == session.siteId}">
-              </option>
-            </select>
-          </div>
+		<div class="grid-2">
+		          <div>
+		            <label>現場名</label>
+		            <input type="hidden" th:field="*{site.siteId}" />
+		            <select disabled style="background-color: #e2e8f0; cursor: not-allowed;">
+		              <option th:each="site : ${siteList}" 
+		                      th:value="${site.siteId}" 
+		                      th:text="${site.siteName}"
+		                      th:selected="${site.siteId == dailyreport.site?.siteId}">
+		              </option>
+		            </select>
+		          </div>
 
-          <div>
-            <label for="projectNumber">工事番号</label>
-            <input type="text" id="projectNumber" th:field="*{projectNumber}" placeholder="例：A-1024" required maxlength="10">
-          </div>
+		          <div>
+		            <label for="projectNumber">工事番号</label>
+		            <input type="text" id="projectNumber" th:field="*{projectNumber}" required maxlength="10">
+		          </div>
 
-          <div>
-            <label for="targetDate">日付</label>
-            <input type="date" id="targetDate" th:field="*{targetDate}" required>
-          </div>
+		          <div>
+		            <label for="targetDate">日付</label>
+		            <input type="date" id="targetDate" name="targetDate" 
+		                   th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" required>
+		          </div>
 
           <div>
             <label for="weather">天候</label>

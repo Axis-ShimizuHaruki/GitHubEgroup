@@ -12,7 +12,7 @@ import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
 
-
+//
 @Controller
 public class ChatController {
 

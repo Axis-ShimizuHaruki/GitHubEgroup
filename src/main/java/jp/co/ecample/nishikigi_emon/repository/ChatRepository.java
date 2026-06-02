@@ -10,6 +10,6 @@ import jp.co.ecample.nishikigi_emon.entity.Chat;
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer> {
 
-	List<Chat> findBySiteIdOrderByDateTimeAsc(
+	List<Chat> findBySiteSiteIdOrderByDateTimeAsc(
             Integer siteId);
 }

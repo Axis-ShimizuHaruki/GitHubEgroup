@@ -112,31 +112,18 @@
         現場チャット
       </div>
 
-      <div class="chat-messages" id="chatMessages">
+	  <div class="chat-messages" id="chatMessages">
 
-        <div class="message-row other">
-          <div class="message">
-            本日の安全点検は15時までに提出してください。
-          </div>
-        </div>
+	      <div th:each="chat : ${chatList}"
+	           class="message-row other">
 
-        <div class="message-row me">
-          <div class="message">
-            了解しました。確認後提出します。
-          </div>
-        </div>
+	          <div class="message"
+	               th:text="${chat.message}">
+	          </div>
 
-        <div class="message-row other">
-          <div class="message">
-            本日午後から資材搬入があります。
-          </div>
-        </div>
+	      </div>
 
-        <div class="message-row me">
-          <div class="message">
-            作業員へ共有済みです。
-          </div>
-        </div>
+	  </div>
 
       </div>
 

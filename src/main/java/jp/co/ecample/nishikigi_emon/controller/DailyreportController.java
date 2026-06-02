@@ -151,6 +151,7 @@ public class DailyreportController {
         return "redirect:/nishikigi/complete";
     }
 
+   
     /**
      * 動作：本社管理者が「確認ボタン」を押下した際、ステータスを更新して詳細画面へ戻る（リロード）
      * URL：POST /nishikigi/dailyreport/{id}/confirm

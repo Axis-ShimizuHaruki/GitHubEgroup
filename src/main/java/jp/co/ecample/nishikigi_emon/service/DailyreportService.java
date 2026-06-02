@@ -37,6 +37,7 @@ public class DailyreportService {
         return dailyreportRepository.findById(reportId).orElse(null);
     }
 
+    
     /**
      * 動作：新しい日報データをデータベースに新規登録（保存）する
      */

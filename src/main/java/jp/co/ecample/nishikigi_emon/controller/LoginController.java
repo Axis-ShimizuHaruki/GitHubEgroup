@@ -56,6 +56,7 @@ public class LoginController {
 	@PostMapping("/login")
 	public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model,
 			HttpSession session) {
+
 		Optional<User> result = Uservice.login(userid, password);
 
 		if (result.isPresent()) {
@@ -98,90 +99,98 @@ public class LoginController {
 
 	// 本社ホーム画面の表示
 	@GetMapping("/homeoffice")
-	public String homeoffice(Model model) {
+	public String homeoffice(Model model, HttpSession session) {
 
-	    List<Site> siteList = siteRepository.findAll();
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
 
-	    List<SiteView> siteViews = new ArrayList<>();
+		List<Site> siteList = siteRepository.findAll();
 
-	    LocalDate today = LocalDate.now();
+		List<SiteView> siteViews = new ArrayList<>();
 
-	    for (Site site : siteList) {
+		LocalDate today = LocalDate.now();
 
-	        // 本社除外
-	        if (site.getOfficecheck()) {
-	            continue;
-	        }
+		for (Site site : siteList) {
 
-	        int maxPriority = 0;
+			// 本社除外
+			if (site.getOfficecheck()) {
+				continue;
+			}
 
-	        for (Trouble trouble : site.getTroubleList()) {
+			int maxPriority = 0;
 
-	            if (trouble.getPriority() > maxPriority) {
-	                maxPriority = trouble.getPriority();
-	            }
-	        }
+			for (Trouble trouble : site.getTroubleList()) {
 
-	        // ====================
-	        // 日報状態
-	        // ====================
+				if (trouble.getPriority() > maxPriority) {
+					maxPriority = trouble.getPriority();
+				}
+			}
 
-	        String dailyStatus = "未提出";
+			// ====================
+			// 日報状態
+			// ====================
 
-	        for (Dailyreport report : site.getDailyreportList()) {
+			String dailyStatus = "未提出";
 
-	            if (today.equals(report.getTargetDate())) {
+			for (Dailyreport report : site.getDailyreportList()) {
 
-	                dailyStatus = "未確認";
+				if (today.equals(report.getTargetDate())) {
 
-	                if (report.getDStatusFlag() == 1) {
+					dailyStatus = "未確認";
 
-	                    dailyStatus = "確認済";
-	                    break;
-	                }
-	            }
-	        }
+					if (report.getDStatusFlag() == 1) {
 
-	        // ====================
-	        // 安全点検状態
-	        // ====================
+						dailyStatus = "確認済";
+						break;
+					}
+				}
+			}
 
-	        String safetyStatus = "未提出";
+			// ====================
+			// 安全点検状態
+			// ====================
 
-	        for (Safety safety : site.getSafetyList()) {
+			String safetyStatus = "未提出";
 
-	            // 今日の安全点検か判定
-	            if (today.equals(
-	                    safety.getsCreatedAt().toLocalDate())) {
+			for (Safety safety : site.getSafetyList()) {
 
-	                safetyStatus = "未確認";
+				// 今日の安全点検か判定
+				if (today.equals(
+						safety.getsCreatedAt().toLocalDate())) {
 
-	                if ("1".equals(safety.getsStatusFlag())) {
+					safetyStatus = "未確認";
 
-	                    safetyStatus = "確認済";
-	                    break;
-	                }
-	            }
-	        }
+					if ("1".equals(safety.getsStatusFlag())) {
 
-	        siteViews.add(
-	            new SiteView(
-	                site,
-	                maxPriority,
-	                dailyStatus,
-	                safetyStatus
-	            )
-	        );
-	    }
+						safetyStatus = "確認済";
+						break;
+					}
+				}
+			}
 
-	    model.addAttribute("siteViews", siteViews);
+			siteViews.add(
+					new SiteView(
+							site,
+							maxPriority,
+							dailyStatus,
+							safetyStatus));
+		}
 
-	    return "nishikigi/list";
+		model.addAttribute("siteViews", siteViews);
+
+		return "nishikigi/list";
 	}
 
 	//完了画面の表示
 	@GetMapping("/complete")
-	public String homesite() {
+	public String homesite(HttpSession session) {
+
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
 		return "nishikigi/complete";
 	}
 

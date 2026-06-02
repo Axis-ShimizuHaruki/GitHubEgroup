@@ -2,248 +2,258 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>トラブル編集確認</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>トラブル編集確認</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="list.html">
+				<a href="list.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <span class="user-name">
-          ログインユーザ：山田 太郎
-        </span>
+				<span class="user-name">
+					ログインユーザ：山田 太郎
+				</span>
 
-        <button class="logout-btn">
-          ログアウト
-        </button>
+				<button class="logout-btn">
+					ログアウト
+				</button>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      トラブル編集確認
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			トラブル編集確認
+		</div>
 
-  </header>
+	</header>
 
-  <div class="container">
+	<div class="container">
 
-    <!-- サマリー -->
-    <div class="section">
+		<!-- サマリー -->
+		<div class="section">
 
-      <div class="section-title">
-        編集内容確認
-      </div>
+			<div class="section-title">
+				編集内容確認
+			</div>
 
-      <div class="summary-box">
-        以下の内容でトラブル情報を更新します。<br>
-        内容をご確認のうえ、「この内容で更新する」を押してください。
-      </div>
+			<div class="summary-box">
+				以下の内容でトラブル情報を更新します。<br>
+				内容をご確認のうえ、「この内容で更新する」を押してください。
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 基本情報 -->
-    <div class="section">
+		<!-- 基本情報 -->
+		<div class="section">
 
-      <div class="section-title">
-        トラブル基本情報
-      </div>
+			<div class="section-title">
+				トラブル基本情報
+			</div>
 
-      <div class="grid-2">
+			<div class="grid-2">
 
-        <div class="item">
-          <div class="label">受付番号</div>
-          <div class="value">TR-20260526-001</div>
-        </div>
+				<div class="item">
+					<div class="label">受付番号</div>
+					<div class="value">TR-20260526-001</div>
+				</div>
 
-        <div class="item">
-          <div class="label">発生日</div>
-          <div class="value">2026-05-26</div>
-        </div>
+				<div class="item">
+					<div class="label">発生日</div>
+					<div class="value">2026-05-26</div>
+				</div>
 
-        <div class="item">
-          <div class="label">報告者</div>
-          <div class="value">山田 太郎</div>
-        </div>
+				<div class="item">
+					<div class="label">報告者</div>
+					<div class="value">山田 太郎</div>
+				</div>
 
-        <div class="item">
-          <div class="label">対象部署</div>
-          <div class="value">情報システム部</div>
-        </div>
+				<div class="item">
+					<div class="label">対象部署</div>
+					<div class="value">情報システム部</div>
+				</div>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- トラブル内容 -->
-    <div class="section">
+		<!-- トラブル内容 -->
+		<div class="section">
 
-      <div class="section-title">
-        トラブル内容
-      </div>
+			<div class="section-title">
+				トラブル内容
+			</div>
 
-      <div class="grid-2">
+			<div class="grid-2">
 
-        <div class="item">
-          <div class="label">緊急度</div>
+				<div class="item">
+					<div class="label">緊急度</div>
 
-          <div class="value">
-            <span class="badge high">高</span>
-          </div>
-        </div>
+					<div class="value">
+						<span th:if="${form.priority == 3}">高</span>
+						<span th:if="${form.priority == 2}">中</span>
+						<span th:if="${form.priority == 1}">低</span>
+					</div>
+				</div>
 
-        <div class="item">
-          <div class="label">トラブル種別</div>
+				<div class="item">
+					<div class="label">トラブル種別</div>
 
-          <div class="value">
-            納品遅れ
-          </div>
-        </div>
+					<div class="value">
+						<span th:if="${form.troubleType == 1}">事故</span>
+						<span th:if="${form.troubleType == 2}">資材不足</span>
+						<span th:if="${form.troubleType == 3}">納品遅れ</span>
+						<span th:if="${form.troubleType == 4}">工程遅延</span>
+						<span th:if="${form.troubleType == 5}">その他</span>
+					</div>
+				</div>
 
-      </div>
+			</div>
 
-      <div class="item">
-        <div class="label">一言で表す</div>
+			<div class="item">
+				<div class="label">一言で表す</div>
 
-        <div class="value">
-          サーバに接続できない
-        </div>
-      </div>
+				<div class="value" th:text="${form.overview}">
+				</div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 詳細 -->
-    <div class="section">
+		<!-- 詳細 -->
+		<div class="section">
 
-      <div class="section-title">
-        詳細内容
-      </div>
+			<div class="section-title">
+				詳細内容
+			</div>
 
-      <div class="item">
+			<div class="item">
 
-        <div class="label">
-          トラブル詳細
-        </div>
+				<div class="label">
+					トラブル詳細
+				</div>
 
-        <div class="value">
-          サーバへの接続が不安定で、
-          社内システムにログインできない状態が発生。
+				<div class="value" th:text="${form.detail}">
+				</div>
 
-          午前9時頃から継続しており、
-          現在システム担当が原因を調査中。
-        </div>
+			</div>
 
-      </div>
+		</div>
 
-    </div>
+		<!-- 対応状況 -->
+		<div class="section">
 
-    <!-- 対応状況 -->
-    <div class="section">
+			<div class="section-title">
+				対応状況
+			</div>
 
-      <div class="section-title">
-        対応状況
-      </div>
+			<div class="grid-2">
 
-      <div class="grid-2">
+				<div class="item">
+					<div class="label">現在の対応状況</div>
 
-        <div class="item">
-          <div class="label">現在の対応状況</div>
+					<div class="value">
+						調査中
+					</div>
+				</div>
 
-          <div class="value">
-            調査中
-          </div>
-        </div>
+				<div class="item">
+					<div class="label">管理者共有</div>
 
-        <div class="item">
-          <div class="label">管理者共有</div>
+					<div class="value">
+						共有済み
+					</div>
+				</div>
 
-          <div class="value">
-            共有済み
-          </div>
-        </div>
+			</div>
 
-      </div>
+			<div class="item">
 
-      <div class="item">
+				<div class="label">
+					対応メモ
+				</div>
 
-        <div class="label">
-          対応メモ
-        </div>
+				<div class="value">
+					ネットワーク機器およびサーバログを確認中。
+					午前中に一次報告予定。
+				</div>
 
-        <div class="value">
-          ネットワーク機器およびサーバログを確認中。
-          午前中に一次報告予定。
-        </div>
+			</div>
 
-      </div>
+		</div>
 
-    </div>
+		<!-- コメント -->
+		<div class="section">
 
-    <!-- コメント -->
-    <div class="section">
+			<div class="section-title">
+				確認ステータス
+			</div>
 
-      <div class="section-title">
-        確認ステータス
-      </div>
+			<div class="item">
 
-      <div class="item">
+				<div class="label">
+					コメント
+				</div>
 
-        <div class="label">
-          コメント
-        </div>
+				<div class="value">
+					登録内容に問題がないことを確認してください。
+					必要に応じて管理者へ共有されます。
+				</div>
 
-        <div class="value">
-          登録内容に問題がないことを確認してください。
-          必要に応じて管理者へ共有されます。
-        </div>
+			</div>
 
-      </div>
+		</div>
 
-    </div>
+		<!-- ボタン -->
+		<form th:action="@{/trouble/{id}/edit/complete(id=${form.troubleId})}" method="post">
 
-    <!-- ボタン -->
-    <div class="btn-area">
+			<input type="hidden" name="troubleId" th:value="${form.troubleId}">
 
-      <button class="btn btn-secondary" onclick="history.back()">
-        修正する
-      </button>
+			<input type="hidden" name="priority" th:value="${form.priority}">
 
-      <button class="btn" onclick="location.href='complete.html';">
-        確認
-      </button>
+			<input type="hidden" name="troubleType" th:value="${form.troubleType}">
 
-    </div>
+			<input type="hidden" name="overview" th:value="${form.overview}">
 
-  </div>
+			<input type="hidden" name="detail" th:value="${form.detail}">
+
+			<button type="button" onclick="history.back()">
+				修正する
+			</button>
+
+			<button type="submit">
+				この内容で更新する
+			</button>
+
+		</form>
+
+	</div>
 
 </body>
 

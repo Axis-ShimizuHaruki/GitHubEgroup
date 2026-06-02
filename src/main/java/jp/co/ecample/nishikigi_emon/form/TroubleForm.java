@@ -2,6 +2,8 @@ package jp.co.ecample.nishikigi_emon.form;
 
 public class TroubleForm {
 
+	private Integer troubleId;
+
 	private Integer priority;
 
 	private Integer troubleType;
@@ -9,6 +11,14 @@ public class TroubleForm {
 	private String overview;
 
 	private String detail;
+
+	public Integer getTroubleId() {
+		return troubleId;
+	}
+
+	public void setTroubleId(Integer troubleId) {
+		this.troubleId = troubleId;
+	}
 
 	public Integer getPriority() {
 		return priority;

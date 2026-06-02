@@ -111,14 +111,43 @@ public class TroubleController {
 
 	// トラブル編集表示
 	@GetMapping("/trouble/{id}/edit")
-	public String edit() {
+	public String edit(@PathVariable Integer id, Model model) {
+
+		Trouble trouble = service.findById(id);
+
+		if (trouble == null) {
+			return "redirect:/trouble/list";
+		}
+
+		model.addAttribute("trouble", trouble);
+
 		return "nishikigi/troubleedit";
 	}
 
 	// トラブル編集確認
 	@PostMapping("/trouble/{id}/edit/confirm")
-	public String confirm() {
+	public String confirm(@PathVariable Integer id, @ModelAttribute TroubleForm form, Model model) {
+
+		model.addAttribute("form", form);
+
 		return "nishikigi/troubleeditcheck";
+	}
+
+	@PostMapping("/trouble/{id}/edit/complete")
+	public String complete(
+			@ModelAttribute TroubleForm form) {
+
+		Trouble trouble = new Trouble();
+
+		trouble.setTroubleId(form.getTroubleId());
+		trouble.setPriority(form.getPriority());
+		trouble.setTroubleType(form.getTroubleType());
+		trouble.setOverview(form.getOverview());
+		trouble.setDetail(form.getDetail());
+
+		service.update(trouble);
+
+		return "redirect:/complete";
 	}
 
 }

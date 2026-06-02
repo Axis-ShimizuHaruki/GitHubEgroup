@@ -73,9 +73,9 @@
 
 					<select th:field="*{priority}" class="search-select">
 						<option value="">すべて</option>
-						<option value="1">高</option>
+						<option value="3">高</option>
 						<option value="2">中</option>
-						<option value="3">低</option>
+						<option value="1">低</option>
 					</select>
 				</div>
 
@@ -145,16 +145,18 @@
 					<td th:text="${trouble.site.siteName}"></td>
 
 					<td>
-						<span class="badge high" th:if="${trouble.priority == 1}"> 高 </span>
+						<span class="badge high" th:if="${trouble.priority == 0}"> なし </span>
+						<span class="badge high" th:if="${trouble.priority == 3}"> 高 </span>
 						<span class="badge middle" th:if="${trouble.priority == 2}"> 中 </span>
-						<span class="badge low" th:if="${trouble.priority == 3}"> 低 </span>
+						<span class="badge low" th:if="${trouble.priority == 1}"> 低 </span>
 					</td>
 
 					<td>
-						<span th:if="${trouble.troubleType == 1}"> 転倒 </span>
-						<span th:if="${trouble.troubleType == 2}"> 機械故障 </span>
-						<span th:if="${trouble.troubleType == 3}">資材不足 </span>
-						<span th:if="${trouble.troubleType == 4}"> その他 </span>
+						<span th:if="${trouble.troubleType == 1}">事故</span>
+						<span th:if="${trouble.troubleType == 2}">資材不足</span>
+						<span th:if="${trouble.troubleType == 3}">納品遅れ</span>
+						<span th:if="${trouble.troubleType == 4}">工程遅延</span>
+						<span th:if="${trouble.troubleType == 5}">その他</span>
 					</td>
 
 					<td th:text="${trouble.overview}"></td>
@@ -178,21 +180,21 @@
 
 	<!-- ===== 左下ステータス ===== -->
 
-	<div class="status-bubble">
+	<!--	<div class="status-bubble">-->
 
-		<div class="status-item">
-			<span class="status-title">日報</span>
-			<span class="done">✔ 作成済み</span>
-		</div>
+	<!--		<div class="status-item">-->
+	<!--			<span class="status-title">日報</span>-->
+	<!--			<span class="done">✔ 作成済み</span>-->
+	<!--		</div>-->
 
-		<div class="status-item">
-			<span class="status-title">安全点検</span>
-			<span class="not-done blinking">
-				⚠ 未作成
-			</span>
-		</div>
+	<!--		<div class="status-item">-->
+	<!--			<span class="status-title">安全点検</span>-->
+	<!--			<span class="not-done blinking">-->
+	<!--				⚠ 未作成-->
+	<!--			</span>-->
+	<!--		</div>-->
 
-	</div>
+	<!--	</div>-->
 
 </body>
 

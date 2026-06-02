@@ -227,7 +227,8 @@
 
 			<!--			</form>-->
 
-			<button class="btn btn-gray" onclick="location.href='troubleedit.html';">
+			<button type="button" class="btn btn-gray"
+				th:onclick="|location.href='@{/trouble/{id}/edit(id=${trouble.troubleId})}'|">
 				編集
 			</button>
 

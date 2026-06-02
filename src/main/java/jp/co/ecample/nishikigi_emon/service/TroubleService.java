@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
@@ -98,5 +100,20 @@ public class TroubleService {
 	//
 	//		troubleRepository.save(trouble);
 	//	}
+
+	@Transactional
+	public void update(Trouble input) {
+
+		Trouble trouble = troubleRepository.findById(input.getTroubleId()).orElseThrow();
+
+		trouble.setPriority(input.getPriority());
+		trouble.setTroubleType(input.getTroubleType());
+		trouble.setOverview(input.getOverview());
+		trouble.setDetail(input.getDetail());
+
+		trouble.settUpdatedAt(LocalDateTime.now());
+
+		troubleRepository.save(trouble);
+	}
 
 }

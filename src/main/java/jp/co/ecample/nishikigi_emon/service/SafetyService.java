@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -163,6 +164,11 @@ public class SafetyService {
 	    }
 	    
 	    return safetyListDto;
+	}
+	
+	// IDから取得
+	public Optional<Safety> findById(Integer safetyId) {
+		return repository.findById(safetyId);
 	}
 
 	// 安全点検を保存

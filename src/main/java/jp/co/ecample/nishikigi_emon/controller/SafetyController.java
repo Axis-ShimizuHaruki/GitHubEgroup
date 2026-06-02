@@ -2,6 +2,7 @@ package jp.co.ecample.nishikigi_emon.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -11,10 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.dto.SafetyList;
+import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.form.SafetyForm;
 import jp.co.ecample.nishikigi_emon.service.SafetyService;
 
@@ -55,7 +58,19 @@ public class SafetyController {
 	}
 
 	// 詳細画面表示
-	
+	@GetMapping("/safetyinspection/{id}")
+	public String showSafetyDetail(
+			@PathVariable Integer id,
+			Model model,
+			HttpSession session
+			) {
+		Optional<Safety> result = service.findById(id);
+		Safety safety = result.get();
+
+		model.addAttribute("safety", safety);
+		
+		return "nishikigi/safetycheckdetail";
+	}
 	
 	// 安全点検登録画面表示
 	@GetMapping("/safetyinspection/new")

@@ -144,6 +144,8 @@ public class TroubleController {
 		trouble.setTroubleType(form.getTroubleType());
 		trouble.setOverview(form.getOverview());
 		trouble.setDetail(form.getDetail());
+		trouble.setSiteMemo(form.getSiteMemo());
+		trouble.setHqMemo(form.getHqMemo());
 
 		service.update(trouble);
 

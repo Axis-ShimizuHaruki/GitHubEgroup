@@ -173,62 +173,28 @@
 				対応状況
 			</div>
 
-			<div class="grid-2">
+			<div class="item">
 
-				<div class="item">
-					<div class="label">現在の対応状況</div>
-
-					<div class="value">
-						調査中
-					</div>
+				<div class="label">
+					現場対応メモ
 				</div>
 
-				<div class="item">
-					<div class="label">管理者共有</div>
-
-					<div class="value">
-						共有済み
-					</div>
-				</div>
+				<div class="value" th:text="${form.siteMemo}"></div>
 
 			</div>
 
 			<div class="item">
 
 				<div class="label">
-					対応メモ
+					本社対応メモ
 				</div>
 
-				<div class="value">
-					ネットワーク機器およびサーバログを確認中。
-					午前中に一次報告予定。
-				</div>
+				<div class="value" th:text="${form.hqMemo}"></div>
 
 			</div>
 
 		</div>
 
-		<!-- コメント -->
-		<div class="section">
-
-			<div class="section-title">
-				確認ステータス
-			</div>
-
-			<div class="item">
-
-				<div class="label">
-					コメント
-				</div>
-
-				<div class="value">
-					登録内容に問題がないことを確認してください。
-					必要に応じて管理者へ共有されます。
-				</div>
-
-			</div>
-
-		</div>
 
 		<!-- ボタン -->
 		<form th:action="@{/trouble/{id}/edit/complete(id=${form.troubleId})}" method="post">
@@ -242,6 +208,10 @@
 			<input type="hidden" name="overview" th:value="${form.overview}">
 
 			<input type="hidden" name="detail" th:value="${form.detail}">
+
+			<input type="hidden" name="siteMemo" th:value="${form.siteMemo}">
+
+			<input type="hidden" name="hqMemo" th:value="${form.hqMemo}">
 
 			<button type="button" onclick="history.back()">
 				修正する

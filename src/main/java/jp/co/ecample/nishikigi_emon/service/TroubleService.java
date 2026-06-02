@@ -111,6 +111,9 @@ public class TroubleService {
 		trouble.setOverview(input.getOverview());
 		trouble.setDetail(input.getDetail());
 
+		trouble.setSiteMemo(input.getSiteMemo());
+		trouble.setHqMemo(input.getHqMemo());
+
 		trouble.settUpdatedAt(LocalDateTime.now());
 
 		troubleRepository.save(trouble);

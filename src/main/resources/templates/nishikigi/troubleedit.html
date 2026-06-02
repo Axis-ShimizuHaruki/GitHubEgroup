@@ -138,80 +138,40 @@
 			<!-- 対応状況 -->
 			<div class="section">
 
-				<div class="section-title">
-					対応状況
-				</div>
 
-				<div class="grid-2">
-
-					<div class="item">
-						<div class="label">現在の対応状況</div>
-
-						<select>
-							<option selected>調査中</option>
-							<option>対応中</option>
-							<option>復旧済み</option>
-							<option>完了</option>
-						</select>
-					</div>
-
-					<div class="item">
-						<div class="label">管理者共有</div>
-
-						<select>
-							<option selected>共有済み</option>
-							<option>未共有</option>
-						</select>
-					</div>
-
-				</div>
-
+				<!-- 現場対応メモ -->
 				<div class="item">
 
 					<div class="label">
-						対応メモ
+						現場対応メモ
 					</div>
 
-					<textarea>
-ネットワーク機器およびサーバログを確認中。
-午前中に一次報告予定。
-        </textarea>
+					<textarea name="siteMemo" th:text="${trouble.siteMemo}"></textarea>
+
+				</div>
+
+				<!-- 本社対応メモ -->
+				<div class="item">
+
+					<div class="label">
+						本社対応メモ
+					</div>
+
+					<textarea name="hqMemo" th:text="${trouble.hqMemo}"></textarea>
 
 				</div>
 
 			</div>
 
-			<!-- 確認ステータス -->
-			<div class="section">
-
-				<div class="section-title">
-					確認ステータス
-				</div>
-
-				<div class="item">
-
-					<div class="label">
-						コメント
-					</div>
-
-					<textarea>
-登録内容に問題がないことを確認してください。
-必要に応じて管理者へ共有されます。
-        </textarea>
-
-				</div>
-
-			</div>
 
 			<!-- ボタン -->
 			<div class="btn-area">
-
-
 
 				<button type="button" class="btn btn-gray"
 					th:onclick="|location.href='@{/trouble/{id}(id=${trouble.troubleId})}'|">
 					キャンセル
 				</button>
+
 				<button type="submit" class="btn">
 					保存
 				</button>

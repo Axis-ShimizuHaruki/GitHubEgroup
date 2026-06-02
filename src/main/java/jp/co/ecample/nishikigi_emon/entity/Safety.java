@@ -58,7 +58,7 @@ public class Safety {
 
 	// 0：提出済み（未確認）, 1：確認完了
 	@Column(name = "s_status_flag", nullable = false)
-	private String sStatusFlag;
+	private Integer sStatusFlag;
 
 	// 更新日時
 	@Column(name = "s_updated_at")
@@ -149,11 +149,11 @@ public class Safety {
 		this.sCreatedAt = sCreatedAt;
 	}
 
-	public String getsStatusFlag() {
+	public Integer getsStatusFlag() {
 		return sStatusFlag;
 	}
 
-	public void setsStatusFlag(String sStatusFlag) {
+	public void setsStatusFlag(Integer sStatusFlag) {
 		this.sStatusFlag = sStatusFlag;
 	}
 

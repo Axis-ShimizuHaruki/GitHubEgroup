@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,17 @@ public class SafetyController {
 		return "nishikigi/safetycheck";
 	}
 	
+	// 安全点検登録画面に戻る
+	@PostMapping("/safetyinspection/new")
+	public String backSafetyInput(
+	        @ModelAttribute("safety") SafetyForm safety,
+	        Model model) {
+
+	    model.addAttribute("safety", safety);
+
+	    return "nishikigi/safetycheck";
+	}
+	
 	// 安全点検登録確認画面を表示
 	@PostMapping("/safetyinspection/new/confirm")
 	public String showSafetyConfirm(
@@ -53,8 +65,9 @@ public class SafetyController {
 	}
 	
 	// 安全点検登録処理
-	@PostMapping("/safetyinspection/new")
-	public String createSafety(@ModelAttribute("safety") SafetyForm safety) {
+	@PostMapping("/safetyinspection/new/comfirmed")
+	public String createSafety(@ModelAttribute("safety") SafetyForm safety,
+			HttpSession session) {
 		service.saveSafety(
 				safety.getScaffolding(),
 				safety.getProtectingOpenings(),
@@ -62,7 +75,8 @@ public class SafetyController {
 				safety.getEquipmentInspection(),
 				safety.getFireExtinguisher(),
 				safety.getOrganization(),
-				safety.getElectricalInsulation()
+				safety.getElectricalInsulation(),
+				(Integer)session.getAttribute("siteId")
 				);
 		
 		return "redirect:/complete";

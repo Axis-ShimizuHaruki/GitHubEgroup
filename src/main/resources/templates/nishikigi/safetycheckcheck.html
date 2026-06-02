@@ -2,214 +2,257 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>安全点検登録確認</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>安全点検登録確認</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="home.html">
+				<a href="home.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <div>
-          ログインユーザ：田中 太郎
-        </div>
+				<div>
+					ログインユーザ：田中 太郎
+				</div>
 
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
+				<a href="logout.html" class="logout-btn">
+					ログアウト
+				</a>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      安全点検登録確認
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			安全点検登録確認
+		</div>
 
-  </header>
+	</header>
 
-  <!-- =========================
+	<!-- =========================
        コンテンツ
   ========================= -->
 
-  <div class="container">
+	<div class="container">
 
-    <!-- 点検結果サマリー -->
-    <div class="section">
+		<!-- 点検結果サマリー -->
+		<div class="section">
 
-      <div class="section-title">
-        点検結果サマリー
-      </div>
+			<div class="section-title">
+				点検結果サマリー
+			</div>
 
-      <div class="summary-box">
+			<div class="summary-box">
 
-        <div class="summary-title">
-          確認内容
-        </div>
+				点検項目：7件<br>
 
-        点検項目：7件<br>
-        良好：5件<br>
-        注意：1件<br>
-        不備：1件
+				良好：
+				<span th:text="${
+	            (safety.scaffolding == 0 ? 1 : 0) +
+	            (safety.protectingOpenings == 0 ? 1 : 0) +
+	            (safety.safetyHarness == 0 ? 1 : 0) +
+	            (safety.equipmentInspection == 0 ? 1 : 0) +
+	            (safety.fireExtinguisher == 0 ? 1 : 0) +
+	            (safety.organization == 0 ? 1 : 0) +
+	            (safety.electricalInsulation == 0 ? 1 : 0)
+	        }"></span>件
+				<br>
 
-      </div>
+				不備：
+				<span th:text="${
+	            (safety.scaffolding == 1 ? 1 : 0) +
+	            (safety.protectingOpenings == 1 ? 1 : 0) +
+	            (safety.safetyHarness == 1 ? 1 : 0) +
+	            (safety.equipmentInspection == 1 ? 1 : 0) +
+	            (safety.fireExtinguisher == 1 ? 1 : 0) +
+	            (safety.organization == 1 ? 1 : 0) +
+	            (safety.electricalInsulation == 1 ? 1 : 0)
+	        }"></span>件
 
-    </div>
+			</div>
 
-    <!-- 点検項目 -->
-    <div class="section">
+		</div>
+		<!-- 点検項目 -->
+		<div class="section">
 
-      <div class="section-title">
-        点検項目確認
-      </div>
+		    <div class="section-title">
+		        点検項目確認
+		    </div>
 
-      <div class="check-list">
+		    <div class="check-list">
 
-        <div class="check-card">
-          <div class="check-name">
-            足場（手すり・幅木・滑り止め）
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                足場（手すり・幅木・滑り止め）
+		            </div>
 
-          <div class="check-status ok">
-            良好
-          </div>
-        </div>
+		            <div th:class="${safety.scaffolding == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.scaffolding == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            開口部養生
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                開口部養生
+		            </div>
 
-          <div class="check-status ok">
-            良好
-          </div>
-        </div>
+		            <div th:class="${safety.protectingOpenings == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.protectingOpenings == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            高所作業の安全帯使用
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                高所作業の安全帯使用
+		            </div>
 
-          <div class="check-status ng">
-            不備
-          </div>
-        </div>
+		            <div th:class="${safety.safetyHarness == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.safetyHarness == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            重機点検記録
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                重機点検記録
+		            </div>
 
-          <div class="check-status ok">
-            良好
-          </div>
-        </div>
+		            <div th:class="${safety.equipmentInspection == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.equipmentInspection == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            火気使用時の消火器配置
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                火気使用時の消火器配置
+		            </div>
 
-          <div class="check-status ng">
-            不備
-          </div>
-        </div>
+		            <div th:class="${safety.fireExtinguisher == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.fireExtinguisher == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            整理整頓（つまずきリスク）
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                整理整頓（つまずきリスク）
+		            </div>
 
-          <div class="check-status ok">
-            良好
-          </div>
-        </div>
+		            <div th:class="${safety.organization == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.organization == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-        <div class="check-card">
-          <div class="check-name">
-            仮設電気の絶縁
-          </div>
+		        <div class="check-card">
+		            <div class="check-name">
+		                仮設電気の絶縁
+		            </div>
 
-          <div class="check-status ok">
-            良好
-          </div>
-        </div>
+		            <div th:class="${safety.electricalInsulation == 0} ? 'check-status ok' : 'check-status ng'"
+		                 th:text="${safety.electricalInsulation == 0} ? '良好' : '不備'">
+		            </div>
+		        </div>
 
-      </div>
+		    </div>
 
-    </div>
-    <!-- =========================
+		</div>		<!-- =========================
      画像確認
 ========================= -->
 
-    <div class="section">
+<!--		<div class="section">-->
 
-      <div class="section-title">
-        添付画像確認
-      </div>
+<!--			<div class="section-title">-->
+<!--				添付画像確認-->
+<!--			</div>-->
 
-      <div class="item">
+<!--			<div class="item">-->
 
-        <div class="label">
-          添付画像
-        </div>
+<!--				<div class="label">-->
+<!--					添付画像-->
+<!--				</div>-->
 
-        <div class="value">
+<!--				<div class="value">-->
 
-          <img src="sample.jpg" alt="点検画像" style="
-          width:100%;
-          max-width:400px;
-          border-radius:10px;
-          border:1px solid #dfe6f7;
-        ">
+<!--					<img src="sample.jpg" alt="点検画像" style="-->
+<!--          width:100%;-->
+<!--          max-width:400px;-->
+<!--          border-radius:10px;-->
+<!--          border:1px solid #dfe6f7;-->
+<!--        ">-->
 
-        </div>
+<!--				</div>-->
 
-      </div>
+<!--			</div>-->
 
-    </div>
+<!--		</div>-->
 
-    <!-- ボタン -->
-    <div class="btn-area">
+		<!-- ボタン -->
+		<div class="btn-area">
 
-      <button class="btn btn-secondary">
-        修正する
-      </button>
+		    <!-- 修正 -->
+		    <form th:action="@{/safetyinspection/new}"
+		          th:object="${safety}"
+		          method="post">
 
-      <button class="btn" onclick="location.href='complete.html'">
-        登録する
-      </button>
+		        <input type="hidden" th:field="*{scaffolding}">
+		        <input type="hidden" th:field="*{protectingOpenings}">
+		        <input type="hidden" th:field="*{safetyHarness}">
+		        <input type="hidden" th:field="*{equipmentInspection}">
+		        <input type="hidden" th:field="*{fireExtinguisher}">
+		        <input type="hidden" th:field="*{organization}">
+		        <input type="hidden" th:field="*{electricalInsulation}">
 
-    </div>
+		        <button type="submit" class="btn btn-secondary">
+		            修正
+		        </button>
 
-  </div>
+		    </form>
+
+		    <!-- 登録 -->
+		    <form th:action="@{/safetyinspection/new/comfirmed}"
+		          th:object="${safety}"
+		          method="post">
+
+		        <input type="hidden" th:field="*{scaffolding}">
+		        <input type="hidden" th:field="*{protectingOpenings}">
+		        <input type="hidden" th:field="*{safetyHarness}">
+		        <input type="hidden" th:field="*{equipmentInspection}">
+		        <input type="hidden" th:field="*{fireExtinguisher}">
+		        <input type="hidden" th:field="*{organization}">
+		        <input type="hidden" th:field="*{electricalInsulation}">
+
+		        <button type="submit" class="btn">
+		            登録
+		        </button>
+
+		    </form>
+
+		</div>
+	</div>
 
 </body>
 

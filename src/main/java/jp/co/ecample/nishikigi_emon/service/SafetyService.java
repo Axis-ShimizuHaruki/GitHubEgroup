@@ -1,8 +1,11 @@
 package jp.co.ecample.nishikigi_emon.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import jp.co.ecample.nishikigi_emon.entity.Safety;
+import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.repository.SafetyRepository;
 
 @Service
@@ -21,7 +24,8 @@ public class SafetyService {
 			Integer equipmentInspection,
 			Integer fireExtinguisher,
 			Integer organization,
-			Integer electricalInsulation
+			Integer electricalInsulation,
+			Integer siteId
 			) {
 		Safety safety = new Safety();
 		safety.setScaffolding(scaffolding);
@@ -31,7 +35,14 @@ public class SafetyService {
 		safety.setFireExtinguisher(fireExtinguisher);
 		safety.setOrganization(organization);
 		safety.setElectricalInsulation(electricalInsulation);
-
+		safety.setsStatusFlag(0);
+		safety.setsCreatedAt(LocalDateTime.now());
+		safety.setsUpdatedAt(LocalDateTime.now());
+		
+		Site site = new Site();
+		site.setSiteId(siteId);
+		safety.setSite(site);
+		
 		// データベースに保存
 		repository.save(safety);
 	}

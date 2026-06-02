@@ -387,6 +387,19 @@ main {
     animation: blink 1.2s infinite;
 }
 
+/* ===== ステータス色 ===== */
+
+.checked {
+    color: #2ecc71;
+    font-weight: bold;
+}
+
+.unchecked {
+    color: #e74c3c;
+    font-weight: bold;
+	animation: blink 1s infinite;
+}
+
 @keyframes blink {
     0% {
         opacity: 1;

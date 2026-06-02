@@ -1,74 +1,63 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>処理完了</title>
-
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>処理完了</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body>
 
-	<header>
+  <header>
+    <div class="header-top">
+      
+      <div class="logo-area">
+        <a th:href="@{/homesite}">
+          <img th:src="@{/images/icon.png}" alt="アイコン" class="logo-img" style="height: 45px; width: auto;">
+        </a>
+      </div>
 
-		<!-- 上段 -->
-		<div class="header-top">
+      <div class="user-area">
+        <span th:if="${session.loginUser != null}">
+          ログインユーザ：<strong th:text="${session.loginUser.username}">ゲスト</strong> さん
+          <form th:action="@{/logout}" method="post" style="display: inline-block; margin-left: 10px;">
+            <button type="submit" class="logout-btn">ログアウト</button>
+          </form>
+        </span>
+        <span th:unless="${session.loginUser != null}">
+          <a th:href="@{/login}">ログイン</a>
+        </span>
+      </div>
 
-			<!-- 左側：ロゴ＋ホームリンク -->
-			<div class="logo-area">
-				<a href="home.html">
-					<!-- アイコン画像 -->
-					<img src="icon.png" alt="アイコン" class="logo-img">
-				</a>
-			</div>
+    </div>
 
-			<!-- 右側：ユーザ名＋ログアウト -->
-			<div class="user-area">
+    <div class="site-info">
+      <span th:if="${session.siteName != null}" th:text="${session.siteName}">対象現場名</span>
+      <span th:unless="${session.siteName != null}">本社管理者アカウント</span>
+    </div>
+  </header>
 
-				<!-- ログイン中の場合 -->
-				<span th:if="${session.loginUser != null}">
-					<span th:text="${session.loginUser.username}">ゲスト</span>さん
-					<form th:action="@{/logout}" method="post" class="logout-form">
-						<button type="submit">ログアウト</button>
-					</form>
-				</span>
-				<!-- 未ログインの場合 -->
-				<span th:unless="${session.loginUser != null}">
-					<a th:href="@{/login}">ログイン</a>
-				</span>
+  <main>
+    <div class="complete-card">
 
-			</div>
+      <div class="check-mark">✔</div>
 
-		</div>
+      <div class="title">処理が完了しました</div>
 
-		<!-- 下段：現場名 -->
-		<div class="site-info">
-			<td th:text="${session.siteId}"></td>
-		</div>
+      <div class="message">
+        ご入力いただいた内容は正常に登録、または編集されました。
+      </div>
 
-	</header>
+      <div class="btn-area">
+        <a th:href="@{/homesite}" class="btn" style="text-decoration: none; display: inline-block;">
+          ホームへ戻る
+        </a>
+      </div>
 
-	<main>
-
-		<div class="complete-card">
-
-			<div class="check-mark">✔</div>
-
-			<div class="title">処理が完了しました</div>
-
-			<div class="message">
-				ご入力いただいた内容は正常に登録、編集されました。
-			</div>
-
-			<div class="btn-area">
-				<a href="home.html" class="btn">ホームへ戻る</a>
-			</div>
-
-		</div>
-
-	</main>
+    </div>
+  </main>
 
 </body>
 

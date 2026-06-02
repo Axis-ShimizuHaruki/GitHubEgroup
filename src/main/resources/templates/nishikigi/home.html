@@ -111,14 +111,16 @@
 	  <!-- チャットログ -->
 	  <div class="chat-messages" id="chatMessages">
 
-	      <div th:each="chat : ${chatList}"
-	           class="message-row other">
+		<div th:each="chat : ${chatList}"
+		     th:class="${chat.senderSite.siteId == loginSiteId}
+		               ? 'message-row me'
+		               : 'message-row other'">
 
-	          <div class="message"
-	               th:text="${chat.message}">
-	          </div>
+		    <div class="message"
+		         th:text="${chat.message}">
+		    </div>
 
-	      </div>
+		</div>
 
 	  
 

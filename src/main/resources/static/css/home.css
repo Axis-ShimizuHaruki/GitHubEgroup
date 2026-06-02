@@ -176,6 +176,27 @@ header {
     opacity: 0.9;
 }
 
+.message-row {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.message-row.other {
+    justify-content: flex-start;
+}
+
+.message-row.me {
+    justify-content: flex-end;
+}
+
+.message-row.other .message {
+    background: #eeeeee;
+}
+
+.message-row.me .message {
+    background: #4da3ff;
+    color: white;
+}
 /* =========================
    ステータス
 ========================= */

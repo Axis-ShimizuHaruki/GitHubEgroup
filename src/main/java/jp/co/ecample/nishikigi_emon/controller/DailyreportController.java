@@ -160,14 +160,4 @@ public class DailyreportController {
         }
         return "redirect:/nishikigi/dailyreport/" + reportId;
     }
-
-    /**
-     * 動作：各登録・編集機能共通の完了画面を表示する
-     * URL：GET /nishikigi/complete
-     * 画面：complete.html
-     */
-    @GetMapping("/complete")
-    public String showCompletePage() {
-        return "complete";
-    }
 }

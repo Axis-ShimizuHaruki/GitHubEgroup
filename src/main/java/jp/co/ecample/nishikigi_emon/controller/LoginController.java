@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,15 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.ecample.nishikigi_emon.dto.SiteView;
 import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ManagerRepository;
+import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 import jp.co.ecample.nishikigi_emon.service.UserService;
-
 
 @Controller
 public class LoginController {
@@ -27,88 +29,107 @@ public class LoginController {
 	private final SiteService Sservice;
 	private final TroubleService Tservice;
 	private final ManagerRepository managerRepository;
+	private final SiteRepository siteRepository;
 
 	public LoginController(UserService Uservice,
 			SiteService Sservice,
 			TroubleService Tservice,
-			ManagerRepository managerRepository) {
+			ManagerRepository managerRepository,
+			SiteRepository siteRepository) {
 		this.Uservice = Uservice;
 		this.Sservice = Sservice;
 		this.Tservice = Tservice;
 		this.managerRepository = managerRepository;
+		this.siteRepository = siteRepository;
 	}
 
 	// ログイン画面の表示
-		@GetMapping("/login")
-		public String loginForm() {
-			return "nishikigi/login";
-		}
-		
-		
+	@GetMapping("/login")
+	public String loginForm() {
+		return "nishikigi/login";
+	}
+
 	// IDとパスワードを取得、DBに存在すればsessionに情報を保存しリストへ、存在しなければloginへredirect
-		@PostMapping("/login")
-		public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model, HttpSession session) {
-			Optional<User> result = Uservice.login(userid, password);
+	@PostMapping("/login")
+	public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model,
+			HttpSession session) {
+		Optional<User> result = Uservice.login(userid, password);
 
-			if (result.isPresent()) {
-				User user = result.get(); // 値を取り出す
-				session.setAttribute("loginUser", user);
-				
-				// Manager取得
-				Optional<Manager> managerOpt =
-						managerRepository.findByUser_Userid(user.getUserid());
+		if (result.isPresent()) {
+			User user = result.get(); // 値を取り出す
+			session.setAttribute("loginUser", user);
 
-				// 現場IDをsession保存
-				if(managerOpt.isPresent()) {
-					Manager manager = managerOpt.get();
+			// Manager取得
+			Optional<Manager> managerOpt = managerRepository.findByUser_Userid(user.getUserid());
 
-					Integer siteId = manager.getSite().getSiteId();
+			// 現場IDをsession保存
+			if (managerOpt.isPresent()) {
+				Manager manager = managerOpt.get();
 
-					session.setAttribute("siteId", siteId);
-				}
-				
-				// 権限により遷移先ページを変更
-				if(user.getRoll() == 0) {
-					return "redirect:/homeoffice";
-				}else {
-					return "redirect:/homesite";
-				}
+				Integer siteId = manager.getSite().getSiteId();
 
-			} else {
-				// 該当ユーザーが存在しなかった場合の処理
-				model.addAttribute("error", "ユーザーが見つかりません");
-				return "redirect:login";
+				session.setAttribute("siteId", siteId);
 			}
 
+			// 権限により遷移先ページを変更
+			if (user.getRoll() == 0) {
+				return "redirect:/homeoffice";
+			} else {
+				return "redirect:/homesite";
+			}
 
+		} else {
+			// 該当ユーザーが存在しなかった場合の処理
+			model.addAttribute("error", "ユーザーが見つかりません");
+			return "redirect:login";
 		}
+
+	}
 
 	// ログアウト、sessionを空にしlogin画面へ
-		@PostMapping("/logout")
-		public String logoutForm(HttpSession session) {
-			session.invalidate();
-			return "redirect:/login";
+	@PostMapping("/logout")
+	public String logoutForm(HttpSession session) {
+		session.invalidate();
+		return "redirect:/login";
+	}
+
+	// 本社ホーム画面の表示
+	@GetMapping("/homeoffice")
+	public String homeoffice(Model model) {
+
+		List<Site> siteList = siteRepository.findAll();
+
+		List<SiteView> siteViews = new ArrayList<>();
+
+		for (Site site : siteList) {
+
+			// 本社除外
+			if (site.getOfficecheck()) {
+				continue;
+			}
+
+			int maxPriority = 0;
+
+			for (Trouble trouble : site.getTroubleList()) {
+
+				if (trouble.getPriority() > maxPriority) {
+					maxPriority = trouble.getPriority();
+				}
+			}
+
+			siteViews.add(
+					new SiteView(site, maxPriority));
 		}
-		
-		// 本社ホーム画面の表示
-		@GetMapping("/homeoffice")
-		public String homeoffice(Model model) {
-			
-			// 全件取得
-			List<Site> site = Sservice.selectAll();
-			model.addAttribute("site", site);
-			
-			List<Trouble> trouble = Tservice.selectAll();
-			model.addAttribute("trouble", trouble);
-			
-			return "nishikigi/list";
-		}
-		
-		
-		// 現場ホーム画面の表示
-//		@GetMapping("/homesite")
-//		public String homesite() {
-//			return "nishikigi/home";
-//		}
-		
+
+		model.addAttribute("siteViews", siteViews);
+
+		return "nishikigi/list";
+	}
+
+	//完了画面の表示
+	@GetMapping("/complete")
+	public String homesite() {
+		return "nishikigi/complete";
+	}
+
 }

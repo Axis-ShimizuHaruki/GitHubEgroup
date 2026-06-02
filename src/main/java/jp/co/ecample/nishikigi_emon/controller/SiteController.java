@@ -42,6 +42,7 @@ public class SiteController {
 
 	    model.addAttribute("site", site);
 	    model.addAttribute("chatList", chatList);
+	    model.addAttribute("loginSiteId", siteId);
 
 	    return "nishikigi/home";
 	}

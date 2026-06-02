@@ -6,6 +6,75 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日報登録</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+
+  <style>
+    /* 1. 左右分割を完全に解除し、上から下へ流れる縦並びに強制上書き */
+    html, body {
+      display: block !important; /* 左右分割のCSSを無効化 */
+      height: auto !important;
+      overflow-y: auto !important;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+    }
+
+    /* 2. ヘッダーを一番上に全幅で横いっぱいに表示 */
+    header {
+      display: block !important;
+      width: 100% !important;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #ffffff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-top {
+      display: flex !important;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      box-sizing: border-box;
+    }
+
+    .page-title-center {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #1a202c;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logout-btn {
+      background-color: #e2e8f0;
+      color: #4a5568;
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    /* 3. 入力欄（コンテンツ）をヘッダーの下に配置 */
+    .container {
+      display: block !important; /* 左右配置の解除 */
+      width: 100% !important;
+      max-width: 900px;
+      margin: 30px auto !important; /* 上下に余白を持たせて中央配置 */
+      padding: 0 20px 80px 20px;
+      box-sizing: border-box;
+    }
+
+    /* 出面追加行の簡易デザイン調整 */
+    .worker-row {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+    }
+  </style>
 </head>
 
 <body>
@@ -14,30 +83,28 @@
     <div class="header-top">
       <div class="logo-area">
         <a th:href="@{/nishikigi/dailyreport/list}">
-          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img" style="height: 45px; width: auto;">
         </a>
+      </div>
+
+      <div class="page-title-center">
+        日報登録
       </div>
 
       <div class="user-area">
         <div th:if="${session.loginUser}">
-          ログインユーザ：<span th:text="${session.loginUser.empName}">田中 太郎</span>
+          ログインユーザ：<strong th:text="${session.loginUser.username}">田中 太郎</strong> さん
         </div>
         <form th:action="@{/logout}" method="post" style="display: inline;">
-          <button type="submit" class="logout-btn" style="background:none; border:none; color:inherit; cursor:pointer;">
-            ログアウト
-          </button>
+          <button type="submit" class="logout-btn">ログアウト</button>
         </form>
       </div>
-    </div>
-
-    <div class="page-title-bar">
-      日報登録
     </div>
   </header>
 
   <div class="container">
 
-    <form th:action="@{/nishikigi/dailyreport/new/confirm}" th:object="${dailyreport}" method="post" id="reportForm">
+    <form th:action="@{/dailyreport/new/confirm}" th:object="${dailyreport}" method="post" id="reportForm">
 
       <div class="section">
         <div class="section-title">作業実績</div>
@@ -48,6 +115,7 @@
             <select th:field="*{site.siteId}" required>
               <option value="">-- 現場を選択してください --</option>
               <option th:each="site : ${siteList}" 
+                      th:if="${site.siteId != 1}"
                       th:value="${site.siteId}" 
                       th:text="${site.siteName}"
                       th:selected="${site.siteId == session.siteId}">
@@ -88,7 +156,6 @@
 
       <div class="section">
         <div class="section-title">出面（協力会社別）</div>
-
         <input type="hidden" th:field="*{workerDetails}" id="workerDetails">
 
         <div class="sub-box" id="worker-rows">
@@ -101,7 +168,6 @@
             <input type="text" class="input-names" placeholder="例：山田、佐藤">
           </div>
         </div>
-
         <button type="button" class="btn" onclick="addWorkerRow()">＋ 追加</button>
       </div>
 
@@ -114,7 +180,6 @@
 
       <div class="section">
         <div class="section-title">写真記録（ファイル名を入力）</div>
-
         <div class="check-item">
           <label for="photoBefore">写真_着工前</label>
           <input type="text" id="photoBefore" th:field="*{photoBefore}" placeholder="例：before.jpg">
@@ -137,35 +202,40 @@
         </div>
       </div>
 
-      <div class="section">
-        <div class="section-title">安全管理</div>
+	  <div class="section">
+	          <div class="section-title">安全管理</div>
+	          
+	          <label for="safetyKy">KY項目</label>
+	          <textarea id="safetyKy" th:field="*{safetyKy}" required maxlength="500"
+	                    placeholder="例：高所作業時における外部足場からの墜落・転落の危険、開口部まわりでの踏み外しの危険"></textarea>
 
-        <label for="safetyKy">KY項目</label>
-        <textarea id="safetyKy" th:field="*{safetyKy}" required maxlength="500"></textarea>
+	          <label for="safetyMeasure">対策</label>
+	          <textarea id="safetyMeasure" th:field="*{safetyMeasure}" required maxlength="500"
+	                    placeholder="例：フルハーネス型安全帯の完全着用の徹底、親綱の緊張状態の確認、開口部手摺りの再点検実施"></textarea>
 
-        <label for="safetyMeasure">対策</label>
-        <textarea id="safetyMeasure" th:field="*{safetyMeasure}" required maxlength="500"></textarea>
+	          <label for="safetyEducation">新規入場者教育</label>
+	          <textarea id="safetyEducation" th:field="*{safetyEducation}" required maxlength="500"
+	                    placeholder="例：株式会社A工業の新規入場者3名に対し、当現場の独自ルール、災害防止協議会事項、避難経路の教育を実施。全員理解度良好。"></textarea>
 
-        <label for="safetyEducation">新規入場者教育</label>
-        <textarea id="safetyEducation" th:field="*{safetyEducation}" required maxlength="500"></textarea>
+	          <label for="nearMiss">ヒヤリハット</label>
+	          <textarea id="nearMiss" th:field="*{nearMiss}" required maxlength="500"
+	                    placeholder="例：2階通路の段差に足元を取られ、つまずきそうになった。（対策：該当箇所に注意喚起のクッション材とカラーコーンを設置）。特になければ「特になし」と入力"></textarea>
+	        </div>
 
-        <label for="nearMiss">ヒヤリハット</label>
-        <textarea id="nearMiss" th:field="*{nearMiss}" required maxlength="500"></textarea>
-      </div>
+	        <div class="section">
+	          <div class="section-title">資材・機材</div>
+	          
+	          <label for="materials">搬入物</label>
+	          <textarea id="materials" th:field="*{materials}" required maxlength="500"
+	                    placeholder="例：生コンクリート（21-18-20BB） 12.5m3、構造用異形鉄筋（D19・D22） 計4.5t 搬入完了"></textarea>
 
-      <div class="section">
-        <div class="section-title">資材・機材</div>
-
-        <label for="materials">搬入物</label>
-        <textarea id="materials" th:field="*{materials}" required maxlength="500"></textarea>
-
-        <label for="equipments">レンタル機材稼働</label>
-        <textarea id="equipments" th:field="*{equipments}" required maxlength="500"></textarea>
-      </div>
+	          <label for="equipments">レンタル機材稼働</label>
+	          <textarea id="equipments" th:field="*{equipments}" required maxlength="500"
+	                    placeholder="例：25tラフタークレーン（錦木リース） 1台終日稼働、高所作業車（12m型） 2台使用、不具合なし"></textarea>
+	        </div>
 
       <div class="section">
         <div class="section-title">問題・調整事項</div>
-
         <label for="designChange">設計変更指示</label>
         <textarea id="designChange" th:field="*{designChange}" placeholder="設計変更指示の内容" required maxlength="500"></textarea>
 
@@ -193,6 +263,31 @@
   </div>
 
   <script>
+    // ★ 修正ポイント：出面（協力会社）の入力欄を動的に追加する関数
+    function addWorkerRow() {
+      const container = document.getElementById('worker-rows');
+      
+      // 新しい入力行のラッパーを作成
+      const newRow = document.createElement('div');
+      newRow.className = 'worker-row';
+      newRow.style.borderTop = '1px dashed #cbd5e0';
+      newRow.style.paddingTop = '15px';
+      newRow.style.marginTop = '15px';
+      
+      // 行の中身（HTML構造）を注入
+      newRow.innerHTML = `
+        <label>会社名</label>
+        <input type="text" class="input-company" placeholder="例：錦木組">
+        <label>職人数</label>
+        <input type="number" class="input-count" placeholder="例：3">
+        <label>氏名</label>
+        <input type="text" class="input-names" placeholder="例：山田、佐藤">
+      `;
+      
+      container.appendChild(newRow);
+    }
+
+    // 全ての入力行を集計して1つのJSON文字列にまとめる関数
     function serializeWorkerDetails() {
       const rows = document.querySelectorAll('.worker-row');
       const workerList = [];
@@ -202,6 +297,7 @@
         const count = row.querySelector('.input-count').value;
         const names = row.querySelector('.input-names').value;
         
+        // どこか1つでも入力されていたら集計対象にする
         if (company || count || names) {
           workerList.push({
             company: company,
@@ -210,12 +306,10 @@
           });
         }
       });
-      
-      // JSON形式の文字列に変換してhiddenに格納し、Java側に送る
       document.getElementById('workerDetails').value = JSON.stringify(workerList);
     }
 
-    // フォーム送信（確認ボタン押下）の瞬間にJSONを組み立てる
+    // フォーム送信時に自動でJSON化を実行
     document.getElementById('reportForm').addEventListener('submit', function(e) {
       serializeWorkerDetails();
     });

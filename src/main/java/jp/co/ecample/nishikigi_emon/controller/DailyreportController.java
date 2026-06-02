@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Site;
@@ -20,6 +21,7 @@ import jp.co.ecample.nishikigi_emon.service.DailyreportService;
 import jp.co.ecample.nishikigi_emon.service.SiteService; // ★エラー解消のためにインポートを追加
 
 @Controller
+@RequestMapping("/dailyreport")
 public class DailyreportController {
 
     @Autowired
@@ -33,7 +35,7 @@ public class DailyreportController {
      * URL：GET /nishikigi/dailyreport/list
      * 画面：nishikigi/dailylist.html
      */
-    @GetMapping("/dailyreport/list")
+    @GetMapping("/list")
     public String showList(HttpSession session, Model model) {
         // LoginControllerに合わせて、セッションのキー名を「roll」ではなく「roll」に修正
         User loginUser = (User) session.getAttribute("loginUser");
@@ -53,28 +55,13 @@ public class DailyreportController {
         model.addAttribute("reportList", reportList);
         return "nishikigi/dailylist";
     }
-
-    /**
-     * 動作：日報詳細画面を表示する
-     * URL：GET /nishikigi/dailyreport/{id}
-     * 画面：nishikigi/dailyreportdetail.html
-     */
-    @GetMapping("/dailyreport/{id}")
-    public String showDetail(@PathVariable("id") Integer reportId, Model model) {
-        Dailyreport report = dailyreportService.getReportById(reportId);
-        if (report == null) {
-            return "error/404";
-        }
-        model.addAttribute("report", report);
-        return "nishikigi/dailyreportdetail";
-    }
-
+    
     /**
      * 動作：日報新規登録画面を表示する（現場マスタリストも一緒に画面に送る）
      * URL：GET /nishikigi/dailyreport/new
      * 画面：nishikigi/dailyreport.html
      */
-    @GetMapping("/dailyreport/new")
+    @GetMapping("/new")
     public String showCreateForm(HttpSession session, Model model) {
         model.addAttribute("dailyreport", new Dailyreport());
         
@@ -84,13 +71,14 @@ public class DailyreportController {
         
         return "nishikigi/dailyreport";
     }
-
+    
+    
     /**
      * 動作：日報登録画面からの入力を受け取り、登録確認画面を表示する
      * URL：POST /nishikigi/dailyreport/new/confirm
      * 画面：nishikigi/dailyreportcheck.html
      */
-    @PostMapping("/dailyreport/new/confirm")
+    @PostMapping("/new/confirm")
     public String confirmCreate(@ModelAttribute("dailyreport") Dailyreport report, Model model) {
         model.addAttribute("dailyreport", report);
         return "nishikigi/dailyreportcheck";
@@ -101,18 +89,34 @@ public class DailyreportController {
      * URL：POST /nishikigi/dailyreport/create
      * 遷移：redirect:/nishikigi/complete
      */
-    @PostMapping("/dailyreport/create")
+    @PostMapping("/create")
     public String registerReport(@ModelAttribute("dailyreport") Dailyreport report) {
         dailyreportService.createReport(report);
-        return "redirect:/nishikigi/complete";
+        return "redirect:/complete";
     }
+    
+    /**
+     * 動作：日報詳細画面を表示する
+     * URL：GET /nishikigi/dailyreport/{id}
+     * 画面：nishikigi/dailyreportdetail.html
+     */
+    @GetMapping("/{id}")
+    public String showDetail(@PathVariable("id") Integer reportId, Model model) {
+        Dailyreport report = dailyreportService.getReportById(reportId);
+        if (report == null) {
+            return "error/404";
+        }
+        model.addAttribute("report", report);
+        return "nishikigi/dailyreportdetail";
+    }
+
 
     /**
      * 動作：日報編集画面を表示する（既存データの読み込み）
      * URL：GET /nishikigi/dailyreport/{id}/edit
      * 画面：nishikigi/dailyedit.html
      */
-    @GetMapping("/dailyreport/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Integer reportId, Model model) {
         Dailyreport report = dailyreportService.getReportById(reportId);
         if (report == null) {
@@ -127,7 +131,7 @@ public class DailyreportController {
      * URL：POST /nishikigi/dailyreport/{id}/edit/confirm
      * 画面：nishikigi/dailyeditcheck.html
      */
-    @PostMapping("/dailyreport/{id}/edit/confirm")
+    @PostMapping("/{id}/edit/confirm")
     public String confirmUpdate(@ModelAttribute("dailyreport") Dailyreport report, Model model) {
         model.addAttribute("dailyreport", report);
         return "nishikigi/dailyeditcheck";
@@ -138,7 +142,7 @@ public class DailyreportController {
      * URL：POST /nishikigi/dailyreport/{id}/update
      * 遷移：redirect:/nishikigi/complete
      */
-    @PostMapping("/dailyreport/{id}/update")
+    @PostMapping("/{id}/update")
     public String updateReport(@ModelAttribute("dailyreport") Dailyreport report) {
         Dailyreport result = dailyreportService.updateReport(report);
         if (result == null) {
@@ -152,7 +156,7 @@ public class DailyreportController {
      * URL：POST /nishikigi/dailyreport/{id}/confirm
      * 遷移：redirect:/nishikigi/dailyreport/{id}
      */
-    @PostMapping("/dailyreport/{id}/confirm")
+    @PostMapping("/{id}/confirm")
     public String confirmReport(@PathVariable("id") Integer reportId) {
         boolean isSuccess = dailyreportService.confirmReport(reportId);
         if (!isSuccess) {

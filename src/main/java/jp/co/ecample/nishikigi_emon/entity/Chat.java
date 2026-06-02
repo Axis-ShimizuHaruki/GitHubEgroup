@@ -76,4 +76,12 @@ public class Chat {
     public void setSite(Site site) {
         this.site = site;
     }
+    
+    public Site getSenderSite() {
+        return senderSite;
+    }
+
+    public void setSenderSite(Site senderSite) {
+        this.senderSite = senderSite;
+    }
 }

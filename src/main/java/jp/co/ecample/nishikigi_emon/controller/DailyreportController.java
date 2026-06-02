@@ -128,7 +128,7 @@ public class DailyreportController {
 
     /**
      * 動作：日報編集画面を表示する（既存データの読み込み）
-     * URL：GET /nishikigi/dailyreport/{id}/edit
+     * URL：GET /dailyreport/{id}/edit
      * 画面：nishikigi/dailyedit.html
      */
     @GetMapping("/{id}/edit")
@@ -138,6 +138,10 @@ public class DailyreportController {
             return "error/404";
         }
         model.addAttribute("dailyreport", report);
+        
+        // 編集画面のプルダウン復元用に、現場リストをModelに詰める
+        model.addAttribute("siteList", siteService.selectAll());
+        
         return "nishikigi/dailyedit";
     }
 
@@ -148,6 +152,18 @@ public class DailyreportController {
      */
     @PostMapping("/{id}/edit/confirm")
     public String confirmUpdate(@ModelAttribute("dailyreport") Dailyreport report, Model model) {
+        
+        // 画面から届いた現場IDを元に、現場名を含んだ完全な現場情報をドッキングする
+        if (report.getSite() != null && report.getSite().getSiteId() != null) {
+            // すでに実績のある selectAll() から対象の現場をループで安全に特定します
+            for (jp.co.ecample.nishikigi_emon.entity.Site s : siteService.selectAll()) {
+                if (s.getSiteId().equals(report.getSite().getSiteId())) {
+                    report.setSite(s); // 現場名が入った完全なオブジェクトをセット
+                    break;
+                }
+            }
+        }
+        
         model.addAttribute("dailyreport", report);
         return "nishikigi/dailyeditcheck";
     }
@@ -163,14 +179,14 @@ public class DailyreportController {
         if (result == null) {
             return "error/404";
         }
-        return "redirect:/nishikigi/complete";
+        return "redirect:/complete";
     }
 
    
     /**
-     * 動作：本社管理者が「確認ボタン」を押下した際、ステータスを更新して詳細画面へ戻る（リロード）
+     * 動作：本社管理者が「確認ボタン」を押下した際、ステータスを更新して一覧画面へ戻る（リロード）
      * URL：POST /nishikigi/dailyreport/{id}/confirm
-     * 遷移：redirect:/nishikigi/dailyreport/{id}
+     * 遷移：redirect:/nishikigi/dailyreport/list
      */
     @PostMapping("/{id}/confirm")
     public String confirmReport(@PathVariable("id") Integer reportId) {
@@ -178,7 +194,8 @@ public class DailyreportController {
         if (!isSuccess) {
             return "error/404";
         }
-        return "redirect:/nishikigi/dailyreport/" + reportId;
+        // ★ 詳細に戻るのではなく、一覧画面（/dailyreport/list）に引き戻してあげる
+        return "redirect:/dailyreport/list";
     }
 }
 

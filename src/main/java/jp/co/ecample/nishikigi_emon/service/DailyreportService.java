@@ -22,6 +22,13 @@ public class DailyreportService {
     public List<Dailyreport> getAllReports() {
         return dailyreportRepository.findAllByOrderByTargetDateDesc();
     }
+    
+    /**
+     * 動作：日付・現場名・判定フラグを条件に日報を検索・絞り込みする
+     */
+    public List<Dailyreport> searchReports(java.time.LocalDate targetDate, Integer siteId, Integer dStatusFlag) {
+        return dailyreportRepository.searchReports(targetDate, siteId, dStatusFlag);
+    }
 
     /**
      * 動作：特定の現場IDに絞り込んだ日報データを対象日付の新しい順で取得する（現場所長・一般用）
@@ -42,6 +49,9 @@ public class DailyreportService {
      * 動作：新しい日報データをデータベースに新規登録（保存）する
      */
     public Dailyreport createReport(Dailyreport report) {
+    	if (dailyreportRepository.existsBySiteSiteIdAndTargetDate(report.getSite().getSiteId(), report.getTargetDate())) {
+    	    throw new IllegalStateException("該当日の日報は既に登録されています。");
+    	}
         report.setDStatusFlag(0); // 業務ルール：提出時は自動的に「0:提出済み(未確認)」
         return dailyreportRepository.save(report);
     }

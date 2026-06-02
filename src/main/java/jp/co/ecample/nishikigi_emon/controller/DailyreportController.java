@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Site;
@@ -31,26 +32,40 @@ public class DailyreportController {
     private SiteService siteService; // ★エラー解消のためにSiteServiceを定義（追加）
 
     /**
-     * 動作：日報一覧画面を表示する
-     * URL：GET /nishikigi/dailyreport/list
-     * 画面：nishikigi/dailylist.html
+     * 動作：日報一覧画面を表示する（検索・絞り込み対応版）
+     * URL：GET /dailyreport/list
      */
-    @GetMapping("/list")
-    public String showList(HttpSession session, Model model) {
-        // LoginControllerに合わせて、セッションのキー名を「roll」ではなく「roll」に修正
+    @GetMapping("/list") 
+    public String showList(
+            @RequestParam(name = "targetDate", required = false) String targetDateStr,
+            @RequestParam(name = "siteId", required = false) Integer siteId,
+            @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
+            HttpSession session, Model model) {
+        
         User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) return "redirect:/login";
+        
         Integer userSiteId = (Integer) session.getAttribute("siteId");
 
-        if (loginUser == null) return "redirect:/login";
+        // 検索プルダウン用に、現場マスタ一覧（siteList）をModelに乗せる
+        model.addAttribute("siteList", siteService.selectAll());
 
-        List<Dailyreport> reportList;
-        if (loginUser.getRoll() == 0) {
-            // 本社管理者は全現場の日報を取得
-            reportList = dailyreportService.getAllReports();
-        } else {
-            // 現場所長・一般はセッションから取得した「自分の現場ID」の日報のみ取得
-            reportList = dailyreportService.getReportsBySite(userSiteId);
+        // 1. 画面から送られてきた日付文字列(String)を LocalDate 型に変換する
+        java.time.LocalDate targetDate = null;
+        if (targetDateStr != null && !targetDateStr.isEmpty()) {
+            targetDate = java.time.LocalDate.parse(targetDateStr);
         }
+
+        // 2. 権限に応じた現場IDのコントロール
+        if (loginUser.getRoll() != 0) {
+            // 現場所長・一般ユーザーの場合は、画面からの現場検索を無視して「自分の現場ID」で強制固定！
+            siteId = userSiteId;
+            
+            
+        }
+
+        // 3. 検索処理の実行
+        List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag);
 
         model.addAttribute("reportList", reportList);
         return "nishikigi/dailylist";

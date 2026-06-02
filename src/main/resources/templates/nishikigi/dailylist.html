@@ -1,176 +1,284 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>日報一覧</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 
   <style>
+      /* 1. 左右分割を完全に解除し、上から下へ流れる縦並びに強制上書き */
+      html, body {
+        display: block !important;
+        height: auto !important;
+        overflow-y: auto !important;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f7fa;
+      }
 
-  </style>
+      /* 2. ヘッダーを一番上に全幅で横いっぱいに表示 */
+      header {
+        display: block !important;
+        width: 100% !important;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #ffffff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-top {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        box-sizing: border-box;
+      }
+
+      .page-title-center {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: #1a202c;
+      }
+
+      .user-area {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logout-btn {
+        background-color: #e2e8f0;
+        color: #4a5568;
+        padding: 6px 12px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      /* 3. コンテンツを中央配置 */
+      .container {
+        display: block !important;
+        width: 100% !important;
+        max-width: 1100px; /* 横幅をテーブル用に少し広げました */
+        margin: 30px auto !important;
+        padding: 0 20px 80px 20px;
+        box-sizing: border-box;
+      }
+
+      /* ===== 一覧・検索エリア専用のスタイル調整 ===== */
+      .search-area {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: flex-end;
+      }
+
+      .search-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        flex: 1;
+        min-width: 180px;
+      }
+
+      .search-label {
+        font-size: 0.85rem;
+        font-weight: bold;
+        color: #4a5568;
+      }
+
+      .search-input, .search-select {
+        padding: 8px;
+        border: 1px solid #cbd5e0;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .search-btn-area {
+        display: flex;
+        gap: 10px;
+      }
+
+      .search-btn {
+        padding: 9px 20px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      .btn-submit { background-color: #3182ce; color: white; }
+      .btn-reset { background-color: #718096; color: white; text-decoration: none; padding: 9px 20px; border-radius: 4px; font-size: 0.9rem; font-weight: bold; text-align: center;}
+
+
+      .report-table, .table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #ffffff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-top: 10px;
+      }
+
+      .report-table th, .report-table td, .table th, .table td {
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      /* 一覧画面、および詳細画面のテーブルヘッダー(th)を真っ黒な太字にする強制設定 */
+      .report-table th, .table th {
+        background-color: #edf2f7;
+        color: #1a202c !important;   /* ★ 文字色をハッキリとした濃い色に固定 */
+        font-weight: bold !important; /* ★ 確実に太字（ボールド）にする */
+        font-size: 0.95rem;
+      }
+
+      /* 判定バッジの装飾 */
+      .status-badge {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        display: inline-block;
+      }
+      .status-progress { background-color: #feebc8; color: #c05621; } /* 未確認：オレンジ */
+      .status-complete { background-color: #c6f6d5; color: #22543d; } /* 確認済：緑 */
+
+      .detail-btn {
+        background-color: #4a5568;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: background 0.2s;
+      }
+      .detail-btn:hover { background-color: #2d3748; }
+    </style>
 </head>
 
 <body>
 
-  <!-- ===== ヘッダー ===== -->
-
   <header>
-
-    <!-- 上段 -->
     <div class="header-top">
-
-      <!-- 左：ロゴ -->
       <div class="logo-area">
-        <a href="home.html">
-
-          <img src="icon.png" alt="アイコン" class="logo-img">
-
+        <a th:href="@{/homesite}">
+          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img" style="height: 45px; width: auto;">
         </a>
       </div>
 
-      <!-- 右：ユーザ -->
+      <div class="page-title-center">
+        日報一覧
+      </div>
+
       <div class="user-area">
-
-        <div>
-          ログインユーザ：田中 太郎
+        <div th:if="${session.loginUser}">
+          ログインユーザ：<strong th:text="${session.loginUser.username}">田中 太郎</strong> さん
         </div>
-
-        <a href="logout.html" class="logout-btn">
-          ログアウト
-        </a>
-
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+          <button type="submit" class="logout-btn">ログアウト</button>
+        </form>
       </div>
-
     </div>
-
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      日報一覧
-    </div>
-
   </header>
 
-  <!-- ===== メイン ===== -->
+  <div class="container">
 
-  <main>
-
-    <!-- 検索エリア -->
-    <div class="search-area">
+    <form th:action="@{/dailyreport/list}" method="get" class="search-area">
 
       <div class="search-item">
         <label class="search-label">日付</label>
-        <input type="date" class="search-input">
+        <input type="date" name="targetDate" class="search-input" th:value="${param.targetDate}">
       </div>
 
-      <div class="search-item">
+      <div class="search-item" th:if="${session.loginUser.roll == 0}">
         <label class="search-label">現場名</label>
-        <input type="text" class="search-input">
+        <select name="siteId" class="search-select">
+          <option value="">すべて</option>
+          <option th:each="site : ${siteList}" 
+                  th:if="${site.siteId != 1}"
+                  th:value="${site.siteId}" 
+                  th:text="${site.siteName}"
+                  th:selected="${#strings.equals(param.siteId, site.siteId)}">
+          </option>
+        </select>
       </div>
 
       <div class="search-item">
         <label class="search-label">判定</label>
-
-        <select class="search-select">
+        <select name="dStatusFlag" class="search-select">
           <option value="">すべて</option>
-          <option value="complete">確認済み</option>
-          <option value="progress">未確認</option>
+          <option value="0" th:selected="${#strings.equals(param.dStatusFlag, '0')}">未確認</option>
+          <option value="1" th:selected="${#strings.equals(param.dStatusFlag, '1')}">確認済み</option>
         </select>
       </div>
 
       <div class="search-btn-area">
-        <button class="search-btn">
-          検索
-        </button>
-        <button class="search-btn">
-          リセット
-        </button>
+        <button type="submit" class="search-btn btn-submit">検索</button>
+        <a th:href="@{/dailyreport/list}" class="btn-reset">リセット</a>
       </div>
 
-    </div>
+    </form>
 
-    <!-- テーブル -->
     <table class="report-table">
-
       <thead>
         <tr>
           <th>日付</th>
-          <th>現場名</th>
+          <th th:if="${session.loginUser.roll == 0}">現場名</th>
           <th>判定</th>
           <th>詳細</th>
         </tr>
       </thead>
-
       <tbody>
-
-        <tr>
-          <td>2026/05/26</td>
-          <td>新宿ビル建設工事</td>
-          <td class="status-progress">未確認</td>
+        <tr th:each="report : ${reportList}">
+          <td th:text="${#temporals.format(report.targetDate, 'yyyy/MM/dd')}">2026/05/26</td>
+          
+          <td th:if="${session.loginUser.roll == 0}" th:text="${report.site.siteName}">新宿ビル建設工事</td>
+          
           <td>
-            <a href="dailyreportdetail.html" class="detail-btn">
-              詳細
-            </a>
+            <span th:class="${report.dStatusFlag == 0 ? 'status-badge status-progress' : 'status-badge status-complete'}"
+                  th:text="${report.dStatusFlag == 0 ? '未確認' : '確認済み'}">
+              未確認
+            </span>
+          </td>
+          <td>
+            <a th:href="@{/dailyreport/{id}(id=${report.reportId})}" class="detail-btn">詳細</a>
           </td>
         </tr>
-
-        <tr>
-          <td>2026/05/25</td>
-          <td>池袋外壁補修</td>
-          <td class="status-complete">確認済み</td>
-          <td>
-            <a href="dailyreportdetail.html" class="detail-btn">
-              詳細
-            </a>
+        
+        <tr th:if="${#lists.isEmpty(reportList)}">
+          <td th:colspan="${session.loginUser.roll == 0 ? 4 : 3}" style="text-align: center; color: #718096;">
+            該当する日報データが見つかりません。
           </td>
         </tr>
-
-        <tr>
-          <td>2026/05/24</td>
-          <td>新橋</td>
-          <td class="status-complete">確認済み</td>
-          <td>
-            <a href="dailyreportdetail.html" class="detail-btn">
-              詳細
-            </a>
-          </td>
-        </tr>
-
-        <tr>
-          <td>2026/05/23</td>
-          <td>上野</td>
-          <td class="status-complete">確認済み</td>
-          <td>
-            <a href="dailyreportdetail.html" class="detail-btn">
-              詳細
-            </a>
-          </td>
-        </tr>
-
       </tbody>
-
     </table>
 
-  </main>
-
-  <!-- ===== 左下ステータス吹き出し ===== -->
+  </div>
 
   <div class="status-bubble">
-
     <div class="status-item">
       <span class="status-title">日報</span>
       <span class="done">✔ 作成済み</span>
     </div>
-
     <div class="status-item">
       <span class="status-title">安全点検</span>
-      <span class="not-done blinking">
-        ⚠ 未作成
-      </span>
+      <span class="not-done blinking">⚠ 未作成</span>
     </div>
-
   </div>
 
 </body>
-
 </html>

@@ -88,7 +88,14 @@
 
 						<div class="status-item">
 
-							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
+								日報確認
+							</a>
+
+							<!-- 未提出 → 文字だけ -->
+							<a th:if="${view.todayReport == null}">
 								日報確認
 							</a>
 
@@ -105,9 +112,17 @@
 							</span>
 
 
-							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
 								安全点検確認
 							</a>
+
+							<!-- 未提出 → 文字 -->
+							<a th:if="${view.todaySafety == null}">
+								安全点検確認
+							</a>
+							
 							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
 								✔ 確認済
 							</span>
@@ -159,7 +174,14 @@
 
 						<div class="status-item">
 
-							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
+								日報確認
+							</a>
+
+							<!-- 未提出 → 文字だけ -->
+							<a th:if="${view.todayReport == null}">
 								日報確認
 							</a>
 
@@ -175,9 +197,17 @@
 								✖ 未提出
 							</span>
 
-							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
 								安全点検確認
 							</a>
+
+							<!-- 未提出 → 文字 -->
+							<a th:if="${view.todaySafety == null}">
+								安全点検確認
+							</a>
+
 							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
 								✔ 確認済
 							</span>
@@ -228,7 +258,14 @@
 
 						<div class="status-item">
 
-							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
+								日報確認
+							</a>
+
+							<!-- 未提出 → 文字だけ -->
+							<a th:if="${view.todayReport == null}">
 								日報確認
 							</a>
 
@@ -244,9 +281,17 @@
 								✖ 未提出
 							</span>
 
-							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
 								安全点検確認
 							</a>
+
+							<!-- 未提出 → 文字 -->
+							<a th:if="${view.todaySafety == null}">
+								安全点検確認
+							</a>
+
 							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
 								✔ 確認済
 							</span>
@@ -297,7 +342,14 @@
 						<div class="status-item">
 
 
-							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}">
+								日報確認
+							</a>
+
+							<!-- 未提出 → 文字だけ -->
+							<a th:if="${view.todayReport == null}">
 								日報確認
 							</a>
 
@@ -313,9 +365,17 @@
 								✖ 未提出
 							</span>
 
-							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+							<!-- 提出済み → リンク -->
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
 								安全点検確認
 							</a>
+
+							<!-- 未提出 → 文字 -->
+							<a th:if="${view.todaySafety == null}">
+								安全点検確認
+							</a>
+
 							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
 								✔ 確認済
 							</span>

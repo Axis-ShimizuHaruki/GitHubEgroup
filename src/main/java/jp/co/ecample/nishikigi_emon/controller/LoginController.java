@@ -134,9 +134,14 @@ public class LoginController {
 
 			String dailyStatus = "未提出";
 
+			Dailyreport todayReport = null;
+
 			for (Dailyreport report : site.getDailyreportList()) {
 
 				if (today.equals(report.getTargetDate())) {
+
+					// 今日の日報を保存
+					todayReport = report;
 
 					dailyStatus = "未確認";
 
@@ -148,35 +153,43 @@ public class LoginController {
 				}
 			}
 
-			// ====================
-			// 安全点検状態
-			// ====================
-
 			String safetyStatus = "未提出";
+
+			Safety todaySafety = null;
 
 			for (Safety safety : site.getSafetyList()) {
 
-				// 今日の安全点検か判定
-				if (today.equals(
-						safety.getsCreatedAt().toLocalDate())) {
+			    // 今日の安全点検か
+			    if (today.equals(
+			            safety.getsCreatedAt().toLocalDate())) {
 
-					safetyStatus = "未確認";
+			        // 保存
+			        todaySafety = safety;
 
-					if ("1".equals(safety.getsStatusFlag())) {
+			        safetyStatus = "未確認";
 
-						safetyStatus = "確認済";
-						break;
-					}
-				}
+			        if ("1".equals(safety.getsStatusFlag())) {
+
+			            safetyStatus = "確認済";
+			            break;
+			        }
+			    }
 			}
 
-			siteViews.add(
-					new SiteView(
-							site,
-							maxPriority,
-							dailyStatus,
-							safetyStatus));
+			SiteView view = new SiteView(
+			        site,
+			        maxPriority,
+			        dailyStatus,
+			        safetyStatus
+			);
+
+			view.setTodayReport(todayReport);
+
+			view.setTodaySafety(todaySafety);
+
+			siteViews.add(view);
 		}
+		
 
 		model.addAttribute("siteViews", siteViews);
 

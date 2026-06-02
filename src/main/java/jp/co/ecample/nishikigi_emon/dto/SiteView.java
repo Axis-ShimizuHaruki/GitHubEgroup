@@ -1,5 +1,7 @@
 package jp.co.ecample.nishikigi_emon.dto;
 
+import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
+import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 
 public class SiteView {
@@ -13,6 +15,10 @@ public class SiteView {
     private String dailyStatus;
     
     private String safetyStatus;
+    
+    private Dailyreport todayReport;
+    
+    private Safety todaySafety;
     
     public SiteView(Site site, Integer maxPriority) {
         this.site = site;
@@ -76,5 +82,19 @@ public class SiteView {
 
 	public void setSafetyStatus(String safetyStatus) {
 	    this.safetyStatus = safetyStatus;
+	}
+	public Dailyreport getTodayReport() {
+	    return todayReport;
+	}
+
+	public void setTodayReport(Dailyreport todayReport) {
+	    this.todayReport = todayReport;
+	}
+	public Safety getTodaySafety() {
+	    return todaySafety;
+	}
+
+	public void setTodaySafety(Safety todaySafety) {
+	    this.todaySafety = todaySafety;
 	}
 }

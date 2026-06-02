@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
+import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.form.TroubleForm;
 import jp.co.ecample.nishikigi_emon.form.TroubleSearchForm;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
@@ -80,14 +81,18 @@ public class TroubleController {
 
 	// トラブル詳細表示
 	@GetMapping("/trouble/{id}")
-	public String detail(@PathVariable Integer id, Model model) {
+	public String detail(@PathVariable Integer id, Model model, HttpSession session) {
 		Trouble trouble = service.findById(id);
 
 		if (trouble == null) {
 			return "redirect:/trouble/list";
 		}
 
+		User loginUser = (User) session.getAttribute("loginUser");
+
 		model.addAttribute("trouble", trouble);
+		model.addAttribute("role", loginUser.getRoll());
+
 		return "nishikigi/troubledetail";
 	}
 
@@ -111,7 +116,7 @@ public class TroubleController {
 
 	// トラブル編集表示
 	@GetMapping("/trouble/{id}/edit")
-	public String edit(@PathVariable Integer id, Model model) {
+	public String edit(@PathVariable Integer id, Model model, HttpSession session) {
 
 		Trouble trouble = service.findById(id);
 
@@ -119,7 +124,9 @@ public class TroubleController {
 			return "redirect:/trouble/list";
 		}
 
+		User loginUser = (User) session.getAttribute("loginUser");
 		model.addAttribute("trouble", trouble);
+		model.addAttribute("role", loginUser.getRoll());
 
 		return "nishikigi/troubleedit";
 	}

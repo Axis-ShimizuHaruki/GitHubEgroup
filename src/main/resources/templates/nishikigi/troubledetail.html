@@ -5,8 +5,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>トラブル詳細</title>
-
-	<link rel="stylesheet" th:href="@{/css/troubledetail.css}" />
+	<link rel="stylesheet" th:href="@{/css/trouble/troubledetail.css}" />
 </head>
 
 <body>
@@ -198,24 +197,24 @@
 		</div>
 
 		<!-- 確認ステータス -->
-		<div class="section">
+		<!--		<div class="section">-->
 
-			<div class="section-title">
-				確認ステータス
-			</div>
+		<!--			<div class="section-title">-->
+		<!--				確認ステータス-->
+		<!--			</div>-->
 
-			<div class="value">
-				登録内容に問題がないことを確認してください。
-				必要に応じて管理者へ共有されます。
-			</div>
+		<!--			<div class="value">-->
+		<!--				登録内容に問題がないことを確認してください。-->
+		<!--				必要に応じて管理者へ共有されます。-->
+		<!--			</div>-->
 
-		</div>
+		<!--		</div>-->
 
 		<!-- ボタン -->
 		<div class="btn-area">
 
 			<!-- 対応状況を進める -->
-			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post">
+			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post" th:if="${role == 0}">
 
 				<button type="submit" th:if="${trouble.tStatusFlag == 0}">
 					確認完了

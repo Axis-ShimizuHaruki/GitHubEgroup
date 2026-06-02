@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>トラブル編集</title>
+	<link rel="stylesheet" th:href="@{/css/trouble/troubleedit.css}" />
 
 	<style>
 
@@ -89,24 +90,30 @@
 						<div class="label">緊急度</div>
 
 
-						<select name="priority">
+						<select name="priority" th:if="${role == 1}">
 							<option value="3" th:selected="${trouble.priority == 3}">高</option>
 							<option value="2" th:selected="${trouble.priority == 2}">中</option>
 							<option value="1" th:selected="${trouble.priority == 1}">低</option>
 						</select>
+
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}">
+						</div>
 
 					</div>
 
 					<div class="item">
 						<div class="label">トラブル種別</div>
 
-						<select name="troubleType">
+						<select name="troubleType" th:if="${role == 1}">
 							<option value="1" th:selected="${trouble.troubleType == 1}">事故</option>
 							<option value="2" th:selected="${trouble.troubleType == 2}">資材不足</option>
 							<option value="3" th:selected="${trouble.troubleType == 3}">納品遅れ</option>
 							<option value="4" th:selected="${trouble.troubleType == 4}">工程遅延</option>
 							<option value="5" th:selected="${trouble.troubleType == 5}">その他</option>
 						</select>
+
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}">
+						</div>
 					</div>
 
 				</div>
@@ -114,7 +121,10 @@
 				<div class="item">
 					<div class="label">一言で表す</div>
 
-					<input type="text" name="overview" th:value="${trouble.overview}">
+					<input type="text" name="overview" th:value="${trouble.overview}" th:if="${role == 1}">
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.overview}">
+					</div>
 				</div>
 
 			</div>
@@ -128,8 +138,11 @@
 
 				<div class="item">
 
-					<textarea name="detail" th:text="${trouble.detail}">
-				</textarea>
+					<textarea name="detail" th:text="${trouble.detail}" th:if="${role == 1}">
+					</textarea>
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.detail}">
+					</div>
 
 				</div>
 
@@ -142,22 +155,26 @@
 				<!-- 現場対応メモ -->
 				<div class="item">
 
-					<div class="label">
-						現場対応メモ
-					</div>
+					<div class="label">現場対応メモ</div>
 
-					<textarea name="siteMemo" th:text="${trouble.siteMemo}"></textarea>
+					<textarea name="siteMemo" th:text="${trouble.siteMemo}" th:if="${role == 1}">
+					</textarea>
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.siteMemo}">
+					</div>
 
 				</div>
 
 				<!-- 本社対応メモ -->
 				<div class="item">
 
-					<div class="label">
-						本社対応メモ
-					</div>
+					<div class="label">本社対応メモ</div>
 
-					<textarea name="hqMemo" th:text="${trouble.hqMemo}"></textarea>
+					<textarea name="hqMemo" th:text="${trouble.hqMemo}" th:if="${role == 0}">
+					</textarea>
+
+					<div class="value" th:if="${role == 1}" th:text="${trouble.hqMemo}">
+					</div>
 
 				</div>
 
@@ -172,7 +189,7 @@
 					キャンセル
 				</button>
 
-				<button type="submit" class="btn">
+				<button type="submit" class="btn" th:if="${role == 0 or role == 1}">
 					保存
 				</button>
 

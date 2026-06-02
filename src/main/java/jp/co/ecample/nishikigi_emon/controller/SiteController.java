@@ -1,12 +1,17 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.List;
+
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import jp.co.ecample.nishikigi_emon.entity.Chat;
 import jp.co.ecample.nishikigi_emon.entity.Site;
+import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
 
 @Controller
@@ -15,16 +20,30 @@ public class SiteController {
 	public SiteController(SiteService service) {
 		this.service = service;
 	}
+	
+	@Autowired
+	private ChatRepository chatRepository;
 
 	@GetMapping("/homesite")
-	public String showNewHome(HttpSession session, Model model) {
-		Integer siteId = (Integer) session.getAttribute("siteId");
+	public String showNewHome(
+	        HttpSession session,
+	        Model model) {
 
-	    Site site = service.findById(siteId);
+	    Integer siteId =
+	        (Integer) session.getAttribute("siteId");
+
+	    Site site =
+	        service.findById(siteId);
+
+	    List<Chat> chatList =
+	        chatRepository
+	            .findBySiteSiteIdOrderByDateTimeAsc(
+	                siteId);
 
 	    model.addAttribute("site", site);
-		
-		return "nishikigi/home";
+	    model.addAttribute("chatList", chatList);
+
+	    return "nishikigi/home";
 	}
 	
 //	@GetMapping("/dailyreport/new/confirm")

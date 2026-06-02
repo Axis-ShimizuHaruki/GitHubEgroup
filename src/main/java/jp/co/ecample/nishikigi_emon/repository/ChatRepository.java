@@ -8,8 +8,9 @@ import org.springframework.stereotype.Repository;
 import jp.co.ecample.nishikigi_emon.entity.Chat;
 
 @Repository
-public interface ChatRepository extends JpaRepository<Chat, Integer> {
+public interface ChatRepository
+        extends JpaRepository<Chat, Long> {
 
-	List<Chat> findBySiteSiteIdOrderByDateTimeAsc(
+    List<Chat> findBySiteSiteIdOrderByDateTimeAsc(
             Integer siteId);
 }

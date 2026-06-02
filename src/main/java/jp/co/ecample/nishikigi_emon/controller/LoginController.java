@@ -59,16 +59,20 @@ public class LoginController {
 			User user = result.get(); // 値を取り出す
 			session.setAttribute("loginUser", user);
 
-			// Manager取得
-			Optional<Manager> managerOpt = managerRepository.findByUser_Userid(user.getUserid());
+			if (userid == 1) {
+				session.setAttribute("siteId", 1);
+			} else {
+				// Manager取得
+				Optional<Manager> managerOpt = managerRepository.findByUser_Userid(user.getUserid());
 
-			// 現場IDをsession保存
-			if (managerOpt.isPresent()) {
-				Manager manager = managerOpt.get();
+				// 現場IDをsession保存
+				if (managerOpt.isPresent()) {
+					Manager manager = managerOpt.get();
 
-				Integer siteId = manager.getSite().getSiteId();
+					Integer siteId = manager.getSite().getSiteId();
 
-				session.setAttribute("siteId", siteId);
+					session.setAttribute("siteId", siteId);
+				}
 			}
 
 			// 権限により遷移先ページを変更
@@ -101,9 +105,9 @@ public class LoginController {
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/login";
 		}
-		
+
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+
 		List<Site> siteList = siteRepository.findAll();
 
 		List<SiteView> siteViews = new ArrayList<>();
@@ -157,61 +161,60 @@ public class LoginController {
 
 			for (Safety safety : site.getSafetyList()) {
 
-			    // 今日の安全点検か
-			    if (today.equals(
-			            safety.getsCreatedAt().toLocalDate())) {
+				// 今日の安全点検か
+				if (today.equals(
+						safety.getsCreatedAt().toLocalDate())) {
 
-			        // 保存
-			        todaySafety = safety;
+					// 保存
+					todaySafety = safety;
 
-			        safetyStatus = "未確認";
+					safetyStatus = "未確認";
 
-			        if ("1".equals(safety.getsStatusFlag())) {
+					if ("1".equals(safety.getsStatusFlag())) {
 
-			            safetyStatus = "確認済";
-			            break;
-			        }
-			    }
+						safetyStatus = "確認済";
+						break;
+					}
+				}
 			}
 			boolean mySite = false;
 
 			for (Manager manager : site.getManagerList()) {
 
-			    if (manager.getUser().getUserid()
-			            .equals(loginUser.getUserid())) {
+				if (manager.getUser().getUserid()
+						.equals(loginUser.getUserid())) {
 
-			        mySite = true;
-			        break;
-			    }
+					mySite = true;
+					break;
+				}
 			}
-			
+
 			SiteView view = new SiteView(
-			        site,
-			        maxPriority,
-			        dailyStatus,
-			        safetyStatus,
-			        mySite);
+					site,
+					maxPriority,
+					dailyStatus,
+					safetyStatus,
+					mySite);
 
 			view.setTodayReport(todayReport);
 			view.setTodaySafety(todaySafety);
 
 			siteViews.add(view);
-			
+
 			siteViews.sort((a, b) -> {
 
-			    // 自分の担当現場を先に
-			    if (a.isMySite() && !b.isMySite()) {
-			        return -1;
-			    }
+				// 自分の担当現場を先に
+				if (a.isMySite() && !b.isMySite()) {
+					return -1;
+				}
 
-			    if (!a.isMySite() && b.isMySite()) {
-			        return 1;
-			    }
+				if (!a.isMySite() && b.isMySite()) {
+					return 1;
+				}
 
-			    return 0;
+				return 0;
 			});
 		}
-		
 
 		model.addAttribute("siteViews", siteViews);
 

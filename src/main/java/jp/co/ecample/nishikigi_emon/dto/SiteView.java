@@ -20,6 +20,8 @@ public class SiteView {
     
     private Safety todaySafety;
     
+    private boolean mySite;
+    
     public SiteView(Site site, Integer maxPriority) {
         this.site = site;
         this.maxPriority = maxPriority;
@@ -35,12 +37,14 @@ public class SiteView {
             Site site,
             int maxPriority,
             String dailyStatus,
-            String safetyStatus) {
+            String safetyStatus,
+            boolean mySite) {
 
         this.site = site;
         this.maxPriority = maxPriority;
         this.dailyStatus = dailyStatus;
         this.safetyStatus = safetyStatus;
+        this.mySite = mySite;
     }
     
     
@@ -96,5 +100,13 @@ public class SiteView {
 
 	public void setTodaySafety(Safety todaySafety) {
 	    this.todaySafety = todaySafety;
+	}
+	
+	public boolean isMySite() {
+	    return mySite;
+	}
+
+	public void setMySite(boolean mySite) {
+	    this.mySite = mySite;
 	}
 }

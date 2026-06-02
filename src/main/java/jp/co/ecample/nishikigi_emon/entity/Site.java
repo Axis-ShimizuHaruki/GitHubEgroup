@@ -38,6 +38,9 @@ public class Site {
     @OneToMany(mappedBy = "site")
     private List<Safety> safetyList;
     
+    @OneToMany(mappedBy = "site")
+    private List<Manager> managerList;
+    
     // コンストラクタ
     public Site() {
     }
@@ -89,5 +92,9 @@ public class Site {
 
 	public void setSafetyList(List<Safety> safetyList) {
 	    this.safetyList = safetyList;
+	}
+	
+	public List<Manager> getManagerList() {
+	    return managerList;
 	}
 }

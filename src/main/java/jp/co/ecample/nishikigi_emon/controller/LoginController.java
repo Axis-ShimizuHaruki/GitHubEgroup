@@ -29,8 +29,6 @@ import jp.co.ecample.nishikigi_emon.service.UserService;
 @Controller
 public class LoginController {
 	private final UserService Uservice;
-	private final SiteService Sservice;
-	private final TroubleService Tservice;
 	private final ManagerRepository managerRepository;
 	private final SiteRepository siteRepository;
 
@@ -40,8 +38,6 @@ public class LoginController {
 			ManagerRepository managerRepository,
 			SiteRepository siteRepository) {
 		this.Uservice = Uservice;
-		this.Sservice = Sservice;
-		this.Tservice = Tservice;
 		this.managerRepository = managerRepository;
 		this.siteRepository = siteRepository;
 	}
@@ -105,7 +101,9 @@ public class LoginController {
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/login";
 		}
-
+		
+		User loginUser = (User) session.getAttribute("loginUser");
+		
 		List<Site> siteList = siteRepository.findAll();
 
 		List<SiteView> siteViews = new ArrayList<>();
@@ -175,19 +173,43 @@ public class LoginController {
 			        }
 			    }
 			}
+			boolean mySite = false;
 
+			for (Manager manager : site.getManagerList()) {
+
+			    if (manager.getUser().getUserid()
+			            .equals(loginUser.getUserid())) {
+
+			        mySite = true;
+			        break;
+			    }
+			}
+			
 			SiteView view = new SiteView(
 			        site,
 			        maxPriority,
 			        dailyStatus,
-			        safetyStatus
-			);
+			        safetyStatus,
+			        mySite);
 
 			view.setTodayReport(todayReport);
-
 			view.setTodaySafety(todaySafety);
 
 			siteViews.add(view);
+			
+			siteViews.sort((a, b) -> {
+
+			    // 自分の担当現場を先に
+			    if (a.isMySite() && !b.isMySite()) {
+			        return -1;
+			    }
+
+			    if (!a.isMySite() && b.isMySite()) {
+			        return 1;
+			    }
+
+			    return 0;
+			});
 		}
 		
 

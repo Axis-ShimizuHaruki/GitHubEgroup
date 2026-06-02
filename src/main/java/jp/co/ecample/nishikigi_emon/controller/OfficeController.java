@@ -6,18 +6,21 @@ import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import jp.co.ecample.nishikigi_emon.dto.SiteView;
+import jp.co.ecample.nishikigi_emon.entity.Chat;
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
+import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
 
 @Controller
@@ -27,6 +30,9 @@ public class OfficeController {
 	public OfficeController(SiteRepository siteRepository) {
 		this.siteRepository = siteRepository;
 	}
+	
+	@Autowired
+	private ChatRepository chatRepository;
 
 	// 本社ホーム画面の表示
 	@GetMapping("/homeoffice")
@@ -158,6 +164,8 @@ public class OfficeController {
 	        @PathVariable("id") Integer siteId,
 	        HttpSession session,
 	        Model model) {
+		
+		
 
 	    User loginUser =
 	            (User) session.getAttribute("loginUser");
@@ -260,6 +268,18 @@ public class OfficeController {
 
 	    model.addAttribute("view", view);
 
+	    
+	    List<Chat> chatList =
+	    	    chatRepository
+	    	        .findBySiteSiteIdOrderByDateTimeAsc(
+	    	            view.getSite().getSiteId());
+
+	    	model.addAttribute("chatList", chatList);
+
+	    	model.addAttribute(
+	    	    "loginSiteId",
+	    	    view.getSite().getSiteId());
+	    
 	    return "nishikigi/portal";
 	}
 }

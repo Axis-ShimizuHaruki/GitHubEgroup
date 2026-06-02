@@ -5,7 +5,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>現場一覧</title>
-
+	<link rel="stylesheet" href="css/list.css" />
 </head>
 
 <body>
@@ -19,10 +19,8 @@
 			<!-- 左：ロゴ -->
 			<div class="logo-area">
 
-				<a href="home.html">
-
+				<a th:href="@{/homeoffice}">
 					<img src="icon.png" alt="ロゴ" class="logo-img">
-
 				</a>
 
 			</div>
@@ -87,50 +85,48 @@
 
 					<div class="status">
 
+
 						<div class="status-item">
 
-							<div class="status-item">
+							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+								日報確認
+							</a>
 
-								<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
-									日報確認
-								</a>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.dailyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
-
-								<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 
 
-								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
-									安全点検認
-								</a>
-								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+								安全点検確認
+							</a>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
-
-							</div>
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 
 						</div>
 
+
 					</div>
 
-					<div th:each="trouble : ${view.site.troubleList}">
-						<div>
+					<div class="trouble-box">
+						<div th:each="trouble : ${view.site.troubleList}">
 							<a th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
 								<span th:text="${trouble.overview}"></span>
 							</a>
@@ -161,50 +157,48 @@
 
 					<div class="status">
 
+
 						<div class="status-item">
 
-							<div class="status-item">
+							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+								日報確認
+							</a>
 
-								<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
-									日報確認
-								</a>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.dailyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 
-								<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
+							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+								安全点検確認
+							</a>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
-									安全点検認
-								</a>
-								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
-
-								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
-							</div>
-
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 						</div>
 
+					</div>
+
+					<div class="trouble-box">
 						<div th:each="trouble : ${view.site.troubleList}">
-							<div>
-								<a th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
-									<span th:text="${trouble.overview}"></span>
-								</a>
-							</div>
+							<a th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
+								<span th:text="${trouble.overview}"></span>
+							</a>
 						</div>
 					</div>
 				</div>
@@ -232,56 +226,55 @@
 
 					<div class="status">
 
+
 						<div class="status-item">
 
-							<div class="status-item">
+							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+								日報確認
+							</a>
 
-								<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
-									日報確認
-								</a>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.dailyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 
-								<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
+							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+								安全点検確認
+							</a>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
-									安全点検認
-								</a>
-								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
-
-								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
-							</div>
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 						</div>
+					</div>
 
+					<div class="trouble-box">
 						<div th:each="trouble : ${view.site.troubleList}">
-							<div>
-								<a th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
-									<span th:text="${trouble.overview}"></span>
-								</a>
-							</div>
+							<a th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
+								<span th:text="${trouble.overview}"></span>
+							</a>
 						</div>
 					</div>
 				</div>
-
 			</div>
 
 		</div>
+
+	</div>
 	</div>
 
 	<!-- トラブルなし -->
@@ -295,7 +288,7 @@
 
 			<div th:each="view : ${siteViews}">
 
-				<div class="site-card high" th:if="${view.maxPriority == 0}">
+				<div class="site-card none" th:if="${view.maxPriority == 0}">
 
 					<a th:href="@{/portal/{id}(id=${view.site.siteId})}">
 						<span th:text="${view.site.siteName}"></span>
@@ -304,41 +297,39 @@
 
 						<div class="status-item">
 
-							<div class="status-item">
 
-								<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
-									日報確認
-								</a>
+							<a th:href="@{/dailyreport/{id}(id=${view.site.siteId})}">
+								日報確認
+							</a>
 
-								<span th:if="${view.dailyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 
-								<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
-									安全点検認
-								</a>
-								<span th:if="${view.safetyStatus == '確認済'}" class="checked">
-									✔ 確認済
-								</span>
+							<a th:href="@{/safetyinspection/{id}(id=${view.site.siteId})}">
+								安全点検確認
+							</a>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
 
-								<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
-									▲ 未確認
-								</span>
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
 
-								<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
-									✖ 未提出
-								</span>
-							</div>
-
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
 						</div>
+
 					</div>
 				</div>
 

@@ -2,176 +2,220 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>トラブル詳細</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>トラブル詳細</title>
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="list.html">
+				<a href="list.html">
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+					<img src="icon.png" alt="ロゴ" class="logo-img">
 
-        </a>
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <span class="user-name">
-          ログインユーザ：田中 太郎
-        </span>
+				<span class="user-name">
+					ログインユーザ：田中 太郎
+				</span>
 
-        <button class="logout-btn">
-          ログアウト
-        </button>
+				<button class="logout-btn">
+					ログアウト
+				</button>
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      トラブル詳細
-    </div>
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			トラブル詳細
+		</div>
 
-  </header>
+	</header>
 
-  <!-- コンテナ -->
-  <div class="container">
+	<!-- コンテナ -->
+	<div class="container">
 
-    <!-- サマリー -->
-    <div class="section">
+		<!-- サマリー -->
+		<div class="section">
 
-      <div class="section-title">
-        登録内容サマリー
-      </div>
+			<div class="section-title">
+				登録内容サマリー
+			</div>
 
-      <div class="summary-box">
+			<div class="summary-box">
 
-        <div class="summary-title">
-          入力内容
-        </div>
+				<div class="summary-title">
+					入力内容
+				</div>
 
-        登録されたトラブル内容を確認してください。<br>
-        問題がなければ「確認完了」を押してください。
+				登録されたトラブル内容を確認してください。<br>
+				問題がなければ「確認完了」を押してください。
 
-      </div>
+			</div>
 
-    </div>
+		</div>
 
-    <!-- トラブル情報 -->
-    <div class="section">
+		<!-- トラブル情報 -->
+		<div class="section">
 
-      <div class="section-title">
-        トラブル情報
-      </div>
+			<div class="section-title">
+				トラブル情報
+			</div>
 
-      <div class="item">
+			<div class="item">
 
-        <div class="label">
-          緊急度
-        </div>
+				<div class="label">
+					緊急度
+				</div>
 
-        <div class="value">
-          <span class="badge high">高</span>
-        </div>
+				<div class="value">
 
-      </div>
+					<span class="badge high" th:if="${trouble.priority == 3}">
+						高
+					</span>
 
-      <div class="item">
+					<span class="badge middle" th:if="${trouble.priority == 2}">
+						中
+					</span>
 
-        <div class="label">
-          トラブル種別
-        </div>
+					<span class="badge low" th:if="${trouble.priority == 1}">
+						低
+					</span>
 
-        <div class="value">
-          納品遅れ
-        </div>
+				</div>
 
-      </div>
+			</div>
 
-      <div class="item">
+			<div class="item">
 
-        <div class="label">
-          一言で表す
-        </div>
+				<div class="label">
+					現場名
+				</div>
 
-        <div class="value">
-          サーバに接続できない
-        </div>
+				<div class="value" th:text="${trouble.site.siteName}">
+				</div>
 
-      </div>
+			</div>
 
-    </div>
+			<div class="item">
 
-    <!-- 詳細 -->
-    <div class="section">
+				<div class="label">
+					トラブル種別
+				</div>
 
-      <div class="section-title">
-        詳細内容
-      </div>
+				<div class="value">
 
-      <div class="value">
-        サーバへの接続が不安定で、
-        社内システムにログインできない状態が発生。
+					<span th:if="${trouble.troubleType == 1}">
+						事故
+					</span>
 
-        午前9時頃から継続しており、
-        現在システム担当が原因を調査中。
-      </div>
+					<span th:if="${trouble.troubleType == 2}">
+						資材不足
+					</span>
 
-    </div>
+					<span th:if="${trouble.troubleType == 3}">
+						納品遅れ
+					</span>
 
-    <!-- 確認ステータス -->
-    <div class="section">
+					<span th:if="${trouble.troubleType == 4}">
+						工程遅延
+					</span>
 
-      <div class="section-title">
-        確認ステータス
-      </div>
+					<span th:if="${trouble.troubleType == 5}">
+						その他
+					</span>
 
-      <div class="value">
-        登録内容に問題がないことを確認してください。
-        必要に応じて管理者へ共有されます。
-      </div>
+				</div>
 
-    </div>
+			</div>
 
-    <!-- ボタン -->
-    <div class="btn-area">
+			<div class="item">
+				<div class="label">
+					発生日
+				</div>
+				<div class="value" th:text="${#temporals.format(trouble.occurredAt,'yyyy/MM/dd HH:mm')}">
+				</div>
+			</div>
 
-      <button class="btn btn-green" onclick="alert('確認が完了しました'); location.href='list.html';">
-        確認完了
-      </button>
+			<div class="item">
 
-      <button class="btn btn-gray" onclick="location.href='troubleedit.html';">
-        編集
-      </button>
+				<div class="label">
+					一言で表す
+				</div>
+				<div class="value" th:text="${trouble.overview}">
+				</div>
 
-      <button class="btn btn-gray" onclick="location.href='troublelist.html';">
-        トラブル一覧へ
-      </button>
+			</div>
 
-    </div>
+		</div>
 
-  </div>
+		<!-- 詳細 -->
+		<div class="section">
+
+			<div class="section-title">
+				詳細内容
+			</div>
+
+			<div class="value" th:text="${trouble.detail}">
+			</div>
+
+		</div>
+
+		<!-- 確認ステータス -->
+		<div class="section">
+
+			<div class="section-title">
+				確認ステータス
+			</div>
+
+			<div class="value">
+				登録内容に問題がないことを確認してください。
+				必要に応じて管理者へ共有されます。
+			</div>
+
+		</div>
+
+		<!-- ボタン -->
+		<div class="btn-area">
+
+			<button class="btn btn-green" onclick="alert('確認が完了しました'); location.href='list.html';">
+				確認完了
+			</button>
+
+			<button class="btn btn-gray" onclick="location.href='troubleedit.html';">
+				編集
+			</button>
+
+			<button type="button" class="btn btn-gray" th:onclick="|location.href='@{/trouble/list}'|">
+				トラブル一覧へ
+			</button>
+
+		</div>
+
+	</div>
 
 </body>
 

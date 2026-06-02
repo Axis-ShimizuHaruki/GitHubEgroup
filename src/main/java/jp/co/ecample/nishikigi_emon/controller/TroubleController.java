@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import jp.co.ecample.nishikigi_emon.entity.Site;
@@ -75,6 +76,19 @@ public class TroubleController {
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
 		return "nishikigi/troublelist";
+	}
+
+	// トラブル詳細表示
+	@GetMapping("/trouble/{id}")
+	public String detail(@PathVariable Integer id, Model model) {
+		Trouble trouble = service.findById(id);
+
+		if (trouble == null) {
+			return "redirect:/trouble/list";
+		}
+
+		model.addAttribute("trouble", trouble);
+		return "nishikigi/troubledetail";
 	}
 
 }

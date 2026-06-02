@@ -108,7 +108,7 @@
 						検索
 					</button>
 
-					<button type="button" onclick="location.href='/nishikigi/trouble/list'" class="search-btn">
+					<button type="button" th:onclick="|location.href='@{/trouble/list}'|" class="search-btn">
 						リセット
 					</button>
 
@@ -165,7 +165,10 @@
 						<span th:if="${trouble.tStatusFlag == 2}"> 完了 </span>
 					</td>
 
-					<td> <a class="detail-btn" th:href="@{/trouble/detail(id=${trouble.troubleId})}"> 詳細 </a> </td>
+					<td> <a class="detail-btn" th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
+							詳細
+						</a>
+					</td>
 				</tr>
 			</tbody>
 

@@ -50,4 +50,11 @@ public class TroubleService {
 				statusFlag);
 	}
 
+	// 指定IDの情報をDBから取得
+	public Trouble findById(Integer troubleId) {
+
+		return troubleRepository.findById(troubleId)
+				.orElse(null);
+	}
+
 }

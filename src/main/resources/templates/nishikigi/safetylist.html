@@ -61,48 +61,48 @@
 
   <main>
 
-    <!-- 検索 -->
-    <div class="search-box">
+	<form th:action="@{/safetyinspection/search}" method="get">
 
-      <div class="search-title">
-        検索条件
-      </div>
+	    <div class="search-box">
 
-      <div class="search-grid">
+	        <div class="search-title">
+	            検索条件
+	        </div>
 
-        <!-- 登録日 -->
-        <div class="search-item">
-          <label>登録日</label>
-          <input type="date">
-        </div>
+	        <div class="search-grid">
 
-        <!-- 現場名 -->
-        <div class="search-item">
-          <label>現場名</label>
-          <input type="text" placeholder="現場名を入力">
-        </div>
+	            <!-- 登録日 -->
+	            <div class="search-item">
+	                <label>登録日</label>
+	                <input type="date" name="sCreatedAt">
+	            </div>
 
-        <!-- 判定 -->
-        <div class="search-item">
-          <label>判定</label>
+	            <!-- 現場名 -->
+	            <div class="search-item">
+	                <label>現場名</label>
+	                <input type="text" name="siteName" placeholder="現場名を入力">
+	            </div>
 
-          <select>
-            <option value="">すべて</option>
-            <option>良好</option>
-            <option>要対応</option>
-            <option>不備あり</option>
-          </select>
-        </div>
+	            <!-- 判定 -->
+	            <div class="search-item">
+	                <label>判定</label>
+	                <select name="judgement">
+	                    <option value="">すべて</option>
+	                    <option value="良好">良好</option>
+	                    <option value="要対応">要対応</option>
+	                </select>
+	            </div>
 
-        <!-- ボタン -->
-        <button class="search-btn">
-          検索
-        </button>
+	            <!-- ボタン -->
+	            <button type="submit" class="search-btn">
+	                検索
+	            </button>
 
-      </div>
+	        </div>
 
-    </div>
+	    </div>
 
+	</form>
     <!-- テーブル -->
     <div class="table-wrap">
 
@@ -115,31 +115,56 @@
             <th>点検項目数</th>
             <th>良好</th>
             <th>不備</th>
-            <th>特記事項</th>
             <th>判定</th>
             <th>詳細</th>
           </tr>
         </thead>
 
-        <tbody>
+		<tbody>
 
-          <tr>
-            <td>2026/05/26</td>
-            <td>新宿建築現場</td>
-            <td>7件</td>
-            <td class="status-ok">5件</td>
-            <td class="status-ng">1件</td>
-            <td>あり</td>
-            <td class="status-warn">要対応</td>
-            <td>
-              <a href="safetycheckdetail.html" class="detail-btn">
-                詳細
-              </a>
-            </td>
-          </tr>
+		    <tr th:each="safety : ${safetyList}">
 
-        </tbody>
+		        <!-- 登録日 -->
+		        <td th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd')}">
+		            2026/05/26
+		        </td>
 
+		        <!-- 現場名 -->
+		        <td th:text="${safety.site.siteName}">
+		        </td>
+
+		        <!-- 点検項目数 -->
+		        <td>7件</td>
+
+		        <!-- 良好 -->
+		        <td class="status-ok">
+		            <span th:text="${safety.goodCount} + '件'"></span>
+		        </td>
+
+		        <!-- 不備 -->
+		        <td class="status-ng">
+		            <span th:text="${safety.badCount} + '件'"></span>
+		        </td>
+
+		        <!-- 判定 -->
+		        <td>
+		            <span
+		                  th:text="${safety.judgement}">
+		                良好
+		            </span>
+		        </td>
+
+		        <!-- 詳細 -->
+		        <td>
+		            <a th:href="@{/safetyinspection/detail/{id}(id=${safety.safetyId})}"
+		               class="detail-btn">
+		                詳細
+		            </a>
+		        </td>
+
+		    </tr>
+
+		</tbody>
       </table>
 
     </div>

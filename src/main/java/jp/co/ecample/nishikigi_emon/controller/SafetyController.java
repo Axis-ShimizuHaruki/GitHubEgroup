@@ -1,5 +1,8 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
@@ -9,7 +12,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.ecample.nishikigi_emon.dto.SafetyList;
 import jp.co.ecample.nishikigi_emon.form.SafetyForm;
 import jp.co.ecample.nishikigi_emon.service.SafetyService;
 
@@ -23,9 +28,34 @@ public class SafetyController {
 
 	// 安全点検一覧画面表示
 	@GetMapping("/safetyinspection/list")
-	public String showSafetyList() {
+	public String showSafetyList(Model model) {
+		List<SafetyList> safetyList = service.selectAll();
+		model.addAttribute("safetyList", safetyList);
+		
 		return "nishikigi/safetylist";
 	}
+	
+	// 検索処理制御
+	@GetMapping("/safetyinspection/search")
+	public String search(
+			@RequestParam(required = false) LocalDate sCreatedAt,
+			@RequestParam(required = false) String siteName,
+			@RequestParam(required = false) String judgement,
+			Model model,
+			HttpSession session) {
+//		if(session.getAttribute("loginUser") == null) {
+//			return "redirect:/login";
+//		}
+
+		List<SafetyList> safetyList = service.search(sCreatedAt, siteName, judgement);
+		
+		model.addAttribute("safetyList", safetyList);
+		
+		return "nishikigi/safetylist";
+	}
+
+	// 詳細画面表示
+	
 	
 	// 安全点検登録画面表示
 	@GetMapping("/safetyinspection/new")

@@ -1,242 +1,431 @@
-
-
-/* =========================
-   共通
-========================= */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: sans-serif;
+}
 
 body {
-    margin: 0;
-    font-family: sans-serif;
-    background-color: #f5f5f5;
-}
-
-main {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    margin-top: 50px;
+	background-color: #f5f6fa;
+	color: #333;
 }
 
 /* =========================
-   ヘッダー
-========================= */
+       ヘッダー
+    ========================= */
 
 header {
-    background-color: #1976d2;
-    color: white;
+	background-color: #1f3c88;
+	color: white;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	margin-bottom: 32px;
+	border-radius: 14px;
+	overflow: hidden;
 }
 
 .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 25px;
+}
+
+/* 左側 */
+.logo-area a {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	text-decoration: none;
+	color: white;
 }
 
 .logo-img {
-    height: 50px;
+	width: 62px;
+	height: 62px;
+	object-fit: contain;
+	background: white;
+	border-radius: 10px;
+	padding: 4px;
 }
 
+.site-system-name {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+/* 右側 */
 .user-area {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-size: 14px;
 }
 
+.logout-btn {
+	background-color: white;
+	color: #1f3c88;
+	padding: 8px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-weight: bold;
+	transition: 0.2s;
+}
+
+.logout-btn:hover {
+	background-color: #dfe6f7;
+}
+
+/* 下段タイトル */
 .page-title-bar {
-    position: absolute;
-    top: 40px;
-    left: 30px;
-
-    background: none;
-    color: black;
-
-    font-size: 20px;
-    font-weight: bold;
-
-    padding: 0;
+	background-color: #e9eefc;
+	color: #1f3c88;
+	padding: 12px 25px;
+	font-size: 16px;
+	font-weight: bold;
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* =========================
-   左メニュー
-========================= */
+       メイン
+    ========================= */
+
+main {
+	max-width: 1400px;
+	margin: 40px auto;
+	padding: 20px;
+
+	display: flex;
+	gap: 30px;
+	align-items: flex-start;
+}
+
+/* =========================
+       左メニュー
+    ========================= */
 
 .button-area {
-    width: 250px;
+	width: 420px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
 }
 
 .menu-group {
-    margin-bottom: 15px;
-}
+	background: white;
+	border-radius: 16px;
+	padding: 24px;
 
-.menu-button,
-.sub-button {
-    display: block;
-    text-decoration: none;
-    text-align: center;
-    padding: 12px;
-    border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+
+	border-top: 6px solid #1f3c88;
 }
 
 .menu-button {
-    background-color: #1976d2;
-    color: white;
-    margin-bottom: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 140px;
+
+	background-color: #f7f9ff;
+	border-radius: 14px;
+
+	text-decoration: none;
+	color: #1f3c88;
+
+	font-size: 28px;
+	font-weight: bold;
+
+	border: 2px solid #d9e3ff;
+
+	transition: 0.2s;
+}
+
+.menu-button:hover {
+	background-color: #1f3c88;
+	color: white;
+	transform: translateY(-4px);
 }
 
 .sub-button {
-    background-color: white;
-    color: #333;
-    border: 1px solid #ddd;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 55px;
+
+	background-color: white;
+	border-radius: 10px;
+
+	text-decoration: none;
+	color: #1f3c88;
+
+	font-size: 18px;
+	font-weight: bold;
+
+	border: 2px solid #1f3c88;
+
+	transition: 0.2s;
+}
+
+.sub-button:hover {
+	background-color: #1f3c88;
+	color: white;
 }
 
 /* =========================
-   チャット
-========================= */
+       チャット
+    ========================= */
 
 .chat-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    height: 700px;
+	flex: 1;
+
+	background: white;
+	border-radius: 18px;
+
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+	height: 760px;
+
+	display: flex;
+	flex-direction: column;
+
+	overflow: hidden;
 }
 
 .chat-header {
-    background-color: #1976d2;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
+	background: #1f3c88;
+	color: white;
+
+	padding: 18px 24px;
+
+	font-size: 20px;
+	font-weight: bold;
 }
 
 .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    background-color: #f8f9fa;
+	flex: 1;
+
+	background: #f5f7fb;
+
+	padding: 24px;
+
+	overflow-y: auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
 }
 
 .message-row {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.message-row.other {
-    justify-content: flex-start;
-}
-
-.message-row.me {
-    justify-content: flex-end;
+	display: flex;
+	align-items: flex-end;
+	gap: 10px;
 }
 
 .message {
-    max-width: 70%;
-    padding: 10px 15px;
-    border-radius: 15px;
-    word-break: break-word;
+	max-width: 70%;
+
+	padding: 14px 18px;
+
+	border-radius: 18px;
+
+	font-size: 16px;
+	line-height: 1.5;
 }
 
-.message-row.other .message {
-    background-color: white;
-    border: 1px solid #ddd;
+.me {
+	justify-content: flex-end;
 }
 
-.message-row.me .message {
-    background-color: #1976d2;
-    color: white;
+.me .message {
+	background: white;
+	border: 1px solid #dfe5f0;
+
+	border-bottom-right-radius: 4px;
 }
+
+.other .message {
+	background: #1f3c88;
+	color: white;
+
+	border-bottom-left-radius: 4px;
+}
+
+/* =========================
+       入力欄
+    ========================= */
 
 .chat-input {
-    display: flex;
-    gap: 10px;
-    padding: 15px;
-    border-top: 1px solid #ddd;
+	background: white;
+
+	border-top: 1px solid #e0e0e0;
+
+	padding: 16px;
+
+	display: flex;
+	gap: 12px;
 }
 
 .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+	flex: 1;
+
+	height: 52px;
+
+	border: 1px solid #ccc;
+	border-radius: 999px;
+
+	padding: 0 18px;
+
+	font-size: 16px;
+
+	outline: none;
 }
 
 .chat-input button {
-    width: 100px;
-    border: none;
-    border-radius: 5px;
-    background-color: #1976d2;
-    color: white;
-    cursor: pointer;
+	width: 100px;
+
+	border: none;
+	border-radius: 999px;
+
+	background: #1f3c88;
+	color: white;
+
+	font-weight: bold;
+
+	cursor: pointer;
+
+	transition: 0.2s;
 }
 
 .chat-input button:hover {
-    opacity: 0.9;
+	background: #16306f;
 }
 
-.message-row {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.message-row.other {
-    justify-content: flex-start;
-}
-
-.message-row.me {
-    justify-content: flex-end;
-}
-
-.message-row.other .message {
-    background: #eeeeee;
-}
-
-.message-row.me .message {
-    background: #4da3ff;
-    color: white;
-}
 /* =========================
-   ステータス
-========================= */
+       左下ステータス
+    ========================= */
 
 .status-bubble {
-    position: fixed;
-    left: 20px;
-    bottom: 20px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 15px;
+	position: fixed;
+	left: 20px;
+	bottom: 20px;
+
+	background: #ffffff;
+	border-radius: 18px;
+	padding: 26px 30px;
+
+	min-width: 340px;
+
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.20);
+
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+
+	z-index: 999;
 }
 
 .status-item {
-    margin-bottom: 10px;
-}
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-.status-item:last-child {
-    margin-bottom: 0;
+	font-size: 18px;
+	padding: 6px 0;
 }
 
 .status-title {
-    font-weight: bold;
+	font-size: 16px;
+	opacity: 0.75;
 }
 
 .done {
-    color: green;
+	color: #2ecc71;
+	font-weight: bold;
+	font-size: 18px;
 }
 
 .not-done {
-    color: red;
+	color: #e67e22;
+	font-weight: bold;
+	font-size: 18px;
 }
 
 .blinking {
-    animation: blink 1s infinite;
+	animation: blink 1.2s infinite;
 }
 
 @keyframes blink {
-    50% {
-        opacity: 0.3;
-    }
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.3;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+/* =========================
+       スマホ対応
+    ========================= */
+
+@media (max-width: 768px) {
+
+	.header-top {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+
+	.user-area {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.logo-img {
+		width: 52px;
+		height: 52px;
+	}
+
+	.page-title-bar {
+		font-size: 14px;
+	}
+
+	main {
+		flex-direction: column;
+	}
+
+	.button-area {
+		width: 100%;
+	}
+
+	.menu-button {
+		font-size: 22px;
+		height: 120px;
+	}
+
+	.chat-panel {
+		width: 100%;
+		height: 600px;
+	}
+
+	.status-bubble {
+		min-width: 260px;
+		padding: 18px 20px;
+	}
+
+	.status-item {
+		font-size: 16px;
+	}
+
 }

@@ -2,247 +2,249 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>業務管理システム</title>
+	<title>業務管理システム</title>
 
-  <link rel="stylesheet"
-            th:href="@{/css/home.css}">
+	<link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-     <!-- 上段 -->
-     <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-       <!-- 左：ロゴ -->
-       <div class="logo-area">
+			<!-- 左：ロゴ -->
+			<div class="logo-area">
 
-		<a th:href="@{/homesite}">
-		  <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
-		</a>
+				<a th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
 
-       </div>
+			</div>
 
-       <!-- 右：ユーザー -->
-       <div class="user-area">
+			<!-- 右：ユーザー -->
+			<div class="user-area">
 
-  	<div>
-  		<!-- ログイン中の場合 -->
-  		<span th:if="${session.loginUser != null}">
-  			<span th:text="${session.loginUser.username}">ゲスト</span>さん
-  				<form th:action="@{/logout}" method="post" class="logout-form">
-  					<button type="submit">ログアウト</button>
-  				</form>
-  			</span>
-  		<!-- 未ログインの場合 -->
-  			<span th:unless="${session.loginUser != null}">
-  				<a th:href="@{/login}">ログイン</a>
-  			</span>
-  	</div>
-       </div>
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
 
-     </div>
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
 
-     <!-- 下段 -->
-    
-	 
-	 <div class="page-title-bar">
-	   <p th:text="${site.siteName}"></p>
-	 </div>
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
 
-   </header>
+				</form>
 
-  <!-- メイン -->
-  <main>
-
-    <!-- 左メニュー -->
-    <div class="button-area">
-
-      <!-- 日報 -->
-      <div class="menu-group">
-        <a th:href="@{/dailyreport/new}" class="menu-button">
-          日報作成
-        </a>
-
-        <a th:href="@{/dailyreport/list}" class="sub-button">
-          日報一覧
-        </a>
-      </div>
-
-      <!-- 安全点検 -->
-      <div class="menu-group">
-        <a th:href="@{/safetyinspection/new}" class="menu-button">
-          安全点検作成
-        </a>
-
-        <a th:href="@{/safetyinspection/list}" class="sub-button">
-          安全点検一覧
-        </a>
-      </div>
-
-      <!-- トラブル -->
-      <div class="menu-group">
-        <a th:href="@{/trouble/new}" class="menu-button">
-          トラブル報告作成
-        </a>
-
-        <a th:href="@{/trouble/list}" class="sub-button">
-          トラブル一覧
-        </a>
-      </div>
-
-    </div>
-
-	
-    <!-- チャット -->
-    <div class="chat-panel">
-
-      <div class="chat-header">
-        現場チャット
-      </div>
-	  <!-- チャットログ -->
-	  <div class="chat-messages" id="chatMessages">
-
-		<div th:each="chat : ${chatList}"
-		     th:class="${chat.senderSite.siteId == loginSiteId}
-		               ? 'message-row me'
-		               : 'message-row other'">
-
-		    <div class="message"
-		         th:text="${chat.message}">
-		    </div>
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+			</div>
 
 		</div>
 
-	  
+		<!-- 下段 -->
 
-      </div>
 
-      <!-- 入力欄 -->
-	  <div class="chat-input">
-	      <input type="text"
-	             id="messageInput"
-	             placeholder="メッセージを入力">
+		<div class="page-title-bar">
+			<p th:text="${site.siteName}"></p>
+		</div>
 
-	      <button type="button"
-	              onclick="sendMessage()">
-	          送信
-	      </button>
-	  </div>
+	</header>
 
-    </div>
+	<!-- メイン -->
+	<main>
+
+		<!-- 左メニュー -->
+		<div class="button-area">
+
+			<!-- 日報 -->
+			<div class="menu-group">
+				<a th:href="@{/dailyreport/new}" class="menu-button">
+					日報作成
+				</a>
+
+				<a th:href="@{/dailyreport/list}" class="sub-button">
+					日報一覧
+				</a>
+			</div>
+
+			<!-- 安全点検 -->
+			<div class="menu-group">
+				<a th:href="@{/safetyinspection/new}" class="menu-button">
+					安全点検作成
+				</a>
+
+				<a th:href="@{/safetyinspection/list}" class="sub-button">
+					安全点検一覧
+				</a>
+			</div>
+
+			<!-- トラブル -->
+			<div class="menu-group">
+				<a th:href="@{/trouble/new}" class="menu-button">
+					トラブル報告作成
+				</a>
+
+				<a th:href="@{/trouble/list}" class="sub-button">
+					トラブル一覧
+				</a>
+			</div>
+
+		</div>
+
+
+		<!-- チャット -->
+		<div class="chat-panel">
+
+			<div class="chat-header">
+				現場チャット
+			</div>
+			<!-- チャットログ -->
+			<div class="chat-messages" id="chatMessages">
+
+				<div th:each="chat : ${chatList}" th:class="${chat.senderSite.siteId == loginSiteId}
+		               ? 'message-row me'
+		               : 'message-row other'">
+
+					<div class="message" th:text="${chat.message}">
+					</div>
+
+				</div>
+
+
+
+			</div>
+
+			<!-- 入力欄 -->
+			<div class="chat-input">
+				<input type="text" id="messageInput" placeholder="メッセージを入力">
+
+				<button type="button" onclick="sendMessage()">
+					送信
+				</button>
+			</div>
+
+		</div>
+		</div>
+
+	</main>
+
+	<!-- 左下ステータス -->
+	<div class="status-bubble">
+
+		<div class="status-item">
+			<span class="status-title">日報</span>
+			<span class="done">✔ 作成済み</span>
+		</div>
+
+		<div class="status-item">
+			<span class="status-title">安全点検</span>
+			<span class="not-done blinking">⚠ 未作成</span>
+		</div>
+
 	</div>
 
-  </main>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
-  <!-- 左下ステータス -->
-  <div class="status-bubble">
+	<script th:inline="javascript">
+		const siteId = /*[[${site.siteId}]]*/ 0;
+		const senderSiteId = /*[[${site.siteId}]]*/ 0;
+	</script>
+	<script>
 
-    <div class="status-item">
-      <span class="status-title">日報</span>
-      <span class="done">✔ 作成済み</span>
-    </div>
+		const socket = new SockJS('/nishikigi/chat');
+		const stompClient = Stomp.over(socket);
 
-    <div class="status-item">
-      <span class="status-title">安全点検</span>
-      <span class="not-done blinking">⚠ 未作成</span>
-    </div>
+		stompClient.connect({}, function () {
 
-  </div>
+			console.log("接続成功");
 
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
-  
-  <script th:inline="javascript">
-      const siteId = /*[[${site.siteId}]]*/ 0;
-      const senderSiteId = /*[[${site.siteId}]]*/ 0;
-  </script>
-  <script>
+			stompClient.subscribe(
+				'/topic/chat/' + siteId,
+				function (message) {
 
-  const socket = new SockJS('/nishikigi/chat');
-  const stompClient = Stomp.over(socket);
+					const msg =
+						JSON.parse(message.body);
 
-  stompClient.connect({}, function() {
+					addMessage(msg.message, false);
+				}
+			);
+		});
 
-      console.log("接続成功");
+	</script>
+	<script>
 
-      stompClient.subscribe(
-          '/topic/chat/' + siteId,
-          function(message) {
+		function addMessage(text, isMe) {
 
-              const msg =
-                  JSON.parse(message.body);
+			const row =
+				document.createElement("div");
 
-              addMessage(msg.message, false);
-          }
-      );
-  });
+			row.className =
+				isMe ? "message-row me"
+					: "message-row other";
 
-  </script>
-  <script>
+			const message =
+				document.createElement("div");
 
-  function addMessage(text, isMe) {
+			message.className = "message";
+			message.textContent = text;
 
-      const row =
-          document.createElement("div");
+			row.appendChild(message);
 
-      row.className =
-          isMe ? "message-row me"
-               : "message-row other";
+			document
+				.getElementById("chatMessages")
+				.appendChild(row);
+		}
 
-      const message =
-          document.createElement("div");
+	</script>
+	<script>
 
-      message.className = "message";
-      message.textContent = text;
+		function sendMessage() {
 
-      row.appendChild(message);
+			const input =
+				document.getElementById("messageInput");
 
-      document
-          .getElementById("chatMessages")
-          .appendChild(row);
-  }
+			const text = input.value.trim();
 
-  </script>
-  <script>
+			if (text === "") {
+				return;
+			}
 
-  function sendMessage() {
+			stompClient.send(
+				"/app/send",
+				{},
+				JSON.stringify({
+					siteId: siteId,
+					senderSiteId: senderSiteId,
+					message: text
+				})
+			);
 
-      const input =
-          document.getElementById("messageInput");
 
-      const text = input.value.trim();
 
-      if (text === "") {
-          return;
-      }
+			input.value = "";
+		}
 
-      stompClient.send(
-          "/app/send",
-          {},
-          JSON.stringify({
-              siteId: siteId,
-              senderSiteId: senderSiteId,
-              message: text
-          })
-      );
+	</script>
 
-      
 
-      input.value = "";
-  }
-
-  </script>
- 
- 
 </body>
 
 </html>

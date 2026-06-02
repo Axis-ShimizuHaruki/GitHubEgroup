@@ -101,12 +101,24 @@ public class TroubleController {
 	}
 
 	// トラブル対応状況を一段戻す
-	@PostMapping("/trouble/status/back/{id}")
-	public String backStatus(@PathVariable Integer id) {
+	//	@PostMapping("/trouble/status/back/{id}")
+	//	public String backStatus(@PathVariable Integer id) {
+	//
+	//		service.backStatus(id);
+	//
+	//		return "redirect:/trouble/" + id;
+	//	}
 
-		service.backStatus(id);
+	// トラブル編集表示
+	@GetMapping("/trouble/{id}/edit")
+	public String edit() {
+		return "nishikigi/troubleedit";
+	}
 
-		return "redirect:/trouble/" + id;
+	// トラブル編集確認
+	@PostMapping("/trouble/{id}/edit/confirm")
+	public String confirm() {
+		return "nishikigi/troubleeditcheck";
 	}
 
 }

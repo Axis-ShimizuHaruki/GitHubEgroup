@@ -71,28 +71,32 @@ public class TroubleService {
 
 			// 対応中 → 対応完了
 			trouble.settStatusFlag(2);
+
+			// 緊急度を0にする
+			trouble.setPriority(0);
 		}
 
 		troubleRepository.save(trouble);
 	}
 
 	// トラブル状況を一段戻す
-	public void backStatus(Integer id) {
-
-		Trouble trouble = troubleRepository.findById(id).orElseThrow();
-
-		if (trouble.gettStatusFlag() == 2) {
-
-			// 対応完了 → 対応中
-			trouble.settStatusFlag(1);
-
-		} else if (trouble.gettStatusFlag() == 1) {
-
-			// 対応中 → 提出済み
-			trouble.settStatusFlag(0);
-		}
-
-		troubleRepository.save(trouble);
-	}
+	//	public void backStatus(Integer id) {
+	//
+	//		Trouble trouble = troubleRepository.findById(id).orElseThrow();
+	//
+	//		if (trouble.gettStatusFlag() == 2) {
+	//
+	//			// 対応完了 → 対応中
+	//			trouble.settStatusFlag(1);
+	//
+	//		} else if (trouble.gettStatusFlag() == 1) {
+	//
+	//			// 対応中 → 提出済み
+	//			trouble.settStatusFlag(0);
+	//
+	//		}
+	//
+	//		troubleRepository.save(trouble);
+	//	}
 
 }

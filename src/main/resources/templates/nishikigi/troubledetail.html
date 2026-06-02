@@ -104,6 +104,9 @@
 					<span class="badge low" th:if="${trouble.priority == 1}">
 						低
 					</span>
+					<span class="badge low" th:if="${trouble.priority == 0}">
+						対応済
+					</span>
 
 				</div>
 
@@ -215,14 +218,14 @@
 			</form>
 
 			<!-- 対応状況を戻す -->
-			<form th:if="${trouble.tStatusFlag > 0}" th:action="@{/trouble/status/back/{id}(id=${trouble.troubleId})}"
-				method="post">
+			<!--			<form th:if="${trouble.tStatusFlag > 0}" th:action="@{/trouble/status/back/{id}(id=${trouble.troubleId})}"-->
+			<!--				method="post">-->
 
-				<button type="submit">
-					一段階戻す
-				</button>
+			<!--				<button type="submit">-->
+			<!--					一段階戻す-->
+			<!--				</button>-->
 
-			</form>
+			<!--			</form>-->
 
 			<button class="btn btn-gray" onclick="location.href='troubleedit.html';">
 				編集

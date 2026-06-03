@@ -18,9 +18,6 @@ header {
 	background-color: #1f3c88;
 	color: white;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-	margin-bottom: 32px;
-	border-radius: 14px;
-	overflow: hidden;
 }
 
 .header-top {
@@ -87,4 +84,184 @@ header {
 	font-size: 16px;
 	font-weight: bold;
 	border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ===============================
+       コンテナ
+    =============================== */
+
+.container {
+	width: 90%;
+	max-width: 900px;
+	/* 少し縮めて密度UP */
+	margin: 30px auto;
+	padding-bottom: 50px;
+}
+
+/* ===============================
+       セクション
+    =============================== */
+
+.section {
+	background: #fff;
+	border-radius: 12px;
+	padding: 20px;
+	margin-bottom: 18px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	/* 軽く */
+}
+
+.section-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #1f3c88;
+	border-left: 5px solid #1f3c88;
+	padding-left: 10px;
+	margin-bottom: 15px;
+}
+
+/* ===============================
+       サマリー
+    =============================== */
+
+.summary-box {
+	background: #eef3ff;
+	border-left: 5px solid #1f3c88;
+	padding: 12px 14px;
+	border-radius: 8px;
+	line-height: 1.6;
+	font-size: 14px;
+}
+
+.summary-title {
+	color: #1f3c88;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+/* ===============================
+       項目
+    =============================== */
+
+.item {
+	margin-bottom: 12px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eee;
+	/* 区切り線に変更 */
+}
+
+.item:last-child {
+	border-bottom: none;
+}
+
+.label {
+	font-size: 12px;
+	font-weight: bold;
+	color: #777;
+	margin-bottom: 6px;
+}
+
+.value {
+	background: #fafbfd;
+	/* 少し薄く */
+	padding: 10px 12px;
+	border-radius: 8px;
+	font-size: 14px;
+	line-height: 1.6;
+}
+
+/* ===============================
+       バッジ
+    =============================== */
+
+.badge {
+	display: inline-block;
+	padding: 5px 12px;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.high {
+	background: #ffe5e5;
+	color: #d63031;
+}
+
+.middle {
+	background: #fff4d6;
+	color: #f39c12;
+}
+
+.low {
+	background: #e6f4ea;
+	color: #27ae60;
+}
+
+/* ===============================
+       ボタン
+    =============================== */
+
+.btn-area {
+	margin-top: 35px;
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.btn {
+	border: none;
+	border-radius: 10px;
+	padding: 14px 28px;
+	font-size: 15px;
+	cursor: pointer;
+	transition: 0.2s;
+	color: #fff;
+}
+
+.btn:hover {
+	transform: translateY(-2px);
+}
+
+.btn-green {
+	background: #28a745;
+}
+
+.btn-green:hover {
+	background: #218838;
+}
+
+.btn-gray {
+	background: #6c757d;
+}
+
+.btn-gray:hover {
+	background: #555;
+}
+
+/* ===============================
+       レスポンシブ
+    =============================== */
+
+@media (max-width: 768px) {
+
+	.header-top {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 15px;
+	}
+
+	.user-area {
+		width: 100%;
+		justify-content: space-between;
+	}
+
+	.btn-area {
+		flex-direction: column;
+	}
+
+	.btn {
+		width: 100%;
+	}
+
 }

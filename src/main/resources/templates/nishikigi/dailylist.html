@@ -68,6 +68,11 @@
           </option>
         </select>
       </div>
+	  
+	  <div class="search-item">
+	          <label class="search-label">作業内容キーワード</label>
+	          <input type="text" name="workDetails" class="search-input" th:value="${workDetails}" placeholder="例：コンクリート">
+	  </div>
 
       <div class="search-item">
         <label class="search-label">判定</label>
@@ -90,6 +95,7 @@
         <tr>
           <th>日付</th>
           <th th:if="${session.loginUser.roll == 0}">現場名</th>
+          <th>当日作業内容</th>
           <th>判定</th>
           <th>詳細</th>
         </tr>
@@ -99,6 +105,8 @@
           <td th:text="${#temporals.format(report.targetDate, 'yyyy/MM/dd')}">2026/05/26</td>
           
           <td th:if="${session.loginUser.roll == 0}" th:text="${report.site.siteName}">新宿ビル建設工事</td>
+          
+          <td th:text="${#strings.abbreviate(report.workDetails, 25)}">鉄筋・型枠工事、コンクリート打設...</td>
           
           <td>
             <span th:class="${report.dStatusFlag == 0 ? 'status-badge status-progress' : 'status-badge status-complete'}"
@@ -112,7 +120,7 @@
         </tr>
         
         <tr th:if="${#lists.isEmpty(reportList)}">
-          <td th:colspan="${session.loginUser.roll == 0 ? 4 : 3}" style="text-align: center; color: #718096;">
+          <td th:colspan="${session.loginUser.roll == 0 ? 5 : 4}" style="text-align: center; color: #718096;">
             該当する日報データが見つかりません。
           </td>
         </tr>

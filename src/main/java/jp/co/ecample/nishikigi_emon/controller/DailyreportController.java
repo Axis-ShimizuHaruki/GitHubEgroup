@@ -90,13 +90,14 @@ public class DailyreportController {
     // =========================================================
 
     /**
-     * 動作：日報一覧画面を表示する（全権限OK）
+     * 動作：日報一覧画面を表示する（検索・絞り込み対応版）
      */
     @GetMapping("/list") 
     public String showList(
             @RequestParam(name = "targetDate", required = false) String targetDateStr,
             @RequestParam(name = "siteId", required = false) Integer siteId,
             @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
+            @RequestParam(name = "workDetails", required = false) String workDetails, // 🌟 追記：画面の入力欄からキーワードを受け取る
             HttpSession session, Model model) {
         
         // 🛡️ ログインチェック
@@ -118,7 +119,11 @@ public class DailyreportController {
             siteId = userSiteId;
         }
 
-        List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag);
+        // 🌟 追記：入力されたキーワードをModelに乗せて画面に戻す（入力状態をキープするため）
+        model.addAttribute("workDetails", workDetails);
+
+        // 🌟 修正：引数の末尾に「workDetails」を追加してサービスへ投げる
+        List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag, workDetails);
         model.addAttribute("reportList", reportList);
         return "nishikigi/dailylist";
     }

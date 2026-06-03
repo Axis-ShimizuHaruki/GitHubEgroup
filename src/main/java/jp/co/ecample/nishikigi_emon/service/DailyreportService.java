@@ -26,8 +26,9 @@ public class DailyreportService {
     /**
      * 動作：日付・現場名・判定フラグを条件に日報を検索・絞り込みする
      */
-    public List<Dailyreport> searchReports(java.time.LocalDate targetDate, Integer siteId, Integer dStatusFlag) {
-        return dailyreportRepository.searchReports(targetDate, siteId, dStatusFlag);
+ // 🌟 DailyreportService 内の対象メソッドの引数に「String workDetails」を追記してリポジトリへ流す
+    public List<Dailyreport> searchReports(java.time.LocalDate targetDate, Integer siteId, Integer dStatusFlag, String workDetails) {
+        return dailyreportRepository.searchReports(targetDate, siteId, dStatusFlag, workDetails);
     }
 
     /**

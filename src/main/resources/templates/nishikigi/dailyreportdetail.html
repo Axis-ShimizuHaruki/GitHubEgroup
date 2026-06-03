@@ -190,6 +190,10 @@
 	        <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
 	        <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn" style="background-color: #3182ce;">編集</a>
 	      </span>
+		  
+		  <span th:if="${#strings.equals(session.loginUser.roll, '2')}" style="display: flex; gap: 15px;">
+		    <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
+		  </span>
 
 	    </div>
 

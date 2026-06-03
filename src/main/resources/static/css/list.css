@@ -13,71 +13,71 @@ body {
 
 /* ===== ヘッダー ===== */
 header {
-    background-color: #1f8488;
-    color: white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 32px;
-    border-radius: 14px;
-    overflow: hidden;
+	background-color: #1f8488;
+	color: white;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	margin-bottom: 32px;
+	border-radius: 14px;
+	overflow: hidden;
 }
 
 .header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-    gap: 20px;
-    flex-wrap: wrap;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 25px;
+	gap: 20px;
+	flex-wrap: wrap;
 }
 
 .logo-area a {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-    color: white;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	text-decoration: none;
+	color: white;
 }
 
 .logo-img {
-    width: 62px;
-    height: 62px;
-    object-fit: contain;
-    background-color: white;
-    border-radius: 10px;
-    padding: 4px;
+	width: 62px;
+	height: 62px;
+	object-fit: contain;
+	background-color: white;
+	border-radius: 10px;
+	padding: 4px;
 }
 
 .site-system-name {
-    font-size: 24px;
-    font-weight: bold;
+	font-size: 24px;
+	font-weight: bold;
 }
 
 .user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 14px;
-    flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	gap: 15px;
+	font-size: 14px;
+	flex-wrap: wrap;
 }
 
 .username {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .logout-btn {
-    background-color: white;
-    color: #1f3c88;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: 0.2s;
-    border: none;
-    cursor: pointer;
+	background-color: white;
+	color: #1f3c88;
+	padding: 8px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-weight: bold;
+	transition: 0.2s;
+	border: none;
+	cursor: pointer;
 }
 
 .logout-btn:hover {
-    background-color: #dfe6f7;
+	background-color: #dfe6f7;
 }
 
 /* ===== 下段タイトル ===== */
@@ -271,7 +271,7 @@ header {
 	gap: 12px;
 
 	/* 高さ制限 */
-	max-height: 40vh;
+	max-height: 60vh;
 
 	/* 通知だけスクロール */
 	overflow-y: auto;
@@ -286,7 +286,7 @@ header {
 
 #notification-container::-webkit-scrollbar-thumb {
 
-	background: rgba(0,0,0,0.25);
+	background: rgba(0, 0, 0, 0.25);
 
 	border-radius: 10px;
 }
@@ -311,11 +311,11 @@ header {
 	cursor: pointer;
 
 	box-shadow:
-		0 8px 20px rgba(0,0,0,0.25);
+		0 8px 20px rgba(0, 0, 0, 0.25);
 
 	animation: noticeIn 0.25s ease;
 
-	border-left: 8px solid rgba(255,255,255,0.5);
+	border-left: 8px solid rgba(255, 255, 255, 0.5);
 
 	backdrop-filter: blur(4px);
 
@@ -329,7 +329,7 @@ header {
 	transform: translateY(-2px);
 
 	box-shadow:
-		0 12px 24px rgba(0,0,0,0.35);
+		0 12px 24px rgba(0, 0, 0, 0.35);
 }
 
 /* =========================
@@ -340,34 +340,38 @@ header {
 .notification.high {
 
 	background:
-		linear-gradient(
-			135deg,
+		linear-gradient(135deg,
 			#ff3b30,
-			#d70015
-		);
+			#d70015);
 }
 
 /* 中 */
 .notification.medium {
 
 	background:
-		linear-gradient(
-			135deg,
+		linear-gradient(135deg,
 			#ff9500,
-			#ff6a00
-		);
+			#ff6a00);
 }
 
 /* 低 */
 .notification.low {
 
 	background:
-		linear-gradient(
-			135deg,
+		linear-gradient(135deg,
 			#34c759,
-			#1f9d45
-		);
+			#1f9d45);
 }
+
+/* その他 */
+.notification.none {
+
+	background:
+		linear-gradient(135deg,
+			#757575,
+			#555);
+}
+
 
 /* =========================
    現場名
@@ -407,8 +411,7 @@ header {
 		opacity: 0;
 
 		transform:
-			translateX(40px)
-			scale(0.95);
+			translateX(40px) scale(0.95);
 	}
 
 	to {
@@ -416,8 +419,7 @@ header {
 		opacity: 1;
 
 		transform:
-			translateX(0)
-			scale(1);
+			translateX(0) scale(1);
 	}
 }
 

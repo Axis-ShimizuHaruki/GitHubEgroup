@@ -524,46 +524,33 @@
 			notification.className =
 				"notification";
 
-			// 優先度で色変更
+			// 優先度保持
+			notification.dataset.priority =
+				data.priority;
+
+			// class付与
 			if (data.priority == 3) {
 
-				notification.style.background =
-					"#e53935"; // 赤
+				notification.classList.add("high");
 
 			} else if (data.priority == 2) {
 
-				notification.style.background =
-					"#fb8c00"; // オレンジ
-
-			} else if (data.priority == 1) {
-
-				notification.style.background =
-					"#43a047"; // 緑
+				notification.classList.add("medium");
 
 			} else {
 
-				notification.style.background =
-					"#757575"; // グレー
+				notification.classList.add("low");
 			}
 
-			notification.style.color =
-				"white";
-
-			notification.style.padding =
-				"10px";
-
-			notification.style.marginBottom =
-				"5px";
-
 			notification.innerHTML = `
-					<div>
-						${data.siteName}
-					</div>
+				<div class="notice-site">
+					${data.siteName}
+				</div>
 
-					<div>
-						${data.overview}
-					</div>
-				`;
+				<div class="notice-overview">
+					${data.overview}
+				</div>
+			`;
 
 			notification.onclick = () => {
 
@@ -572,7 +559,27 @@
 					data.troubleId;
 			};
 
-			container.prepend(notification);
+			// 一旦追加
+			container.appendChild(notification);
+
+			// =====================
+			// 優先度順に並び替え
+			// =====================
+
+			const notices =
+				Array.from(container.children);
+
+			notices.sort((a, b) => {
+
+				return b.dataset.priority
+					- a.dataset.priority;
+			});
+
+			// 再配置
+			notices.forEach(n => {
+
+				container.appendChild(n);
+			});
 		}
 
 	</script>

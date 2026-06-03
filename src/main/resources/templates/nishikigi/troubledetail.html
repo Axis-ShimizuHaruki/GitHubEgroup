@@ -269,7 +269,7 @@
 
 			<!--			</form>-->
 
-			<button type="button" class="btn btn-gray"
+			<button type="button" class="btn btn-gray" th:if="${role != 2}"
 				th:onclick="|location.href='@{/trouble/{id}/edit(id=${trouble.troubleId})}'|">
 				編集
 			</button>

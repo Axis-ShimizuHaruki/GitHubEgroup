@@ -376,6 +376,15 @@
 		}
 
 	</script>
+	
+	<script>
+	window.addEventListener('load', function () {
+	    const chatArea = document.querySelector('.chat-messages');
+	    if (chatArea) {
+	        chatArea.scrollTop = chatArea.scrollHeight;
+	    }
+	});
+	</script>
 
 </body>
 

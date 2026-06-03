@@ -136,7 +136,23 @@ public class TroubleController {
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")
-	public String list(@ModelAttribute TroubleSearchForm form, Model model) {
+	public String list(@ModelAttribute TroubleSearchForm form, Model model, HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// 現場管理者の初回表示
+		if (loginUser.getRoll() == 1
+				&& form.getSiteName() == null
+				&& form.getOccurredDate() == null
+				&& form.getPriority() == null
+				&& form.getTroubleType() == null
+				&& form.getStatusFlag() == null) {
+
+			Integer siteId = (Integer) session.getAttribute("siteId");
+
+			Site site = siteService.findById(siteId);
+
+			form.setSiteName(site.getSiteName());
+		}
 		List<Trouble> troubleList = service.search(
 				form.getOccurredDate(),
 				form.getSiteName(),
@@ -145,6 +161,25 @@ public class TroubleController {
 				form.getStatusFlag());
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
+		return "nishikigi/troublelist";
+	}
+
+	// 検索リセット表示
+	@GetMapping("/trouble/list/reset")
+	public String reset(Model model) {
+
+		TroubleSearchForm form = new TroubleSearchForm();
+
+		List<Trouble> troubleList = service.search(
+				null,
+				null,
+				null,
+				null,
+				null);
+
+		model.addAttribute("troubleList", troubleList);
+		model.addAttribute("troubleSearchForm", form);
+
 		return "nishikigi/troublelist";
 	}
 

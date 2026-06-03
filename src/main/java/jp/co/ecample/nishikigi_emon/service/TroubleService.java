@@ -46,11 +46,11 @@ public class TroubleService {
 
 		return troubleRepository.save(trouble);
 	}
-	
+
 	// 通知表示用
 	public List<Trouble> getActiveTroubles() {
 
-	    return troubleRepository.findByPriorityNot(0);
+		return troubleRepository.findByPriorityNot(0);
 
 	}
 
@@ -93,7 +93,7 @@ public class TroubleService {
 			trouble.settStatusFlag(2);
 
 			// 緊急度を0にする
-			trouble.setPriority(0);
+			//trouble.setPriority(0);
 		}
 
 		troubleRepository.save(trouble);

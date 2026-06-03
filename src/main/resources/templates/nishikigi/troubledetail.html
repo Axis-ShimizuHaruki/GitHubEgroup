@@ -196,6 +196,39 @@
 
 		</div>
 
+		<!-- 対応メモ -->
+		<div class="section">
+
+			<div class="section-title">
+				対応メモ
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					現場対応メモ
+				</div>
+
+				<div class="value" th:text="${#strings.isEmpty(trouble.siteMemo) ? '未入力' : trouble.siteMemo}">
+				</div>
+
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					本社対応メモ
+				</div>
+
+				<div class="value" th:text="${#strings.isEmpty(trouble.hqMemo) ? '未入力' : trouble.hqMemo}">
+				</div>
+
+			</div>
+
+		</div>
+
+
+
 		<!-- 確認ステータス -->
 		<!--		<div class="section">-->
 

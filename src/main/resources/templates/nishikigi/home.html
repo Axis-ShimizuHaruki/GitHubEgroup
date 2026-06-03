@@ -137,7 +137,10 @@
 
 			<!-- 入力欄 -->
 			<div class="chat-input" th:if="${session.loginUser.roll != 2}">
-				<input type="text" id="messageInput" placeholder="メッセージを入力">
+				<textarea
+				        id="messageInput"
+				        placeholder="メッセージを入力"
+				        rows="3"></textarea>
 
 				<button type="button" onclick="sendMessage()">
 					送信

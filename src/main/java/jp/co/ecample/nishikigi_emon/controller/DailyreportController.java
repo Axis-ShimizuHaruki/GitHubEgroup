@@ -3,10 +3,12 @@ package jp.co.ecample.nishikigi_emon.controller;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid; // ★追加
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult; // ★追加
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.User;
+import jp.co.ecample.nishikigi_emon.form.DailyreportForm; // ★追加
 import jp.co.ecample.nishikigi_emon.service.DailyreportService;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
 
@@ -24,10 +27,9 @@ import jp.co.ecample.nishikigi_emon.service.SiteService;
 @RequestMapping("/dailyreport")
 public class DailyreportController {
 
-    /** 権限定数の定義 */
-    private static final int ROLE_HONSHA = 0;          // 本社管理者
-    private static final int ROLE_GENBA_MANAGER = 1;   // 現場管理者
-    private static final int ROLE_GENBA_VIEWER = 2;    // 現場閲覧者
+    private static final int ROLE_HONSHA = 0;
+    private static final int ROLE_GENBA_MANAGER = 1;
+    private static final int ROLE_GENBA_VIEWER = 2;
 
     @Autowired
     private DailyreportService dailyreportService;
@@ -35,282 +37,256 @@ public class DailyreportController {
     @Autowired
     private SiteService siteService;
 
-    // =========================================================
-    // 🌟 Empmanagerをリスペクトした共通権限チェックメソッド
-    // =========================================================
-
-    /** 1. ログインチェック（全員共通） */
-    private String checkLogin(HttpSession session) {
-        if (session.getAttribute("loginUser") == null) {
-            return "redirect:/login";
-        }
-        return null;
-    }
-
-    /** 2. 本社ユーザー(0)専用チェック（確認完了処理用） */
-    private String checkHonshaOnly(HttpSession session) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) return "redirect:/login";
-        if (loginUser.getRoll() != ROLE_HONSHA) {
-            return "redirect:/dailyreport/list"; // 本社以外なら一覧へ突っ返す
-        }
-        return null;
-    }
-
-    /** 3. 現場管理者(1)専用チェック（新規登録・編集用） */
-    private String checkManagerOnly(HttpSession session) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) return "redirect:/login";
-        if (loginUser.getRoll() != ROLE_GENBA_MANAGER) {
-            return "redirect:/dailyreport/list"; // 現場管理者(1)以外なら一覧へ突っ返す
-        }
-        return null;
-    }
-
-    /** 4. 現場ユーザー(1,2)の「自現場限定」アクセスチェック（URL直打ち覗き見・不正編集対策） */
-    private String checkSiteAccess(HttpSession session, Integer reportSiteId) {
-        User loginUser = (User) session.getAttribute("loginUser");
-        if (loginUser == null) return "redirect:/login";
-
-        // 本社(0)なら、どの現場の日報でもアクセスOK
-        if (loginUser.getRoll() == ROLE_HONSHA) {
-            return null;
-        }
-
-        // 現場ユーザー(1,2)の場合、日報の現場IDが、自分の担当現場ID(siteId)と違っていれば一覧へ強制送還
-        Integer userSiteId = (Integer) session.getAttribute("siteId");
-        if (userSiteId == null || !userSiteId.equals(reportSiteId)) {
-            return "redirect:/dailyreport/list";
-        }
-        return null;
-    }
-
-    // =========================================================
-    // 各画面・処理のマッピング
-    // =========================================================
+    // --- 共通チェックメソッド群 (変更なしのため省略) ---
+    private String checkLogin(HttpSession session) { return session.getAttribute("loginUser") == null ? "redirect:/login" : null; }
+    private String checkHonshaOnly(HttpSession session) { User u = (User) session.getAttribute("loginUser"); return (u == null) ? "redirect:/login" : (u.getRoll() != ROLE_HONSHA ? "redirect:/dailyreport/list" : null); }
+    private String checkManagerOnly(HttpSession session) { User u = (User) session.getAttribute("loginUser"); return (u == null) ? "redirect:/login" : (u.getRoll() != ROLE_GENBA_MANAGER ? "redirect:/dailyreport/list" : null); }
+    private String checkSiteAccess(HttpSession session, Integer reportSiteId) { User u = (User) session.getAttribute("loginUser"); if (u == null) return "redirect:/login"; if (u.getRoll() == ROLE_HONSHA) return null; Integer sId = (Integer) session.getAttribute("siteId"); return (sId == null || !sId.equals(reportSiteId)) ? "redirect:/dailyreport/list" : null; }
 
     /**
-     * 動作：日報一覧画面を表示する（検索・絞り込み対応版）
+     * 一覧画面表示（変更なし）
      */
     @GetMapping("/list") 
     public String showList(
             @RequestParam(name = "targetDate", required = false) String targetDateStr,
             @RequestParam(name = "siteId", required = false) Integer siteId,
             @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
-            @RequestParam(name = "workDetails", required = false) String workDetails, // 🌟 追記：画面の入力欄からキーワードを受け取る
+            @RequestParam(name = "workDetails", required = false) String workDetails,
             HttpSession session, Model model) {
-        
-        // 🛡️ ログインチェック
-        String redirect = checkLogin(session);
-        if (redirect != null) return redirect;
-        
+        String redirect = checkLogin(session); if (redirect != null) return redirect;
         User loginUser = (User) session.getAttribute("loginUser");
         Integer userSiteId = (Integer) session.getAttribute("siteId");
-
         model.addAttribute("siteList", siteService.selectAll());
-
         java.time.LocalDate targetDate = null;
-        if (targetDateStr != null && !targetDateStr.isEmpty()) {
-            targetDate = java.time.LocalDate.parse(targetDateStr);
-        }
-
-        // 🛡️ 現場ユーザー(1,2)の場合は、画面からの検索を無視して「自現場」で強制固定
-        if (loginUser.getRoll() != ROLE_HONSHA) {
-            siteId = userSiteId;
-        }
-
-        // 🌟 追記：入力されたキーワードをModelに乗せて画面に戻す（入力状態をキープするため）
+        if (targetDateStr != null && !targetDateStr.isEmpty()) { targetDate = java.time.LocalDate.parse(targetDateStr); }
+        if (loginUser.getRoll() != ROLE_HONSHA) { siteId = userSiteId; }
         model.addAttribute("workDetails", workDetails);
-
-        // 🌟 修正：引数の末尾に「workDetails」を追加してサービスへ投げる
         List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag, workDetails);
         model.addAttribute("reportList", reportList);
         return "nishikigi/dailylist";
     }
     
     /**
-     * 動作：日報新規登録画面を表示する（現場管理者1のみ）
+     * 動作：日報新規登録画面を表示する
      */
     @GetMapping("/new")
     public String showCreateForm(HttpSession session, Model model) {
-        
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
-
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
         Integer userSiteId = (Integer) session.getAttribute("siteId");
-        Dailyreport newReport = new Dailyreport();
-        newReport.setTargetDate(java.time.LocalDate.now());
-        
+
+        // 🌟 修正：EntityではなくFormを作成して初期値をセットする
+        DailyreportForm form = new DailyreportForm();
+        form.setTargetDate(java.time.LocalDate.now());
         if (userSiteId != null) {
-            jp.co.ecample.nishikigi_emon.entity.Site currentSite = new jp.co.ecample.nishikigi_emon.entity.Site();
-            currentSite.setSiteId(userSiteId);
-            newReport.setSite(currentSite);
+            form.setSiteId(userSiteId);
         }
         
-        model.addAttribute("dailyreport", newReport);
+        model.addAttribute("dailyreport", form); // HTML側の th:object="${dailyreport}" を維持するため、名前はそのまま
         model.addAttribute("siteList", siteService.selectAll());
         return "nishikigi/dailyreport";
     }
     
     /**
-     * 動作：日報登録の確認画面（現場管理者1のみ）
+     * 動作：日報登録の確認画面（バリデーション追加）
      */
     @PostMapping("/new/confirm")
-    public String confirmCreate(@ModelAttribute("dailyreport") Dailyreport report, HttpSession session, Model model) {
+    public String confirmCreate(
+            @Valid @ModelAttribute("dailyreport") DailyreportForm form, // 🌟 @Valid を追加
+            BindingResult bindingResult,                                // 🌟 追加
+            HttpSession session, Model model) {
         
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
         
-        if (report.getSite() != null && report.getSite().getSiteId() != null) {
+     // 出面情報（JSON文字列）の高度な手動バリデーション
+        String wd = form.getWorkerDetails();
+        if (wd == null || wd.isEmpty() || "[]".equals(wd)) {
+            // 何も入力がない、またはすべて消された場合
+            bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+        } else if (wd.contains("\"company\":\"\"") || wd.contains("\"count\":\"\"") || wd.contains("\"names\":\"\"")) {
+            // どれか1つでも空欄（""）が含まれている不備がある場合
+            bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+        }
+        
+        // 🌟 入力エラーがあれば登録画面に戻す
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("siteList", siteService.selectAll());
+            return "nishikigi/dailyreport";
+        }
+        
+        // 画面に選択した現場名を表示するためのドッキング処理
+        if (form.getSiteId() != null) {
             for (Site s : siteService.selectAll()) {
-                if (s.getSiteId().equals(report.getSite().getSiteId())) {
-                    report.setSite(s); 
+                if (s.getSiteId().equals(form.getSiteId())) {
+                    model.addAttribute("chosenSiteName", s.getSiteName()); // 現場名をModelに乗せる
                     break;
                 }
             }
         }
         
-        model.addAttribute("dailyreport", report);
+        model.addAttribute("dailyreport", form);
         return "nishikigi/dailyreportcheck";
     }
 
     /**
-     * 動作：日報登録の実行（現場管理者1のみ）
+     * 動作：日報登録の実行（FormからEntityへの詰め替え処理）
      */
     @PostMapping("/create")
-    public String registerReport(@ModelAttribute("dailyreport") Dailyreport report, HttpSession session) {
-        
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
+    public String registerReport(@ModelAttribute("dailyreport") DailyreportForm form, HttpSession session) {
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
+
+        // 🌟 FormクラスのデータをEntityへ詰め替える
+        Dailyreport report = new Dailyreport();
+        copyFormToEntity(form, report);
 
         dailyreportService.createReport(report);
         return "redirect:/complete";
     }
     
     /**
-     * 動作：日報詳細画面を表示する（全権限OK、ただし1,2は自現場のみ）
+     * 動作：日報詳細画面（変更なし）
      */
     @GetMapping("/{id}")
-    public String showDetail(@PathVariable("id") Integer reportId,
-                            @RequestParam(name = "from", required = false, defaultValue = "list") String from,
-                            HttpSession session, Model model) {
-        
-        // 🛡️ ログインチェック
-        String redirect = checkLogin(session);
-        if (redirect != null) return redirect;
-
-        Dailyreport report = dailyreportService.getReportById(reportId);
-        if (report == null) {
-            return "error/404";
-        }
-
-        // 🛡️ 自現場チェック（現場ユーザーによるURL直打ち覗き見をガード）
-        String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId());
-        if (accessRedirect != null) return accessRedirect;
-
-        model.addAttribute("report", report);
-        model.addAttribute("from", from);
+    public String showDetail(@PathVariable("id") Integer reportId, @RequestParam(name = "from", required = false, defaultValue = "list") String from, HttpSession session, Model model) {
+        String redirect = checkLogin(session); if (redirect != null) return redirect;
+        Dailyreport report = dailyreportService.getReportById(reportId); if (report == null) return "error/404";
+        String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId()); if (accessRedirect != null) return accessRedirect;
+        model.addAttribute("report", report); model.addAttribute("from", from);
         return "nishikigi/dailyreportdetail";
     }
 
     /**
-     * 動作：日報編集画面を表示する（現場管理者1のみ ＆ 自現場のみ）
+     * 動作：日報編集画面を表示する（EntityからFormへの逆詰め替え）
      */
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable("id") Integer reportId, HttpSession session, Model model) {
-        
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
+        Dailyreport report = dailyreportService.getReportById(reportId); if (report == null) return "error/404";
+        String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId()); if (accessRedirect != null) return accessRedirect;
 
-        Dailyreport report = dailyreportService.getReportById(reportId);
-        if (report == null) {
-            return "error/404";
-        }
+        // 🌟 EntityのデータをFormへ詰め替えて画面に渡す
+        DailyreportForm form = new DailyreportForm();
+        form.setReportId(report.getReportId());
+        form.setSiteId(report.getSite().getSiteId());
+        form.setProjectNumber(report.getProjectNumber());
+        form.setTargetDate(report.getTargetDate());
+        form.setWeather(report.getWeather());
+        form.setTemperature(report.getTemperature());
+        form.setWorkDetails(report.getWorkDetails());
+        form.setWorkerDetails(report.getWorkerDetails());
+        form.setProgressPercent(report.getProgressPercent());
+        form.setPhotoBefore(report.getPhotoBefore());
+        form.setPhotoDuring(report.getPhotoDuring());
+        form.setPhotoAfter(report.getPhotoAfter());
+        form.setPhotoInspection(report.getPhotoInspection());
+        form.setPhotoSafety(report.getPhotoSafety());
+        form.setSafetyKy(report.getSafetyKy());
+        form.setSafetyMeasure(report.getSafetyMeasure());
+        form.setSafetyEducation(report.getSafetyEducation());
+        form.setNearMiss(report.getNearMiss());
+        form.setMaterials(report.getMaterials());
+        form.setEquipments(report.getEquipments());
+        form.setDesignChange(report.getDesignChange());
+        form.setCustomerRequest(report.getCustomerRequest());
+        form.setPartnerCoordination(report.getPartnerCoordination());
+        form.setNextDaySchedule(report.getNextDaySchedule());
+        form.setNotes(report.getNotes());
+        form.setDStatusFlag(report.getDStatusFlag());
 
-        // 🛡️ 自現場チェック（他人の現場の日報をURL直打ちで編集しようとしたら弾く）
-        String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId());
-        if (accessRedirect != null) return accessRedirect;
-
-        model.addAttribute("dailyreport", report);
+        model.addAttribute("dailyreport", form);
         model.addAttribute("siteList", siteService.selectAll());
         return "nishikigi/dailyedit";
     }
 
     /**
-     * 動作：日報編集の確認画面（現場管理者1のみ ＆ 自現場のみ）
+     * 動作：日報編集の確認画面
      */
     @PostMapping("/{id}/edit/confirm")
-    public String confirmUpdate(@ModelAttribute("dailyreport") Dailyreport report, HttpSession session, Model model) {
+    public String confirmUpdate(
+            @Valid @ModelAttribute("dailyreport") DailyreportForm form,
+            BindingResult bindingResult,
+            HttpSession session, Model model) {
         
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
         
-        // 🛡️ フォームから送信された現場IDに対する不正アクセスチェック
-        if (report.getSite() != null && report.getSite().getSiteId() != null) {
-            String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId());
-            if (accessRedirect != null) return accessRedirect;
-            
+     // 編集時も全く同じ手動バリデーションをかけます
+        String wd = form.getWorkerDetails();
+        if (wd == null || wd.isEmpty() || "[]".equals(wd)) {
+            bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+        } else if (wd.contains("\"company\":\"\"") || wd.contains("\"count\":\"\"") || wd.contains("\"names\":\"\"")) {
+            bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+        }
+        
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("siteList", siteService.selectAll());
+            return "nishikigi/dailyedit";
+        }
+        
+        if (form.getSiteId() != null) {
+            String accessRedirect = checkSiteAccess(session, form.getSiteId()); if (accessRedirect != null) return accessRedirect;
             for (Site s : siteService.selectAll()) {
-                if (s.getSiteId().equals(report.getSite().getSiteId())) {
-                    report.setSite(s);
+                if (s.getSiteId().equals(form.getSiteId())) {
+                    model.addAttribute("chosenSiteName", s.getSiteName());
                     break;
                 }
             }
         }
         
-        model.addAttribute("dailyreport", report);
+        model.addAttribute("dailyreport", form);
         return "nishikigi/dailyeditcheck";
     }
 
     /**
-     * 動作：日報編集の実行（現場管理者1のみ ＆ 自現場のみ）
+     * 動作：日報編集の実行（DB更新）
      */
     @PostMapping("/{id}/update")
-    public String updateReport(@ModelAttribute("dailyreport") Dailyreport report, HttpSession session) {
-        
-        // 🛡️ 現場管理者(1)チェック
-        String redirect = checkManagerOnly(session);
-        if (redirect != null) return redirect;
+    public String updateReport(@ModelAttribute("dailyreport") DailyreportForm form, HttpSession session) {
+        String redirect = checkManagerOnly(session); if (redirect != null) return redirect;
+        if (form.getSiteId() != null) { String accessRedirect = checkSiteAccess(session, form.getSiteId()); if (accessRedirect != null) return accessRedirect; }
 
-        // 🛡️ 保存を実行する前に、その現場IDへの書き込み権限があるか最終チェック
-        if (report.getSite() != null && report.getSite().getSiteId() != null) {
-            String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId());
-            if (accessRedirect != null) return accessRedirect;
-        }
+        Dailyreport report = dailyreportService.getReportById(form.getReportId());
+        copyFormToEntity(form, report);
 
         Dailyreport result = dailyreportService.updateReport(report);
-        if (result == null) {
-            return "error/404";
-        }
+        if (result == null) return "error/404";
         return "redirect:/complete";
     }
 
-    /**
-     * 動作：本社管理者が日報を「確認完了」にする（本社0のみ）
-     */
+    /** 本社確認ボタン（変更なし） */
     @PostMapping("/{id}/confirm")
-    public String confirmReport(@PathVariable("id") Integer reportId,
-                                @RequestParam(name = "from", required = false, defaultValue = "list") String from,
-                                HttpSession session) {
-        
-        // 🛡️ 本社ユーザー(0)チェック
-        String redirect = checkHonshaOnly(session);
-        if (redirect != null) return redirect;
+    public String confirmReport(@PathVariable("id") Integer reportId, @RequestParam(name = "from", required = false, defaultValue = "list") String from, HttpSession session) { String redirect = checkHonshaOnly(session); if (redirect != null) return redirect; boolean isSuccess = dailyreportService.confirmReport(reportId); if (!isSuccess) return "error/404"; return "home".equals(from) ? "redirect:/homeoffice" : "redirect:/dailyreport/list"; }
 
-        boolean isSuccess = dailyreportService.confirmReport(reportId);
-        if (!isSuccess) {
-            return "error/404";
-        }
+    /**
+     * 🌟 共通ヘルパーメソッド：FormからEntityへデータを安全に詰め替える
+     */
+    private void copyFormToEntity(DailyreportForm form, Dailyreport report) {
+        Site site = new Site();
+        site.setSiteId(form.getSiteId());
+        report.setSite(site);
         
-        if ("home".equals(from)) {
-            return "redirect:/homeoffice";
-        } else {
-            return "redirect:/dailyreport/list";
-        }
+        report.setReportId(form.getReportId());
+        report.setProjectNumber(form.getProjectNumber());
+        report.setTargetDate(form.getTargetDate());
+        report.setWeather(form.getWeather());
+        report.setTemperature(form.getTemperature());
+        report.setWorkDetails(form.getWorkDetails());
+        report.setWorkerDetails(form.getWorkerDetails());
+        report.setProgressPercent(form.getProgressPercent());
+        report.setPhotoBefore(form.getPhotoBefore());
+        report.setPhotoDuring(form.getPhotoDuring());
+        report.setPhotoAfter(form.getPhotoAfter());
+        report.setPhotoInspection(form.getPhotoInspection());
+        report.setPhotoSafety(form.getPhotoSafety());
+        report.setSafetyKy(form.getSafetyKy());
+        report.setSafetyMeasure(form.getSafetyMeasure());
+        report.setSafetyEducation(form.getSafetyEducation());
+        report.setNearMiss(form.getNearMiss());
+        report.setMaterials(form.getMaterials());
+        report.setEquipments(form.getEquipments());
+        report.setDesignChange(form.getDesignChange());
+        report.setCustomerRequest(form.getCustomerRequest());
+        report.setPartnerCoordination(form.getPartnerCoordination());
+        report.setNextDaySchedule(form.getNextDaySchedule());
+        report.setNotes(form.getNotes());
+        report.setDStatusFlag(form.getDStatusFlag());
     }
 }

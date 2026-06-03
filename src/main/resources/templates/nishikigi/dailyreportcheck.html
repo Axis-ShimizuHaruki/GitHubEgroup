@@ -55,7 +55,7 @@
 
     <form th:action="@{/dailyreport/create}" th:object="${dailyreport}" method="post">
 
-      <input type="hidden" th:field="*{site.siteId}" />
+      <input type="hidden" th:field="*{siteId}" />
       <input type="hidden" th:field="*{projectNumber}" />
       <input type="hidden" th:field="*{targetDate}" />
       <input type="hidden" th:field="*{weather}" />
@@ -85,8 +85,8 @@
 
         <div class="grid-2">
           <div class="item">
-            <div class="label">現場ID</div>
-            <div class="value" th:text="*{site.siteId}">1</div>
+            <div class="label">現場名</div>
+            <div class="value" th:text="${chosenSiteName}">現場名</div>
           </div>
 
           <div class="item">

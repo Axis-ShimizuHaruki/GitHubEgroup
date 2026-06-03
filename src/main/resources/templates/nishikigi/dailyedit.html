@@ -6,26 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>日報編集</title>
   <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
-
   <style></style>
 </head>
 
 <body>
 
 	<header class="system-header">
-
 	    <div class="header-top">
-
 			<div class="logo-area">
-			        
 			        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
 			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 			        </a>
-			        
 			        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
 			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 			        </a>
-					
 	        <div class="site-system-name">
 	          日報編集
 	        </div>
@@ -38,23 +32,20 @@
 	            <button type="submit" class="logout-btn">ログアウト</button>
 	          </form>
 	        </div>
-
 	        <div th:unless="${session.loginUser != null}">
 	          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
 	        </div>
 	      </div>
-
 	    </div>
 
 	    <div class="page-title-bar">
 	      <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
 	    </div>
-
-	  </header>
+	</header>
 
   <div class="container">
 
-    <form th:action="@{/dailyreport/{id}/edit/confirm(id=${dailyreport.reportId})}" th:object="${dailyreport}" method="post" id="reportForm">
+    <form th:action="@{/dailyreport/{id}/edit/confirm(id=${dailyreport.reportId})}" th:object="${dailyreport}" method="post" id="reportForm" novalidate>
 
       <input type="hidden" th:field="*{reportId}" />
       <input type="hidden" th:field="*{dStatusFlag}" />
@@ -63,66 +54,68 @@
         <div class="section-title">基本情報</div>
 
         <div class="grid-2">
-          <div>
-            <label>現場名（自現場のみに固定・変更不可）</label>
-            <input type="hidden" th:field="*{site.siteId}" />
-			<input type="hidden" name="site.siteName" th:value="*{site.siteName}" />
-            <select disabled style="background-color: #e2e8f0; cursor: not-allowed;">
-              <option th:each="site : ${siteList}" 
-                      th:value="${site.siteId}" 
-                      th:text="${site.siteName}"
-                      th:selected="${site.siteId == dailyreport.site.siteId}">
-              </option>
-            </select>
-          </div>
+			<div>
+			  <label>現場名（自現場のみに固定・変更不可）</label>
+			  <input type="hidden" th:field="*{siteId}" />
+			  <select disabled style="background-color: #e2e8f0; cursor: not-allowed;">
+			    <option th:each="site : ${siteList}" 
+			            th:value="${site.siteId}" 
+			            th:text="${site.siteName}"
+			            th:selected="${site.siteId == dailyreport.siteId}"> </option>
+			  </select>
+			  <div th:if="${#fields.hasErrors('siteId')}" th:errors="*{siteId}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
+			</div>
 
-          <div>
-            <label for="projectNumber">工事番号</label>
-            <input type="text" id="projectNumber" th:field="*{projectNumber}" required maxlength="10">
-          </div>
+			<div>
+				<label for="projectNumber">工事番号</label>
+				<input type="text" id="projectNumber" th:field="*{projectNumber}">
+				<div th:if="${#fields.hasErrors('projectNumber')}" th:errors="*{projectNumber}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
+			</div>
 
-          <div>
-            <label for="targetDate">日付</label>
-			<input type="date" id="targetDate" name="targetDate" 
-			       th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" 
-			       readonly style="background-color: #e2e8f0; cursor: not-allowed;" required>
-          </div>
+			<div>
+				<label for="targetDate">日付</label>
+				<input type="date" id="targetDate" name="targetDate" th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" readonly style="background-color: #e2e8f0; cursor: not-allowed;">
+				<div th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
+			</div>
 
-          <div>
-            <label for="weather">天候</label>
-            <select id="weather" th:field="*{weather}" required>
-              <option value="1">晴れ</option>
-              <option value="2">曇り</option>
-              <option value="3">雨</option>
-              <option value="4">雪</option>
-            </select>
-          </div>
+			<div>
+				<label for="weather">天候</label>
+				<select id="weather" th:field="*{weather}">
+					<option value="1">晴れ</option>
+					<option value="2">曇り</option>
+					<option value="3">雨</option>
+					<option value="4">雪</option>
+				</select>
+				<div th:if="${#fields.hasErrors('weather')}" th:errors="*{weather}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
+			</div>
 
-          <div>
-            <label for="temperature">気温 (℃)</label>
-            <input type="number" id="temperature" th:field="*{temperature}" required>
-          </div>
+			<div>
+				<label for="temperature">気温 (℃)</label>
+				<input type="number" id="temperature" th:field="*{temperature}">
+				<div th:if="${#fields.hasErrors('temperature')}" th:errors="*{temperature}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
+			</div>
         </div>
 
         <label for="workDetails">当日作業内容（工種別）</label>
-        <textarea id="workDetails" th:field="*{workDetails}" required maxlength="500"></textarea>
+        <textarea id="workDetails" th:field="*{workDetails}"></textarea>
+		<div th:if="${#fields.hasErrors('workDetails')}" th:errors="*{workDetails}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
         <div class="section-title">出面（協力会社別）</div>
         <input type="hidden" th:field="*{workerDetails}" id="workerDetails">
+		<div th:if="${#fields.hasErrors('workerDetails')}" th:errors="*{workerDetails}" style="color: #e74c3c; font-size: 13px; margin-bottom: 10px; font-weight: bold;"></div>
 
-        <div class="sub-box" id="worker-rows">
-          </div>
+        <div class="sub-box" id="worker-rows"></div>
         <button type="button" class="btn" onclick="addWorkerRow('', '', '')">＋ 追加</button>
       </div>
 
       <div class="section">
         <div class="section-title">工程進捗</div>
         <label for="progressPercent">全体進捗（%）</label>
-        <input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" 
-               oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
+        <input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
         <span id="rangeVal" th:text="*{progressPercent} + '%'">50%</span>
+		<div th:if="${#fields.hasErrors('progressPercent')}" th:errors="*{progressPercent}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
@@ -130,67 +123,83 @@
         <div class="check-item">
           <label for="photoBefore">写真_着工前</label>
           <input type="text" id="photoBefore" th:field="*{photoBefore}">
+		  <div th:if="${#fields.hasErrors('photoBefore')}" th:errors="*{photoBefore}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
         <div class="check-item">
           <label for="photoDuring">写真_施工中</label>
           <input type="text" id="photoDuring" th:field="*{photoDuring}">
+		  <div th:if="${#fields.hasErrors('photoDuring')}" th:errors="*{photoDuring}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
         <div class="check-item">
           <label for="photoAfter">写真_完了</label>
           <input type="text" id="photoAfter" th:field="*{photoAfter}">
+		  <div th:if="${#fields.hasErrors('photoAfter')}" th:errors="*{photoAfter}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
         <div class="check-item">
           <label for="photoInspection">配筋検査写真（必須）</label>
-          <input type="text" id="photoInspection" th:field="*{photoInspection}" required>
+          <input type="text" id="photoInspection" th:field="*{photoInspection}">
+		  <div th:if="${#fields.hasErrors('photoInspection')}" th:errors="*{photoInspection}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
         <div class="check-item">
           <label for="photoSafety">安全帯使用状況写真（必須）</label>
-          <input type="text" id="photoSafety" th:field="*{photoSafety}" required>
+          <input type="text" id="photoSafety" th:field="*{photoSafety}">
+		  <div th:if="${#fields.hasErrors('photoSafety')}" th:errors="*{photoSafety}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
         </div>
       </div>
 
       <div class="section">
         <div class="section-title">安全管理</div>
         <label for="safetyKy">KY項目</label>
-        <textarea id="safetyKy" th:field="*{safetyKy}" required maxlength="500"></textarea>
+        <textarea id="safetyKy" th:field="*{safetyKy}"></textarea>
+		<div th:if="${#fields.hasErrors('safetyKy')}" th:errors="*{safetyKy}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="safetyMeasure">対策</label>
-        <textarea id="safetyMeasure" th:field="*{safetyMeasure}" required maxlength="500"></textarea>
+        <textarea id="safetyMeasure" th:field="*{safetyMeasure}"></textarea>
+		<div th:if="${#fields.hasErrors('safetyMeasure')}" th:errors="*{safetyMeasure}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="safetyEducation">新規入場者教育</label>
-        <textarea id="safetyEducation" th:field="*{safetyEducation}" required maxlength="500"></textarea>
+        <textarea id="safetyEducation" th:field="*{safetyEducation}"></textarea>
+		<div th:if="${#fields.hasErrors('safetyEducation')}" th:errors="*{safetyEducation}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="nearMiss">ヒヤリハット</label>
-        <textarea id="nearMiss" th:field="*{nearMiss}" required maxlength="500"></textarea>
+        <textarea id="nearMiss" th:field="*{nearMiss}"></textarea>
+		<div th:if="${#fields.hasErrors('nearMiss')}" th:errors="*{nearMiss}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
         <div class="section-title">資材・機材</div>
         <label for="materials">搬入物</label>
-        <textarea id="materials" th:field="*{materials}" required maxlength="500"></textarea>
+        <textarea id="materials" th:field="*{materials}"></textarea>
+		<div th:if="${#fields.hasErrors('materials')}" th:errors="*{materials}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="equipments">レンタル機材稼働</label>
-        <textarea id="equipments" th:field="*{equipments}" required maxlength="500"></textarea>
+        <textarea id="equipments" th:field="*{equipments}"></textarea>
+		<div th:if="${#fields.hasErrors('equipments')}" th:errors="*{equipments}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
         <div class="section-title">問題・調整事項</div>
         <label for="designChange">設計変更指示</label>
-        <textarea id="designChange" th:field="*{designChange}" required maxlength="500"></textarea>
+        <textarea id="designChange" th:field="*{designChange}"></textarea>
+		<div th:if="${#fields.hasErrors('designChange')}" th:errors="*{designChange}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="customerRequest">客先追加要望</label>
-        <textarea id="customerRequest" th:field="*{customerRequest}" required maxlength="500"></textarea>
+        <textarea id="customerRequest" th:field="*{customerRequest}"></textarea>
+		<div th:if="${#fields.hasErrors('customerRequest')}" th:errors="*{customerRequest}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="partnerCoordination">協力会社調整</label>
-        <textarea id="partnerCoordination" th:field="*{partnerCoordination}" required maxlength="500"></textarea>
+        <textarea id="partnerCoordination" th:field="*{partnerCoordination}"></textarea>
+		<div th:if="${#fields.hasErrors('partnerCoordination')}" th:errors="*{partnerCoordination}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="nextDaySchedule">翌日予定</label>
-        <textarea id="nextDaySchedule" th:field="*{nextDaySchedule}" required maxlength="500"></textarea>
+        <textarea id="nextDaySchedule" th:field="*{nextDaySchedule}"></textarea>
+		<div th:if="${#fields.hasErrors('nextDaySchedule')}" th:errors="*{nextDaySchedule}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
         <div class="section-title">コメント</div>
         <textarea id="notes" th:field="*{notes}" maxlength="500"></textarea>
+		<div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="btn-area">
@@ -202,15 +211,14 @@
   </div>
 
   <script>
-    // 画面開いた瞬間に現在のJSONデータをフォームに復元する
     document.addEventListener("DOMContentLoaded", function() {
       const jsonStr = document.getElementById("workerDetails").value;
-      
       if (jsonStr) {
         try {
           const workerList = JSON.parse(jsonStr);
           if (workerList.length > 0) {
-            // 現在保存されている会社の数だけ、入力行を自動生成して値をはめ込む
+            const container = document.getElementById('worker-rows');
+            container.innerHTML = ''; 
             workerList.forEach(worker => {
               addWorkerRow(worker.company, worker.count, worker.names);
             });
@@ -220,15 +228,12 @@
           console.error("JSON復元エラー", e);
         }
       }
-      // 登録データが空、またはパースエラーの時はまっさらな行を1行だけ出す
       addWorkerRow('', '', '');
     });
 
-    // 入力行を動的に追加する関数（初期値をセットできるようにパワーアップ）
     function addWorkerRow(company = '', count = '', names = '') {
       const container = document.getElementById('worker-rows');
       const rowCount = container.querySelectorAll('.worker-row').length;
-      
       const newRow = document.createElement('div');
       newRow.className = 'worker-row';
       if (rowCount > 0) {
@@ -236,7 +241,6 @@
         newRow.style.paddingTop = '15px';
         newRow.style.marginTop = '15px';
       }
-      
       newRow.innerHTML = `
         <label>協力会社</label>
         <input type="text" class="input-company" value="${company}" placeholder="例：錦木組">
@@ -245,36 +249,30 @@
         <label>氏名</label>
         <input type="text" class="input-names" value="${names}" placeholder="例：山田、佐藤">
       `;
-      
       container.appendChild(newRow);
     }
 
-    // 全ての入力欄を最終集計して1つのJSON文字列にまとめる関数
+    // 🌟 改善：編集時も同様にデータを途中で消去せず、そのままJavaへ流す
     function serializeWorkerDetails() {
       const rows = document.querySelectorAll('.worker-row');
       const workerList = [];
       
       rows.forEach(row => {
-        const company = row.querySelector('.input-company').value;
-        const count = row.querySelector('.input-count').value;
-        const names = row.querySelector('.input-names').value;
+        const company = row.querySelector('.input-company').value.trim();
+        const count = row.querySelector('.input-count').value.trim();
+        const names = row.querySelector('.input-names').value.trim();
         
         if (company || count || names) {
-          workerList.push({
-            company: company,
-            count: count,
-            names: names
-          });
+          workerList.push({ company: company, count: count, names: names });
         }
       });
+
       document.getElementById('workerDetails').value = JSON.stringify(workerList);
     }
 
-    // 保存（送信）ボタンが押されたら、集計を実行してからControllerへ送信する
     document.getElementById('reportForm').addEventListener('submit', function(e) {
-      serializeWorkerDetails();
+      serializeWorkerDetails(); 
     });
   </script>
-
 </body>
 </html>

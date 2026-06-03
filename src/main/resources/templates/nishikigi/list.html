@@ -550,6 +550,10 @@
 				<div class="notice-overview">
 					${data.overview}
 				</div>
+				
+				<div class="notice-time">
+						${data.createdAt}
+					</div>
 			`;
 
 			notification.onclick = () => {
@@ -593,13 +597,20 @@
 
 			showNotification({
 
-				siteName: '[[${trouble.site.siteName}]]',
+				siteName:
+				'[[${trouble.site.siteName}]]',
 
-				overview: '[[${trouble.overview}]]',
+				overview:
+				'[[${trouble.overview}]]',
 
-				priority: '[[${trouble.priority}]]',
+				priority:
+				'[[${trouble.priority}]]',
 
-				troubleId: '[[${trouble.troubleId}]]'
+				troubleId:
+				'[[${trouble.troubleId}]]',
+				
+				createdAt:
+				'[[${trouble.tCreatedAt}]]'
 
 			});
 

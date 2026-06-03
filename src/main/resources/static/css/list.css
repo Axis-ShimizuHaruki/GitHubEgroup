@@ -401,6 +401,15 @@ header {
 	line-height: 1.4;
 }
 
+.notice-time {
+
+	margin-top: 8px;
+
+	font-size: 12px;
+
+	opacity: 1;
+}
+
 /* =========================
    アニメーション
 ========================= */

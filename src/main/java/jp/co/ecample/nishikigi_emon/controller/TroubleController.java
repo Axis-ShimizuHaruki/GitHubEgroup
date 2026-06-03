@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class TroubleController {
 	public TroubleController(TroubleService service) {
 		this.service = service;
 	}
-	
+
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
@@ -52,35 +53,33 @@ public class TroubleController {
 	}
 
 	// トラブル登録画面のフォーム送信
-//	@PostMapping("/troubles")
-//	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
-//
-//		Integer siteId = (Integer) session.getAttribute("siteId");
-//
-//		System.out.println("siteId = " + siteId);
-//
-//		Trouble trouble = new Trouble();
-//
-//		trouble.setPriority(form.getPriority());
-//		trouble.setTroubleType(form.getTroubleType());
-//		trouble.setOverview(form.getOverview());
-//		trouble.setDetail(form.getDetail());
-//
-//		Site site = new Site();
-//		site.setSiteId(siteId);
-//
-//		trouble.setSite(site);
-//
-//		service.register(trouble);
-//		return "redirect:/complete";
-//	}
-	
-	
-	
+	//	@PostMapping("/troubles")
+	//	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
+	//
+	//		Integer siteId = (Integer) session.getAttribute("siteId");
+	//
+	//		System.out.println("siteId = " + siteId);
+	//
+	//		Trouble trouble = new Trouble();
+	//
+	//		trouble.setPriority(form.getPriority());
+	//		trouble.setTroubleType(form.getTroubleType());
+	//		trouble.setOverview(form.getOverview());
+	//		trouble.setDetail(form.getDetail());
+	//
+	//		Site site = new Site();
+	//		site.setSiteId(siteId);
+	//
+	//		trouble.setSite(site);
+	//
+	//		service.register(trouble);
+	//		return "redirect:/complete";
+	//	}
+
 	// トラブル登録画面のフォーム送信
 	@PostMapping("/troubles")
 	public String register(@ModelAttribute TroubleForm form,
-						   HttpSession session) {
+			HttpSession session) {
 
 		Integer siteId = (Integer) session.getAttribute("siteId");
 
@@ -108,43 +107,30 @@ public class TroubleController {
 		// 通知データ作成
 		// =========================
 
+		DateTimeFormatter formatter =
+				DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+
+		String createdAt =
+				savedTrouble.gettCreatedAt()
+					.format(formatter);
+
 		Map<String, Object> notice = new HashMap<>();
 
 		notice.put("type", "trouble");
-
 		notice.put("siteName", savedSite.getSiteName());
-
 		notice.put("overview", savedTrouble.getOverview());
-
 		notice.put("priority", savedTrouble.getPriority());
-
 		notice.put("troubleId", savedTrouble.getTroubleId());
+		notice.put("createdAt", createdAt);
 
-		// WebSocket送信
-		String json = """
-				{
-					"siteName":"%s",
-					"overview":"%s",
-					"priority":%d,
-					"troubleId":%d
-				}
-				""".formatted(
-					savedSite.getSiteName(),
-					savedTrouble.getOverview(),
-					savedTrouble.getPriority(),
-					savedTrouble.getTroubleId()
-				);
-
-				System.out.println(json);
-
-				messagingTemplate.convertAndSend(
-					"/topic/notice",
-					json
-				);
+		// これだけでOK
+		messagingTemplate.convertAndSend(
+				"/topic/notice",
+				(Object) notice
+			);
 
 		return "redirect:/complete";
 	}
-	
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")

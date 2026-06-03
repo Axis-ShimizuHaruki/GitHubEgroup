@@ -71,7 +71,8 @@
 		</div>
 
 
-		<form th:action="@{/trouble/{id}/edit/confirm(id=${trouble.troubleId})}" method="post">
+		<form th:action="@{/trouble/{id}/edit/confirm(id=${trouble.troubleId})}" th:object="${troubleForm}"
+			method="post">
 
 			<input type="hidden" name="troubleId" th:value="${trouble.troubleId}">
 
@@ -88,11 +89,13 @@
 						<div class="label">緊急度</div>
 
 
-						<select name="priority" th:if="${role == 1}">
+						<select th:field="*{priority}" th:if="${role == 1}">
 							<option value="3" th:selected="${trouble.priority == 3}">高</option>
 							<option value="2" th:selected="${trouble.priority == 2}">中</option>
 							<option value="1" th:selected="${trouble.priority == 1}">低</option>
 						</select>
+
+						<div class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
 
 						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
 						<input type="hidden" name="priority" th:if="${role == 0}" th:value="${trouble.priority}">
@@ -101,13 +104,16 @@
 					<div class="item">
 						<div class="label">トラブル種別</div>
 
-						<select name="troubleType" th:if="${role == 1}">
+						<select th:field="*{troubleType}" th:if="${role == 1}">
 							<option value="1" th:selected="${trouble.troubleType == 1}">事故</option>
 							<option value="2" th:selected="${trouble.troubleType == 2}">資材不足</option>
 							<option value="3" th:selected="${trouble.troubleType == 3}">納品遅れ</option>
 							<option value="4" th:selected="${trouble.troubleType == 4}">工程遅延</option>
 							<option value="5" th:selected="${trouble.troubleType == 5}">その他</option>
 						</select>
+
+						<div class="error" th:if="${#fields.hasErrors('troubleType')}" th:errors="*{troubleType}">
+						</div>
 
 						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
 						<input type="hidden" name="troubleType" th:if="${role == 0}" th:value="${trouble.troubleType}">
@@ -118,7 +124,10 @@
 				<div class="item">
 					<div class="label">一言で表す</div>
 
-					<input type="text" name="overview" th:value="${trouble.overview}" th:if="${role == 1}">
+					<input type="text" th:field="*{overview}" maxlength="100" th:if="${role == 1}">
+
+					<div class="error" th:if="${#fields.hasErrors('overview')}" th:errors="*{overview}">
+					</div>
 
 					<div class="value" th:if="${role == 0}" th:text="${trouble.overview}"></div>
 					<input type="hidden" name="overview" th:if="${role == 0}" th:value="${trouble.overview}">
@@ -135,7 +144,9 @@
 
 				<div class="item">
 
-					<textarea name="detail" th:text="${trouble.detail}" th:if="${role == 1}"></textarea>
+					<textarea th:field="*{detail}" maxlength="500" th:if="${role == 1}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></div>
 
 					<div class="value" th:if="${role == 0}" th:text="${trouble.detail}"></div>
 
@@ -154,7 +165,9 @@
 
 					<div class="label">現場対応メモ</div>
 
-					<textarea name="siteMemo" th:text="${trouble.siteMemo}" th:if="${role == 1}"></textarea>
+					<textarea th:field="*{siteMemo}" th:if="${role == 1}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('siteMemo')}" th:errors="*{siteMemo}"></div>
 
 					<div class="value" th:if="${role == 0}" th:text="${trouble.siteMemo}"></div>
 
@@ -167,7 +180,9 @@
 
 					<div class="label">本社対応メモ</div>
 
-					<textarea name="hqMemo" th:text="${trouble.hqMemo}" th:if="${role == 0}"></textarea>
+					<textarea th:field="*{hqMemo}" th:if="${role == 0}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('hqMemo')}" th:errors="*{hqMemo}"></div>
 
 					<div class="value" th:if="${role == 1}" th:text="${trouble.hqMemo}"></div>
 

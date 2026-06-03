@@ -1,15 +1,24 @@
 package jp.co.ecample.nishikigi_emon.form;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class TroubleForm {
 
 	private Integer troubleId;
 
+	@NotNull(message = "緊急度を選択してください")
 	private Integer priority;
 
+	@NotNull(message = "トラブル種別を選択してください")
 	private Integer troubleType;
 
+	@NotBlank(message = "概要を入力してください")
 	private String overview;
 
+	@NotBlank(message = "詳細を入力してください")
+	@Size(max = 500, message = "詳細は500文字以内で入力してください")
 	private String detail;
 
 	private String siteMemo;

@@ -73,25 +73,26 @@
 
 		<h1>トラブル登録</h1>
 
-		<form th:action="@{/trouble/new/confirm}" method="post">
+		<form th:action="@{/trouble/new/confirm}" th:object="${troubleForm}" method="post">
 
 			<!-- 緊急度 -->
 			<div class="form-group">
 				<label for="priority">緊急度</label>
 
-				<select id="priority" name="priority">
+				<select id="priority" th:field="*{priority}">
 					<option value="">選択してください</option>
 					<option value="3">高</option>
 					<option value="2">中</option>
 					<option value="1">低</option>
 				</select>
+				<div class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
 			</div>
 
 			<!-- トラブル種別 -->
 			<div class="form-group">
 				<label for="type">トラブル種別</label>
 
-				<select id="type" name="troubleType">
+				<select id="type" th:field="*{troubleType}">
 					<option value="">選択してください</option>
 					<option value="1">事故</option>
 					<option value="2">資材不足</option>
@@ -99,20 +100,25 @@
 					<option value="4">工程遅延</option>
 					<option value="5">その他</option>
 				</select>
+
+				<div class="error" th:if="${#fields.hasErrors('troubleType')}" th:errors="*{troubleType}"></div>
 			</div>
 
 			<!-- 一言 -->
 			<div class="form-group">
 				<label for="summary">一言で表す</label>
 
-				<input type="text" id="summary" name="overview" maxlength="100" placeholder="例：サーバに接続できない" />
+				<input type="text" id="summary" th:field="*{overview}" maxlength="100" placeholder="例：サーバに接続できない">
+				<div class="error" th:if="${#fields.hasErrors('overview')}" th:errors="*{overview}"></div>
 			</div>
 
 			<!-- 詳細 -->
 			<div class="form-group">
 				<label for="detail">具体的な内容</label>
 
-				<textarea id="detail" name="detail" maxlength="500" placeholder="発生状況やエラー内容を詳しく入力してください"></textarea>
+				<textarea id="detail" th:field="*{detail}" maxlength="500" placeholder="発生状況やエラー内容を詳しく入力してください">
+				</textarea>
+				<div class="error" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></div>
 			</div>
 
 			<!-- ボタン -->

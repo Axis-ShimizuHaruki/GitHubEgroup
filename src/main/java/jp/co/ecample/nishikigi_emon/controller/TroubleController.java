@@ -6,11 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +49,10 @@ public class TroubleController {
 
 	// トラブル登録確認画面
 	@PostMapping("/trouble/new/confirm")
-	public String confirm(@ModelAttribute TroubleForm form, Model model) {
+	public String confirm(@Valid @ModelAttribute TroubleForm form, BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			return "nishikigi/trouble";
+		}
 		model.addAttribute("form", form);
 		return "nishikigi/troublecheck";
 	}
@@ -107,12 +112,10 @@ public class TroubleController {
 		// 通知データ作成
 		// =========================
 
-		DateTimeFormatter formatter =
-				DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
-		String createdAt =
-				savedTrouble.gettCreatedAt()
-					.format(formatter);
+		String createdAt = savedTrouble.gettCreatedAt()
+				.format(formatter);
 
 		Map<String, Object> notice = new HashMap<>();
 
@@ -126,8 +129,7 @@ public class TroubleController {
 		// これだけでOK
 		messagingTemplate.convertAndSend(
 				"/topic/notice",
-				(Object) notice
-			);
+				(Object) notice);
 
 		return "redirect:/complete";
 	}
@@ -193,6 +195,7 @@ public class TroubleController {
 
 		User loginUser = (User) session.getAttribute("loginUser");
 		model.addAttribute("trouble", trouble);
+		model.addAttribute("troubleForm", trouble);
 		model.addAttribute("role", loginUser.getRoll());
 
 		return "nishikigi/troubleedit";
@@ -200,7 +203,25 @@ public class TroubleController {
 
 	// トラブル編集確認表示
 	@PostMapping("/trouble/{id}/edit/confirm")
-	public String confirm(@PathVariable Integer id, @ModelAttribute TroubleForm form, Model model) {
+	public String confirm(
+			@PathVariable Integer id,
+			@Valid @ModelAttribute("troubleForm") TroubleForm form,
+			BindingResult result,
+			Model model,
+			HttpSession session) {
+
+		if (result.hasErrors()) {
+
+			Trouble trouble = service.findById(id);
+
+			User loginUser = (User) session.getAttribute("loginUser");
+
+			model.addAttribute("trouble", trouble);
+			model.addAttribute("troubleForm", form);
+			model.addAttribute("role", loginUser.getRoll());
+
+			return "nishikigi/troubleedit";
+		}
 
 		model.addAttribute("form", form);
 

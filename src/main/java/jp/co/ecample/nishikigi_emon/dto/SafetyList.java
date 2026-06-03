@@ -17,6 +17,8 @@ public class SafetyList {
 	
 	private String judgement;
 	
+	private Integer sStatusFlag;
+	
 	private Site site;
 	
 	public Integer getSafetyId() {
@@ -73,6 +75,14 @@ public class SafetyList {
 
 	public void setJudgement(String judgement) {
 		this.judgement = judgement;
+	}
+
+	public Integer getsStatusFlag() {
+		return sStatusFlag;
+	}
+
+	public void setsStatusFlag(Integer sStatusFlag) {
+		this.sStatusFlag = sStatusFlag;
 	}
 
 	

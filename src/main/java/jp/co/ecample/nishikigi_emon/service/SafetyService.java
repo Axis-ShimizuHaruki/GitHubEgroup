@@ -1,12 +1,19 @@
 package jp.co.ecample.nishikigi_emon.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.ecample.nishikigi_emon.dto.SafetyList;
 import jp.co.ecample.nishikigi_emon.entity.Safety;
@@ -33,6 +40,7 @@ public class SafetyService {
 	        dto.setSafetyId(safety.getSafetyId());
 	        dto.setsCreatedAt(safety.getsCreatedAt());
 	        dto.setSite(safety.getSite());
+	        dto.setsStatusFlag(safety.getsStatusFlag());
 
 	        int goodCount = 0;
 	        int badCount = 0;
@@ -95,9 +103,9 @@ public class SafetyService {
 	// 検索機能
 	public List<SafetyList> search(
 			LocalDate sCreatedAt,
-			String siteName,
+			Integer siteId,
 			String judgement) {
-	    List<Safety> safetyList = repository.search(sCreatedAt, siteName, judgement);
+	    List<Safety> safetyList = repository.search(sCreatedAt, siteId, judgement);
 	    List<SafetyList> safetyListDto = new ArrayList<>();
 	    
 	    for (Safety safety : safetyList) {
@@ -107,6 +115,8 @@ public class SafetyService {
 	        dto.setSafetyId(safety.getSafetyId());
 	        dto.setsCreatedAt(safety.getsCreatedAt());
 	        dto.setSite(safety.getSite());
+	        dto.setsStatusFlag(safety.getsStatusFlag());
+
 
 	        int goodCount = 0;
 	        int badCount = 0;
@@ -201,5 +211,79 @@ public class SafetyService {
 		// データベースに保存
 		repository.save(safety);
 	}
+	
+	// 写真を保存
+	public String savePhoto(MultipartFile photoFile) {
+	    if (photoFile.isEmpty()) {
+	        return null;
+	    }
 
+	    try {
+	        String fileName =
+	                UUID.randomUUID()
+	                + "_"
+	                + photoFile.getOriginalFilename();
+
+	        Path uploadPath =
+	                Paths.get("src/main/resources/static/images");
+
+	        Files.createDirectories(uploadPath);
+
+	        Files.copy(
+	                photoFile.getInputStream(),
+	                uploadPath.resolve(fileName),
+	                StandardCopyOption.REPLACE_EXISTING);
+
+	        return "/images/" + fileName;
+
+	    } catch (IOException e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+
+	// 安全点検情報を更新
+	public void updateSafety(
+			Integer safetyId,
+			Integer scaffolding,
+			Integer protectingOpenings,
+			Integer safetyHarness,
+			Integer equipmentInspection,
+			Integer fireExtinguisher,
+			Integer organization,
+			Integer electricalInsulation,
+			String photo
+			) {
+		Safety safety = repository.findById(safetyId)
+				.orElseThrow(() -> new RuntimeException("Not found"));
+
+		safety.setScaffolding(scaffolding);
+		safety.setProtectingOpenings(protectingOpenings);
+		safety.setSafetyHarness(safetyHarness);
+		safety.setEquipmentInspection(equipmentInspection);
+		safety.setFireExtinguisher(fireExtinguisher);
+		safety.setOrganization(organization);
+		safety.setElectricalInsulation(electricalInsulation);
+		safety.setPhoto(photo);
+		safety.setsUpdatedAt(LocalDateTime.now());
+
+		repository.save(safety);
+	}
+
+	// 確認完了処理
+	public void confirmSafety(Integer safetyId) {
+		Safety safety = repository.findById(safetyId)
+				.orElseThrow(() -> new RuntimeException("Not found"));
+		
+		safety.setsStatusFlag(1);
+		repository.save(safety);
+	}
+	
+	// 確認解除処理
+	public void confirmCancelSafety(Integer safetyId) {
+		Safety safety = repository.findById(safetyId)
+				.orElseThrow(() -> new RuntimeException("Not found"));
+		
+		safety.setsStatusFlag(0);
+		repository.save(safety);
+	}
 }

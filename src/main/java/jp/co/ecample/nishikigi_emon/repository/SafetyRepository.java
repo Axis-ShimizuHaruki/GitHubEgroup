@@ -17,7 +17,7 @@ public interface SafetyRepository extends JpaRepository<Safety, Integer> {
 			FROM Safety s
 			JOIN s.site st
 			WHERE
-			(:siteName IS NULL OR :siteName = '' OR st.siteName LIKE %:siteName%)
+			(:siteId IS NULL OR st.siteId = siteId)
 			AND
 			(:sCreatedAt IS NULL OR DATE(s.sCreatedAt) = :sCreatedAt)
 			AND(
@@ -51,6 +51,6 @@ public interface SafetyRepository extends JpaRepository<Safety, Integer> {
 			""")
 	List<Safety> search(
 			@Param("sCreatedAt") LocalDate sCreatedAt,
-			@Param("siteName") String siteName,
+			@Param("siteId") Integer siteId,
 			@Param("judgement") String judgement);
 }

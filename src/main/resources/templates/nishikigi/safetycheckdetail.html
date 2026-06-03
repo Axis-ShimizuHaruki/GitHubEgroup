@@ -67,10 +67,17 @@
 			</div>
 
 			<div class="summary-box">
+				<!-- 登録日時 -->
 				<div>
-					登録日：
-					<span th:text="${#temporals.format(safety.sCreatedAt,'yyyy/MM/dd')}">
-					</span>
+				    登録日時：
+				    <span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+				    </span>
+				</div>
+				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
+				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
+				    更新日時：
+				    <span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+				    </span>
 				</div>
 				<div>
 					現場名：
@@ -207,31 +214,25 @@
      添付画像
 ========================= -->
 
-		<div class="section">
-
+		<div th:if="${safety.photo != null}" class="section">
 			<div class="section-title">
 				添付画像
 			</div>
 
 			<div class="item">
-
 				<div class="label">
 					点検時の画像
 				</div>
 
 				<div class="value">
-
-					<img src="sample.jpg" alt="点検画像" style="
-          width:100%;
-          max-width:400px;
-          border-radius:10px;
-          border:1px solid #dfe6f7;
-        ">
-
+					<img th:src="@{${safety.photo}}" alt="点検画像" style="
+				          width:100%;
+				          max-width:400px;
+				          border-radius:10px;
+				          border:1px solid #dfe6f7;
+        			">
 				</div>
-
 			</div>
-
 		</div>
 		<!-- ボタン -->
 		<div class="btn-area">
@@ -250,11 +251,20 @@
 			</form>
 
 			<!-- role=0のみ -->
-			<form th:if="${session.loginUser != null and session.loginUser.roll == 0}"
-				th:action="@{/safetyinspection/{id}/confirm(id=${safety.safetyId})}" 
+			<form th:if="${session.loginUser != null and session.loginUser.roll == 0 and safety.sStatusFlag == 0}"
+				th:action="@{/safetyinspection/{id}/confirmed(id=${safety.safetyId})}" 
 				method="post">
 				<button type="submit" class="btn">
 					確認完了
+				</button>
+			</form>
+			
+			<!-- role=0のみ -->
+			<form th:if="${session.loginUser != null and session.loginUser.roll == 0 and safety.sStatusFlag == 1}"
+				th:action="@{/safetyinspection/{id}/confirmed/cancel(id=${safety.safetyId})}" 
+				method="post">
+				<button type="submit" class="btn">
+					確認解除
 				</button>
 			</form>
 		</div>

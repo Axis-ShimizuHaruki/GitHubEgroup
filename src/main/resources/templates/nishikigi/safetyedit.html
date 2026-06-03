@@ -67,10 +67,17 @@
 			</div>
 
 			<div class="summary-box">
+				<!-- 登録日時 -->
 				<div>
-					登録日：
-					<span th:text="${#temporals.format(safety.sCreatedAt,'yyyy/MM/dd')}">
-					</span>
+				    登録日時：
+				    <span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+				    </span>
+				</div>
+				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
+				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
+				    更新日時：
+				    <span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+				    </span>
 				</div>
 				<div>
 					現場名：
@@ -128,106 +135,113 @@
 				点検項目編集
 			</div>
 
-			<form th:action="@{/safetyinspection/{id}/edit/confirmed}" 
-					method="post" 
-					th:object="${safety}">
+			<form th:action="@{/safetyinspection/{id}/edit/confirm(id=${safety.safetyId})}"
+			method="post"
+			enctype="multipart/form-data"
+			th:object="${safety}">
 
 				<input type="hidden" th:field="*{safetyId}">
+				<input type="hidden" th:field="*{sCreatedAt}">
+				<input type="hidden" th:field="*{sUpdatedAt}">
+				<input type="hidden" th:field="*{site.siteName}">
+<!--				<input th:if="*{photo != null}" type="hidden" th:field="*{photo}">-->
 
-				<table class="table">
 
-					<thead>
-						<tr>
-							<th>点検項目</th>
-							<th>判定</th>
-						</tr>
-					</thead>
+				<div class="check-item">
+					<label>足場（手すり・幅木・滑り止め）</label>
 
-					<tbody>
+					<select th:field="*{scaffolding}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('scaffolding')}" th:errors="*{scaffolding}" style="color:red">
+					</div>
+				</div>
 
-						<tr>
-							<td>足場（手すり・幅木・滑り止め）</td>
-							<td>
-								<select th:field="*{scaffolding}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+				<div class="check-item">
+					<label>開口部養生</label>
 
-						<tr>
-							<td>開口部養生</td>
-							<td>
-								<select th:field="*{protectingOpenings}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+					<select th:field="*{protectingOpenings}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('protectingOpenings')}" th:errors="*{protectingOpenings}"
+						style="color:red">
+					</div>
+				</div>
 
-						<tr>
-							<td>高所作業の安全帯使用</td>
-							<td>
-								<select th:field="*{safetyHarness}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+				<div class="check-item">
+					<label>高所作業の安全帯使用</label>
 
-						<tr>
-							<td>重機点検記録</td>
-							<td>
-								<select th:field="*{equipmentInspection}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+					<select th:field="*{safetyHarness}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('safetyHarness')}" th:errors="*{safetyHarness}" style="color:red">
+					</div>
+				</div>
 
-						<tr>
-							<td>火気使用時の消火器配置</td>
-							<td>
-								<select th:field="*{fireExtinguisher}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+				<div class="check-item">
+					<label>重機点検記録</label>
 
-						<tr>
-							<td>整理整頓（つまずきリスク）</td>
-							<td>
-								<select th:field="*{organization}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+					<select th:field="*{equipmentInspection}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('equipmentInspection')}" th:errors="*{equipmentInspection}"
+						style="color:red">
+					</div>
+				</div>
 
-						<tr>
-							<td>仮設電気の絶縁</td>
-							<td>
-								<select th:field="*{electricalInsulation}">
-									<option value="0">良好</option>
-									<option value="1">不備</option>
-								</select>
-							</td>
-						</tr>
+				<div class="check-item">
+					<label>火気使用時の消火器配置</label>
 
-					</tbody>
+					<select th:field="*{fireExtinguisher}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('fireExtinguisher')}" th:errors="*{fireExtinguisher}"
+						style="color:red">
+					</div>
+				</div>
 
-				</table>
+				<div class="check-item">
+					<label>整理整頓（つまずきリスク）</label>
+
+					<select th:field="*{organization}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}" style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>仮設電気の絶縁</label>
+
+					<select th:field="*{electricalInsulation}">
+						<option value="">選択してください</option>
+						<option value="0">良好</option>
+						<option value="1">不備</option>
+					</select>
+					<div th:if="${#fields.hasErrors('electricalInsulation')}" th:errors="*{electricalInsulation}"
+						style="color:red">
+					</div>
+				</div>
 
 				<!-- 点検写真 -->
 				<div class="section">
-
 					<div class="section-title">
 						点検写真編集
 					</div>
 
 					<div class="item">
-
 						<div class="label">
 							点検写真アップロード
 						</div>
@@ -238,9 +252,7 @@
 						</div>
 
 						<input type="file" name="photoFile" accept="image/*">
-
 					</div>
-
 				</div>
 
 				<!-- ボタン -->
@@ -254,12 +266,9 @@
 					<button type="submit" class="btn">
 						確認
 					</button>
-
 				</div>
-
 			</form>
 		</div>
-
 </body>
 
 </html>

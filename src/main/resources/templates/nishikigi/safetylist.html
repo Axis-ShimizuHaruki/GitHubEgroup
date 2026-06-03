@@ -77,12 +77,21 @@
 	                <input type="date" name="sCreatedAt">
 	            </div>
 
-	            <!-- 現場名 -->
-	            <div class="search-item">
-	                <label>現場名</label>
-	                <input type="text" name="siteName" placeholder="現場名を入力">
-	            </div>
+				<div class="search-item">
+				    <label>現場名</label>
 
+				    <select name="siteId">
+				        <option value="">すべて</option>
+
+				        <option
+				            th:each="site : ${siteList}"
+				            th:value="${site.siteId}"
+				            th:text="${site.siteName}">
+				        </option>
+
+				    </select>
+				</div>
+				
 	            <!-- 判定 -->
 	            <div class="search-item">
 	                <label>判定</label>
@@ -116,6 +125,7 @@
             <th>良好</th>
             <th>不備</th>
             <th>判定</th>
+			<th>確認ステータス</th>
             <th>詳細</th>
           </tr>
         </thead>
@@ -154,6 +164,12 @@
 		            </span>
 		        </td>
 
+				<!-- 確認ステータス -->
+				<td>
+				    <span th:text="${safety.sStatusFlag == 0 ? '提出済み' : '確認済み'}">
+				    </span>
+				</td>
+				
 		        <!-- 詳細 -->
 		        <td>
 		            <a th:href="@{/safetyinspection/{id}(id=${safety.safetyId})}"

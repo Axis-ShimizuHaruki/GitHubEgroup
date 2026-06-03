@@ -1,13 +1,17 @@
 package jp.co.ecample.nishikigi_emon.form;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotNull;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.ecample.nishikigi_emon.entity.Site;
 
 public class SafetyForm {
+	// ID
+	private Integer safetyId;
+	
 	// 足場(手すり・幅木・滑り止め)
 	@NotNull(message = "この項目は必須です")
 	private Integer scaffolding;
@@ -37,13 +41,29 @@ public class SafetyForm {
 	private Integer electricalInsulation;
 	
 	// 写真
-	@Column(name = "photo")
 	private String photo;
+	private MultipartFile photoFile;
+	
+	// 作成日時
+	private LocalDateTime sCreatedAt;
+	
+	// 0：提出済み（未確認）, 1：確認完了
+	private Integer sStatusFlag;
+
+	// 更新日時
+	private LocalDateTime sUpdatedAt;
 	
 	// siteテーブル参照
-	@ManyToOne
-	@JoinColumn(name="site_id")
 	private Site site;
+
+	
+	public Integer getSafetyId() {
+		return safetyId;
+	}
+
+	public void setSafetyId(Integer safetyId) {
+		this.safetyId = safetyId;
+	}
 
 	public Integer getScaffolding() {
 		return scaffolding;
@@ -109,12 +129,44 @@ public class SafetyForm {
 		this.photo = photo;
 	}
 
+	public MultipartFile getPhotoFile() {
+		return photoFile;
+	}
+
+	public void setPhotoFile(MultipartFile photoFile) {
+		this.photoFile = photoFile;
+	}
+
 	public Site getSite() {
 		return site;
 	}
 
 	public void setSite(Site site) {
 		this.site = site;
+	}
+
+	public LocalDateTime getsCreatedAt() {
+		return sCreatedAt;
+	}
+
+	public void setsCreatedAt(LocalDateTime sCreatedAt) {
+		this.sCreatedAt = sCreatedAt;
+	}
+
+	public Integer getsStatusFlag() {
+		return sStatusFlag;
+	}
+
+	public void setsStatusFlag(Integer sStatusFlag) {
+		this.sStatusFlag = sStatusFlag;
+	}
+
+	public LocalDateTime getsUpdatedAt() {
+		return sUpdatedAt;
+	}
+
+	public void setsUpdatedAt(LocalDateTime sUpdatedAt) {
+		this.sUpdatedAt = sUpdatedAt;
 	}
 
 	

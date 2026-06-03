@@ -289,6 +289,7 @@ public class OfficeController {
 		model.addAttribute(
 				"loginSiteId",
 				view.getSite().getSiteId());
+		model.addAttribute("siteId", siteId);
 
 		return "nishikigi/portal";
 	}

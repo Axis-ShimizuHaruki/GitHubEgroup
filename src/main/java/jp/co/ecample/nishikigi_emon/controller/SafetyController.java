@@ -41,7 +41,11 @@ public class SafetyController {
 			Model model
 			) {
 		List<SafetyList> safetyList;
+		
 	    List<Site> siteList = siteService.selectAll();
+	    if (!siteList.isEmpty()) {
+	        siteList.remove(0);
+	    }
 		
 	    if (siteId == null) {
 	        // ホーム画面から
@@ -70,7 +74,11 @@ public class SafetyController {
 //		}
 
 		List<SafetyList> safetyList = service.search(sCreatedAt, siteId, judgement);
+		
 		List<Site> siteList = siteService.selectAll();
+		if (!siteList.isEmpty()) {
+		    siteList.remove(0);
+		}
 		
 		model.addAttribute("safetyList", safetyList);
 	    model.addAttribute("siteList", siteList);

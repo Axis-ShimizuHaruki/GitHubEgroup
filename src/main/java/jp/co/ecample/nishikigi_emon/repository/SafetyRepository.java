@@ -17,7 +17,7 @@ public interface SafetyRepository extends JpaRepository<Safety, Integer> {
 			FROM Safety s
 			JOIN s.site st
 			WHERE
-			(:siteId IS NULL OR st.siteId = siteId)
+			(:siteId IS NULL OR st.siteId = :siteId)
 			AND
 			(:sCreatedAt IS NULL OR DATE(s.sCreatedAt) = :sCreatedAt)
 			AND(

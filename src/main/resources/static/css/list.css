@@ -251,7 +251,9 @@ header {
 	font-weight: bold;
 }
 
-/* ===== 通知全体 ===== */
+/* =========================
+   通知全体
+========================= */
 #notification-container {
 
 	position: fixed;
@@ -259,18 +261,46 @@ header {
 	top: 20px;
 	right: 20px;
 
+	width: 360px;
+
 	z-index: 9999;
 
 	display: flex;
 	flex-direction: column;
 
 	gap: 12px;
+
+	/* 高さ制限 */
+	max-height: 40vh;
+
+	/* 通知だけスクロール */
+	overflow-y: auto;
+
+	padding-right: 6px;
 }
 
-/* ===== 通知カード ===== */
+/* スクロールバー */
+#notification-container::-webkit-scrollbar {
+	width: 8px;
+}
+
+#notification-container::-webkit-scrollbar-thumb {
+
+	background: rgba(0,0,0,0.25);
+
+	border-radius: 10px;
+}
+
+#notification-container::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* =========================
+   通知カード
+========================= */
 .notification {
 
-	width: 340px;
+	position: relative;
 
 	padding: 16px 18px;
 
@@ -278,31 +308,33 @@ header {
 
 	color: white;
 
+	cursor: pointer;
+
 	box-shadow:
 		0 8px 20px rgba(0,0,0,0.25);
 
-	cursor: pointer;
+	animation: noticeIn 0.25s ease;
 
-	animation: noticeSlide 0.25s ease;
+	border-left: 8px solid rgba(255,255,255,0.5);
 
-	border-left: 8px solid rgba(255,255,255,0.7);
-
-	backdrop-filter: blur(6px);
-
-	font-family: "Yu Gothic", sans-serif;
+	backdrop-filter: blur(4px);
 
 	transition:
 		transform 0.2s,
-		opacity 0.2s;
+		box-shadow 0.2s;
 }
 
-/* ホバー */
 .notification:hover {
 
 	transform: translateY(-2px);
+
+	box-shadow:
+		0 12px 24px rgba(0,0,0,0.35);
 }
 
-/* ===== 優先度 ===== */
+/* =========================
+   優先度別
+========================= */
 
 /* 高 */
 .notification.high {
@@ -310,8 +342,8 @@ header {
 	background:
 		linear-gradient(
 			135deg,
-			#e53935,
-			#c62828
+			#ff3b30,
+			#d70015
 		);
 }
 
@@ -321,8 +353,8 @@ header {
 	background:
 		linear-gradient(
 			135deg,
-			#fb8c00,
-			#ef6c00
+			#ff9500,
+			#ff6a00
 		);
 }
 
@@ -332,12 +364,14 @@ header {
 	background:
 		linear-gradient(
 			135deg,
-			#43a047,
-			#2e7d32
+			#34c759,
+			#1f9d45
 		);
 }
 
-/* ===== 現場名 ===== */
+/* =========================
+   現場名
+========================= */
 .notice-site {
 
 	font-size: 13px;
@@ -351,25 +385,30 @@ header {
 	letter-spacing: 0.5px;
 }
 
-/* ===== 内容 ===== */
+/* =========================
+   内容
+========================= */
 .notice-overview {
 
 	font-size: 16px;
 
 	font-weight: bold;
 
-	line-height: 1.5;
+	line-height: 1.4;
 }
 
-/* ===== アニメーション ===== */
-@keyframes noticeSlide {
+/* =========================
+   アニメーション
+========================= */
+@keyframes noticeIn {
 
 	from {
 
 		opacity: 0;
 
 		transform:
-			translateX(50px);
+			translateX(40px)
+			scale(0.95);
 	}
 
 	to {
@@ -377,7 +416,8 @@ header {
 		opacity: 1;
 
 		transform:
-			translateX(0);
+			translateX(0)
+			scale(1);
 	}
 }
 

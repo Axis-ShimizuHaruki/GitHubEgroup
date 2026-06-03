@@ -43,9 +43,7 @@ public class SafetyController {
 		List<SafetyList> safetyList;
 		
 	    List<Site> siteList = siteService.selectAll();
-	    if (!siteList.isEmpty()) {
-	        siteList.remove(0);
-	    }
+	    siteList.removeIf(site -> site.getOfficecheck() == true);
 		
 	    if (siteId == null) {
 	        // ホーム画面から
@@ -57,6 +55,9 @@ public class SafetyController {
 		
 		model.addAttribute("safetyList", safetyList);
 		model.addAttribute("siteList", siteList);
+		
+	    // 検索条件保持用
+	    model.addAttribute("siteId", siteId);
 		
 		return "nishikigi/safetylist";
 	}
@@ -76,12 +77,15 @@ public class SafetyController {
 		List<SafetyList> safetyList = service.search(sCreatedAt, siteId, judgement);
 		
 		List<Site> siteList = siteService.selectAll();
-		if (!siteList.isEmpty()) {
-		    siteList.remove(0);
-		}
+	    siteList.removeIf(site -> site.getOfficecheck() == true);
 		
 		model.addAttribute("safetyList", safetyList);
 	    model.addAttribute("siteList", siteList);
+	    
+	    // 検索条件保持用
+	    model.addAttribute("sCreatedAt", sCreatedAt);
+	    model.addAttribute("siteId", siteId);
+	    model.addAttribute("judgement", judgement);
 		
 		return "nishikigi/safetylist";
 	}

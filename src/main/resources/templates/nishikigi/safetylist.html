@@ -74,7 +74,9 @@
 	            <!-- 登録日 -->
 	            <div class="search-item">
 	                <label>登録日</label>
-	                <input type="date" name="sCreatedAt">
+					<input type="date"
+					       name="sCreatedAt"
+					       th:value="${sCreatedAt}">
 	            </div>
 
 				<div class="search-item">
@@ -83,12 +85,11 @@
 				    <select name="siteId">
 				        <option value="">すべて</option>
 
-				        <option
-				            th:each="site : ${siteList}"
-				            th:value="${site.siteId}"
-				            th:text="${site.siteName}">
-				        </option>
-
+						<option th:each="site : ${siteList}"
+						        th:value="${site.siteId}"
+						        th:text="${site.siteName}"
+						        th:selected="${site.siteId == siteId}">
+						</option>
 				    </select>
 				</div>
 				
@@ -96,9 +97,20 @@
 	            <div class="search-item">
 	                <label>判定</label>
 	                <select name="judgement">
-	                    <option value="">すべて</option>
-	                    <option value="良好">良好</option>
-	                    <option value="要対応">要対応</option>
+						<option value=""
+						        th:selected="${judgement == null or judgement == ''}">
+						    すべて
+						</option>
+
+						<option value="良好"
+						        th:selected="${judgement == '良好'}">
+						    良好
+						</option>
+
+						<option value="要対応"
+						        th:selected="${judgement == '要対応'}">
+						    要対応
+						</option>
 	                </select>
 	            </div>
 
@@ -107,6 +119,11 @@
 	                検索
 	            </button>
 
+				<button type="button"
+				        class="reset-btn"
+				        th:onclick="|location.href='@{/safetyinspection/list}'|">
+				    リセット
+				</button>
 	        </div>
 
 	    </div>

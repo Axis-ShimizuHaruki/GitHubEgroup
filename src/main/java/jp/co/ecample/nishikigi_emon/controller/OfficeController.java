@@ -22,16 +22,19 @@ import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
+import jp.co.ecample.nishikigi_emon.service.SafetyService;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 
 @Controller
 public class OfficeController {
 	private final SiteRepository siteRepository;
 	private final TroubleService Tservice;
+	private final SafetyService Sservice;
 
-	public OfficeController(SiteRepository siteRepository, TroubleService Tservice) {
+	public OfficeController(SiteRepository siteRepository, TroubleService Tservice, SafetyService Sservice) {
 		this.siteRepository = siteRepository;
 		this.Tservice = Tservice;
+		this.Sservice = Sservice;
 	}
 
 	@Autowired
@@ -55,9 +58,11 @@ public class OfficeController {
 
 		// 通知用
 		List<Trouble> noticeList = Tservice.getActiveTroubles();
-
+		List<Safety> snoticeList = Sservice.getActiveTroubles();
+		
+		
 		model.addAttribute("noticeList", noticeList);
-
+		model.addAttribute("snoticeList", snoticeList);
 		//
 
 		List<Site> siteList = siteRepository.findAll();

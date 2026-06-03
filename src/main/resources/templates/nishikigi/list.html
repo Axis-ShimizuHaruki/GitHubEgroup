@@ -463,8 +463,11 @@
 
 
 	<!-- 通知表示エリア -->
-	<div id="notification-container">
-	</div>
+	<!-- トラブル通知 -->
+	<div id="notification-container"></div>
+
+	<!-- 安全点検通知 -->
+	<div id="safety-notification-container"></div>
 
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
@@ -494,8 +497,15 @@
 					const data =
 						JSON.parse(message.body);
 
-					showNotification(data);
+					// 通知タイプで分岐
+					if (data.type === "safety") {
 
+						showSafetyNotification(data);
+
+					} else {
+
+						showNotification(data);
+					}
 				}
 			);
 
@@ -576,6 +586,39 @@
 			});
 		}
 
+		function showSafetyNotification(data) {
+
+			console.log("安全通知");
+			console.log(data);
+
+			const container =
+				document.getElementById(
+					"safety-notification-container"
+				);
+
+			const notification =
+				document.createElement("div");
+
+			notification.className =
+				"safety-notification";
+
+			notification.innerHTML = `
+				<div class="notice-site">
+					${data.siteName}
+				</div>
+
+				<div class="notice-overview">
+					安全点検で不備があります
+				</div>
+
+				<div class="notice-time">
+					${data.createdAt}
+				</div>
+			`;
+
+			container.appendChild(notification);
+		}
+
 	</script>
 
 
@@ -588,19 +631,19 @@
 			showNotification({
 
 				siteName:
-				'[[${trouble.site.siteName}]]',
+					'[[${trouble.site.siteName}]]',
 
 				overview:
-				'[[${trouble.overview}]]',
+					'[[${trouble.overview}]]',
 
 				priority:
-				'[[${trouble.priority}]]',
+					'[[${trouble.priority}]]',
 
 				troubleId:
-				'[[${trouble.troubleId}]]',
-				
+					'[[${trouble.troubleId}]]',
+
 				createdAt:
-				'[[${#temporals.format(trouble.tCreatedAt, "yyyy/MM/dd HH:mm")}]]'
+					'[[${#temporals.format(trouble.tCreatedAt, "yyyy/MM/dd HH:mm")}]]'
 
 			});
 
@@ -609,6 +652,8 @@
 		});
 
 	</script>
+
+
 </body>
 
 </html>

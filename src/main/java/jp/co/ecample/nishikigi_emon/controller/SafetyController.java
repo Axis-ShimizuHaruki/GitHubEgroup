@@ -1,12 +1,18 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,35 +39,37 @@ public class SafetyController {
 		this.service = service;
 		this.siteService = siteService;
 	}
+	
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
 
 	// 安全点検一覧画面表示
 	@GetMapping("/safetyinspection/list")
 	public String showSafetyList(
 			@RequestParam(required = false) Integer siteId,
-			Model model
-			) {
+			Model model) {
 		List<SafetyList> safetyList;
-		
-	    List<Site> siteList = siteService.selectAll();
-	    siteList.removeIf(site -> site.getOfficecheck() == true);
-		
-	    if (siteId == null) {
-	        // ホーム画面から
-	        safetyList = service.selectAll();
-	    } else {
-	        // 現場ポータルから
-	        safetyList = service.search(null, siteId, null);
-	    }
-		
+
+		List<Site> siteList = siteService.selectAll();
+		siteList.removeIf(site -> site.getOfficecheck() == true);
+
+		if (siteId == null) {
+			// ホーム画面から
+			safetyList = service.selectAll();
+		} else {
+			// 現場ポータルから
+			safetyList = service.search(null, siteId, null);
+		}
+
 		model.addAttribute("safetyList", safetyList);
 		model.addAttribute("siteList", siteList);
-		
-	    // 検索条件保持用
-	    model.addAttribute("siteId", siteId);
-		
+
+		// 検索条件保持用
+		model.addAttribute("siteId", siteId);
+
 		return "nishikigi/safetylist";
 	}
-	
+
 	// 検索処理制御
 	@GetMapping("/safetyinspection/search")
 	public String search(
@@ -70,23 +78,23 @@ public class SafetyController {
 			@RequestParam(required = false) String judgement,
 			Model model,
 			HttpSession session) {
-//		if(session.getAttribute("loginUser") == null) {
-//			return "redirect:/login";
-//		}
+		//		if(session.getAttribute("loginUser") == null) {
+		//			return "redirect:/login";
+		//		}
 
 		List<SafetyList> safetyList = service.search(sCreatedAt, siteId, judgement);
-		
+
 		List<Site> siteList = siteService.selectAll();
-	    siteList.removeIf(site -> site.getOfficecheck() == true);
-		
+		siteList.removeIf(site -> site.getOfficecheck() == true);
+
 		model.addAttribute("safetyList", safetyList);
-	    model.addAttribute("siteList", siteList);
-	    
-	    // 検索条件保持用
-	    model.addAttribute("sCreatedAt", sCreatedAt);
-	    model.addAttribute("siteId", siteId);
-	    model.addAttribute("judgement", judgement);
-		
+		model.addAttribute("siteList", siteList);
+
+		// 検索条件保持用
+		model.addAttribute("sCreatedAt", sCreatedAt);
+		model.addAttribute("siteId", siteId);
+		model.addAttribute("judgement", judgement);
+
 		return "nishikigi/safetylist";
 	}
 
@@ -95,52 +103,50 @@ public class SafetyController {
 	public String showSafetyDetail(
 			@PathVariable Integer id,
 			Model model,
-			HttpSession session
-			) {
+			HttpSession session) {
 		Optional<Safety> result = service.findById(id);
 		Safety safety = result.get();
 
 		model.addAttribute("safety", safety);
-		
+
 		return "nishikigi/safetycheckdetail";
 	}
-	
+
 	// 安全点検登録画面表示
 	@GetMapping("/safetyinspection/new")
 	public String showSafetyNewForm(Model model) {
 		model.addAttribute("safety", new SafetyForm());
-		
+
 		return "nishikigi/safetycheck";
 	}
-	
+
 	// 安全点検登録画面に戻る
 	@PostMapping("/safetyinspection/new")
 	public String backSafetyInput(
-	        @ModelAttribute("safety") SafetyForm safety,
-	        Model model) {
+			@ModelAttribute("safety") SafetyForm safety,
+			Model model) {
 
-	    model.addAttribute("safety", safety);
+		model.addAttribute("safety", safety);
 
-	    return "nishikigi/safetycheck";
+		return "nishikigi/safetycheck";
 	}
-	
+
 	// 安全点検登録確認画面を表示
 	@PostMapping("/safetyinspection/new/confirm")
 	public String showSafetyConfirm(
 			@Valid @ModelAttribute("safety") SafetyForm safety,
 			BindingResult result,
-			Model model
-			) {
+			Model model) {
 		// バリデーションNGなら登録画面に戻す
-	    if (result.hasErrors()) {
-	        return "nishikigi/safetycheck";
-	    }
-	    
-	    model.addAttribute("safety", safety);
-	    
+		if (result.hasErrors()) {
+			return "nishikigi/safetycheck";
+		}
+
+		model.addAttribute("safety", safety);
+
 		return "nishikigi/safetycheckcheck";
 	}
-	
+
 	// 安全点検登録処理
 	@PostMapping("/safetyinspection/new/comfirmed")
 	public String createSafety(@ModelAttribute("safety") SafetyForm safety,
@@ -153,51 +159,88 @@ public class SafetyController {
 				safety.getFireExtinguisher(),
 				safety.getOrganization(),
 				safety.getElectricalInsulation(),
-				(Integer)session.getAttribute("siteId")
-				);
+				(Integer) session.getAttribute("siteId"));
 		
+		// =========================
+		// どれか1件でも不備なら通知
+		// =========================
+		boolean hasProblem = safety.getScaffolding() == 1 ||
+				safety.getProtectingOpenings() == 1 ||
+				safety.getSafetyHarness() == 1 ||
+				safety.getEquipmentInspection() == 1 ||
+				safety.getFireExtinguisher() == 1 ||
+				safety.getOrganization() == 1 ||
+				safety.getElectricalInsulation() == 1;
+
+		// =========================
+		// 通知送信
+		// =========================
+		if (hasProblem) {
+
+			Integer siteId =
+					(Integer) session.getAttribute("siteId");
+
+			Site site =
+					siteService.findById(siteId);
+
+			DateTimeFormatter formatter =
+					DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+
+			String createdAt =
+					LocalDateTime.now().format(formatter);
+
+			Map<String, Object> notice = new HashMap<>();
+
+			notice.put("type", "safety");
+			notice.put("siteId", siteId);
+			notice.put("siteName", site.getSiteName());
+			notice.put("createdAt", createdAt);
+
+			messagingTemplate.convertAndSend(
+					"/topic/notice",
+					(Object) notice
+			);
+		}
 		return "redirect:/complete";
 	}
-	
+
 	// 編集画面表示
 	@PostMapping("/safetyinspection/{id}/edit")
 	public String showSafetyEdit(
 			@PathVariable Integer id,
 			Model model,
-			HttpSession session
-			) {
+			HttpSession session) {
 		Optional<Safety> result = service.findById(id);
 		Safety safety = result.get();
-		
+
 		model.addAttribute("safety", safety);
-		
+
 		return "nishikigi/safetyedit";
 	}
-	
+
 	// 編集確認画面を表示
 	@PostMapping("/safetyinspection/{id}/edit/confirm")
 	public String showSafetyEditConfirm(
 			@Valid @ModelAttribute("safety") SafetyForm safety,
 			BindingResult result,
-			Model model, 
+			Model model,
 			HttpSession session) {
-		
-	    if (result.hasErrors()) {
-	        return "nishikigi/safetyedit";
-	    }
-	    
-	    if (!safety.getPhotoFile().isEmpty()) {
-	        String photoPath =
-	                service.savePhoto(safety.getPhotoFile());
 
-	        safety.setPhoto(photoPath);
-	    }
-	    System.out.println("photo = " + safety.getPhoto());
-	    model.addAttribute("safety", safety);
-		
+		if (result.hasErrors()) {
+			return "nishikigi/safetyedit";
+		}
+
+		if (!safety.getPhotoFile().isEmpty()) {
+			String photoPath = service.savePhoto(safety.getPhotoFile());
+
+			safety.setPhoto(photoPath);
+		}
+		System.out.println("photo = " + safety.getPhoto());
+		model.addAttribute("safety", safety);
+
 		return "nishikigi/safetyeditcheck";
 	}
-	
+
 	// 安全点検編集処理
 	@PostMapping("/safetyinspection/{id}/edit/confirmed")
 	public String updateSafety(
@@ -212,9 +255,8 @@ public class SafetyController {
 				safety.getFireExtinguisher(),
 				safety.getOrganization(),
 				safety.getElectricalInsulation(),
-				safety.getPhoto()
-				);
-		
+				safety.getPhoto());
+
 		return "redirect:/complete";
 	}
 
@@ -223,26 +265,24 @@ public class SafetyController {
 	public String confirmSafety(
 			@PathVariable Integer id,
 			RedirectAttributes redirectAttributes,
-			HttpSession session
-			) {
+			HttpSession session) {
 		service.confirmSafety(id);
-		
+
 		redirectAttributes.addAttribute("id", id);
-		
+
 		return "redirect:/safetyinspection/{id}";
 	}
-	
+
 	// 安全点検確認解除
 	@PostMapping("/safetyinspection/{id}/confirmed/cancel")
 	public String confirmCancelSafety(
 			@PathVariable Integer id,
 			RedirectAttributes redirectAttributes,
-			HttpSession session
-			) {
+			HttpSession session) {
 		service.confirmCancelSafety(id);
-		
+
 		redirectAttributes.addAttribute("id", id);
-		
+
 		return "redirect:/safetyinspection/{id}";
 	}
 }

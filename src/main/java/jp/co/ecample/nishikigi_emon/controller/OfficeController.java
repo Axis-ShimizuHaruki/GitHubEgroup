@@ -2,7 +2,9 @@ package jp.co.ecample.nishikigi_emon.controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import jp.co.ecample.nishikigi_emon.dto.SafetyList;
 import jp.co.ecample.nishikigi_emon.dto.SiteView;
 import jp.co.ecample.nishikigi_emon.entity.Chat;
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
@@ -58,11 +61,23 @@ public class OfficeController {
 
 		// 通知用
 		List<Trouble> noticeList = Tservice.getActiveTroubles();
-		List<Safety> snoticeList = Sservice.getActiveTroubles();
+		List<SafetyList> allSafetyList = Sservice.selectAll();
 		
+		
+		List<Map<String, Object>> defectList = allSafetyList.stream()
+			    .filter(dto -> "要対応".equals(dto.getJudgement())) // 要対応のデータのみに絞り込む
+			    .map(dto -> {
+			        Map<String, Object> map = new HashMap<String, Object>();
+			        map.put("siteName", dto.getSite().getSiteName()); // 現場名
+			        map.put("createdAt", dto.getsCreatedAt());        // 登録日
+			        map.put("siteId", dto.getSite().getSiteId());      // 現場ID
+			        map.put("safetyId", dto.getSafetyId());
+			        return map;
+			    })
+			    .toList();	
 		
 		model.addAttribute("noticeList", noticeList);
-		model.addAttribute("snoticeList", snoticeList);
+		model.addAttribute("defectList", defectList);
 		//
 
 		List<Site> siteList = siteRepository.findAll();

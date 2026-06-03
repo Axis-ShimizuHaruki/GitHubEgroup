@@ -623,35 +623,36 @@
 
 
 	<script th:inline="javascript">
+	window.addEventListener('load', function () {
 
-		window.addEventListener('load', function () {
+	    /*[# th:each="trouble : ${noticeList}"]*/
+	    showNotification({
+	        siteName:  /*[[${trouble?.site?.siteName}]]*/ '',
+	        overview:  /*[[${trouble?.overview}]]*/ '',
+	        priority:  /*[[${trouble?.priority}]]*/ '',
+	        troubleId: /*[[${trouble?.troubleId}]]*/ '',
+	        // troubleの型に合わせてフォーマット。null安全に
+	        createdAt: /*[[${trouble?.tCreatedAt != null ? #temporals.format(trouble.tCreatedAt, 'yyyy/MM/dd HH:mm') : ''}]]*/ ''
+	    });
+	    /*[/]*/
 
-			/*[# th:each="trouble : ${noticeList}"]*/
 
-			showNotification({
+	    /*[# th:each="safety : ${defectList}"]*/
+	    showSafetyNotification({
+	        // safetyはMapなので、Java側でputしたキー名をそのまま指定
+	        siteName:  /*[[${safety['siteName']}]]*/ '',
+	        safetyId:  /*[[${safety['safetyId']}]]*/ '',
+	        
+	        // 日付はすでにMapに入っているので直接取得。
+	        createdAt: /*[[${safety['createdAt']}]]*/ ''
+	    });
+	    /*[/]*/
 
-				siteName:
-					'[[${trouble.site.siteName}]]',
-
-				overview:
-					'[[${trouble.overview}]]',
-
-				priority:
-					'[[${trouble.priority}]]',
-
-				troubleId:
-					'[[${trouble.troubleId}]]',
-
-				createdAt:
-					'[[${#temporals.format(trouble.tCreatedAt, "yyyy/MM/dd HH:mm")}]]'
-
-			});
-
-			/*[/]*/
-
-		});
-
+	});
 	</script>
+
+
+
 
 
 </body>

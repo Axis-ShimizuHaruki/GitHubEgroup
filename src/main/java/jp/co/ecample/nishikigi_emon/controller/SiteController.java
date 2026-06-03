@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
@@ -10,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import jp.co.ecample.nishikigi_emon.entity.Chat;
+import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
+import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
@@ -28,7 +31,13 @@ public class SiteController {
 	public String showNewHome(
 	        HttpSession session,
 	        Model model) {
-
+		
+		// ログインチャック
+				if (session.getAttribute("loginUser") == null) {
+					return "redirect:/login";
+				}
+		
+		
 	    Integer siteId =
 	        (Integer) session.getAttribute("siteId");
 
@@ -44,6 +53,66 @@ public class SiteController {
 	    model.addAttribute("chatList", chatList);
 	    model.addAttribute("loginSiteId", siteId);
 
+	    
+	    // 左下ステータス表示用
+	    LocalDate today = LocalDate.now();
+	    
+	    
+	    // ====================
+	    // 日報
+	    // ====================
+	    String dailyStatus = "未提出";
+
+	    Dailyreport todayReport = null;
+
+	    for (Dailyreport report : site.getDailyreportList()) {
+
+	        if (today.equals(report.getTargetDate())) {
+
+	            todayReport = report;
+
+	            dailyStatus = "未確認";
+
+	            if (report.getDStatusFlag() == 1) {
+
+	                dailyStatus = "確認済";
+	                break;
+	            }
+	        }
+	    }
+	    
+	    model.addAttribute("dailyStatus", dailyStatus);
+	    
+
+	    // ====================
+	    // 安全点検
+	    // ====================
+
+	    String safetyStatus = "未提出";
+
+	    Safety todaySafety = null;
+
+	    for (Safety safety : site.getSafetyList()) {
+
+	        if (today.equals(
+	                safety.getsCreatedAt().toLocalDate())) {
+
+	            todaySafety = safety;
+
+	            safetyStatus = "未確認";
+
+	            if ("1".equals(safety.getsStatusFlag())) {
+
+	                safetyStatus = "確認済";
+	                break;
+	            }
+	        }
+	    }
+
+	   
+	    model.addAttribute("safetyStatus", safetyStatus);
+
+	    
 	    return "nishikigi/home";
 	}
 	

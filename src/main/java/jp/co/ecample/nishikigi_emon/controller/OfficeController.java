@@ -30,7 +30,7 @@ public class OfficeController {
 	public OfficeController(SiteRepository siteRepository) {
 		this.siteRepository = siteRepository;
 	}
-	
+
 	@Autowired
 	private ChatRepository chatRepository;
 
@@ -161,126 +161,124 @@ public class OfficeController {
 	// 現場ポータル
 	@GetMapping("/portal/{id}")
 	public String loginForm(
-	        @PathVariable("id") Integer siteId,
-	        HttpSession session,
-	        Model model) {
-		
-		
+			@PathVariable("id") Integer siteId,
+			HttpSession session,
+			Model model) {
 
-	    User loginUser =
-	            (User) session.getAttribute("loginUser");
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
 
-	    if (loginUser == null) {
-	        return "redirect:/login";
-	    }
+		User loginUser = (User) session.getAttribute("loginUser");
 
-	    Site site = siteRepository.findById(siteId)
-	            .orElseThrow(() ->
-	                    new RuntimeException("現場が存在しません"));
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
 
-	    // 本社除外
-	    if (site.getOfficecheck()) {
-	        return "redirect:/home";
-	    }
+		Site site = siteRepository.findById(siteId)
+				.orElseThrow(() -> new RuntimeException("現場が存在しません"));
 
-	    int maxPriority = 0;
+		// 本社除外
+		if (site.getOfficecheck()) {
+			return "redirect:/home";
+		}
 
-	    for (Trouble trouble : site.getTroubleList()) {
+		int maxPriority = 0;
 
-	        if (trouble.getPriority() > maxPriority) {
-	            maxPriority = trouble.getPriority();
-	        }
-	    }
+		for (Trouble trouble : site.getTroubleList()) {
 
-	    LocalDate today = LocalDate.now();
+			if (trouble.getPriority() > maxPriority) {
+				maxPriority = trouble.getPriority();
+			}
+		}
 
-	    // ====================
-	    // 日報状態
-	    // ====================
+		LocalDate today = LocalDate.now();
 
-	    String dailyStatus = "未提出";
+		// ====================
+		// 日報状態
+		// ====================
 
-	    Dailyreport todayReport = null;
+		String dailyStatus = "未提出";
 
-	    for (Dailyreport report : site.getDailyreportList()) {
+		Dailyreport todayReport = null;
 
-	        if (today.equals(report.getTargetDate())) {
+		for (Dailyreport report : site.getDailyreportList()) {
 
-	            todayReport = report;
+			if (today.equals(report.getTargetDate())) {
 
-	            dailyStatus = "未確認";
+				todayReport = report;
 
-	            if (report.getDStatusFlag() == 1) {
+				dailyStatus = "未確認";
 
-	                dailyStatus = "確認済";
-	                break;
-	            }
-	        }
-	    }
+				if (report.getDStatusFlag() == 1) {
 
-	    // ====================
-	    // 安全点検
-	    // ====================
+					dailyStatus = "確認済";
+					break;
+				}
+			}
+		}
 
-	    String safetyStatus = "未提出";
+		// ====================
+		// 安全点検
+		// ====================
 
-	    Safety todaySafety = null;
+		String safetyStatus = "未提出";
 
-	    for (Safety safety : site.getSafetyList()) {
+		Safety todaySafety = null;
 
-	        if (today.equals(
-	                safety.getsCreatedAt().toLocalDate())) {
+		for (Safety safety : site.getSafetyList()) {
 
-	            todaySafety = safety;
+			if (today.equals(
+					safety.getsCreatedAt().toLocalDate())) {
 
-	            safetyStatus = "未確認";
+				todaySafety = safety;
 
-	            if ("1".equals(safety.getsStatusFlag())) {
+				safetyStatus = "未確認";
 
-	                safetyStatus = "確認済";
-	                break;
-	            }
-	        }
-	    }
+				if ("1".equals(safety.getsStatusFlag())) {
 
-	    boolean mySite = false;
+					safetyStatus = "確認済";
+					break;
+				}
+			}
+		}
 
-	    for (Manager manager : site.getManagerList()) {
+		boolean mySite = false;
 
-	        if (manager.getUser() != null &&
-	            manager.getUser().getUserid()
-	                    .equals(loginUser.getUserid())) {
+		for (Manager manager : site.getManagerList()) {
 
-	            mySite = true;
-	            break;
-	        }
-	    }
+			if (manager.getUser() != null &&
+					manager.getUser().getUserid()
+							.equals(loginUser.getUserid())) {
 
-	    SiteView view = new SiteView(
-	            site,
-	            maxPriority,
-	            dailyStatus,
-	            safetyStatus,
-	            mySite);
+				mySite = true;
+				break;
+			}
+		}
 
-	    view.setTodayReport(todayReport);
-	    view.setTodaySafety(todaySafety);
+		SiteView view = new SiteView(
+				site,
+				maxPriority,
+				dailyStatus,
+				safetyStatus,
+				mySite);
 
-	    model.addAttribute("view", view);
+		view.setTodayReport(todayReport);
+		view.setTodaySafety(todaySafety);
 
-	    
-	    List<Chat> chatList =
-	    	    chatRepository
-	    	        .findBySiteSiteIdOrderByDateTimeAsc(
-	    	            view.getSite().getSiteId());
+		model.addAttribute("view", view);
 
-	    	model.addAttribute("chatList", chatList);
+		List<Chat> chatList = chatRepository
+				.findBySiteSiteIdOrderByDateTimeAsc(
+						view.getSite().getSiteId());
 
-	    	model.addAttribute(
-	    	    "loginSiteId",
-	    	    view.getSite().getSiteId());
-	    
-	    return "nishikigi/portal";
+		model.addAttribute("chatList", chatList);
+
+		model.addAttribute(
+				"loginSiteId",
+				view.getSite().getSiteId());
+
+		return "nishikigi/portal";
 	}
 }
-

@@ -105,77 +105,73 @@ main {
 
 .button-area {
 	width: 420px;
-
 	display: flex;
 	flex-direction: column;
-	gap: 25px;
+	gap: 5px;
 }
 
 .menu-group {
 	background: white;
 	border-radius: 16px;
 	padding: 24px;
-
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
+	/* ★縦並び(column)から横並び(row)に変更 */
 	display: flex;
-	flex-direction: column;
-	gap: 18px;
+	flex-direction: row; 
+	gap: 16px; /* ボタン同士の間のスキマ */
 
 	border-top: 6px solid #1f3c88;
 }
 
+/* ★作成ボタン（メイン：濃い青塗りつぶし） */
 .menu-button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	height: 140px;
+	flex: 1;         /* 横幅を均等に広げる */
+	height: 90px;    /* 横並び用に高さを調整 */
 
-	background-color: #f7f9ff;
+	background-color: #1f3c88;
+	color: white;
 	border-radius: 14px;
-
 	text-decoration: none;
-	color: #1f3c88;
 
-	font-size: 28px;
+	font-size: 20px; /* 文字が収まるように少し小さく調整 */
 	font-weight: bold;
-
-	border: 2px solid #d9e3ff;
-
+	border: 2px solid #1f3c88;
 	transition: 0.2s;
 }
 
 .menu-button:hover {
-	background-color: #1f3c88;
-	color: white;
+	background-color: #16306f;
 	transform: translateY(-4px);
 }
 
+/* ★一覧ボタン（サブ：白背景＋青枠線） */
 .sub-button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	height: 55px;
+	flex: 1;         /* 横幅を均等に広げる */
+	height: 90px;    /* 作成ボタンと高さを揃える */
 
 	background-color: white;
-	border-radius: 10px;
-
-	text-decoration: none;
 	color: #1f3c88;
+	border-radius: 14px;
+	text-decoration: none;
 
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: bold;
-
 	border: 2px solid #1f3c88;
-
 	transition: 0.2s;
 }
 
 .sub-button:hover {
-	background-color: #1f3c88;
-	color: white;
+	background-color: #f7f9ff;
+	transform: translateY(-4px); /* 作成ボタンと動きを合わせる */
 }
 
 /* =========================

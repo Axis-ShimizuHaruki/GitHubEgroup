@@ -184,8 +184,8 @@
 			<div class="chat-messages" id="chatMessages">
 
 				<div th:each="chat : ${chatList}" th:class="${chat.senderSite.siteId == loginSiteId}
-			                  ? 'message-row me'
-			                  : 'message-row other'">
+			                  ? 'message-row other'
+			                  : 'message-row me'">
 
 					<div class="message" th:text="${chat.message}">
 					</div>

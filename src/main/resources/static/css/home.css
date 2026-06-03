@@ -269,26 +269,28 @@ main {
 	padding: 16px;
 
 	display: flex;
+	align-items: flex-end;
 	gap: 12px;
 }
 
 .chat-input textarea {
-	flex: 1;
+    flex: 1;
 
-	height: 52px;
+    min-height: 52px;
+    max-height: 120px;
 
-	border: 1px solid #ccc;
-	border-radius: 999px;
+    padding: 12px 18px;
 
-	padding: 0 18px;
+    border: 1px solid #ccc;
+    border-radius: 16px;
 
-	font-size: 16px;
-
-	outline: none;
+    resize: none;
+    overflow-y: auto;
 }
 
 .chat-input button {
 	width: 100px;
+	height: 52px;
 
 	border: none;
 	border-radius: 999px;

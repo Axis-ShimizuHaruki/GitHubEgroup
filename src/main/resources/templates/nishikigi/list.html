@@ -615,7 +615,12 @@
 					${data.createdAt}
 				</div>
 			`;
+			notification.onclick = () => {
 
+				location.href =
+					'/nishikigi/safetyinspection/' +
+					data.safetyId;
+			};
 			container.appendChild(notification);
 		}
 

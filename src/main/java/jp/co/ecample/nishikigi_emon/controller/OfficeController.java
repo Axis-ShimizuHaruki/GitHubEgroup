@@ -94,11 +94,13 @@ public class OfficeController {
 			}
 
 			int maxPriority = 0;
+			int tStatusFlag = 0;
 
 			for (Trouble trouble : site.getTroubleList()) {
 
 				if (trouble.getPriority() > maxPriority) {
 					maxPriority = trouble.getPriority();
+					tStatusFlag = trouble.gettStatusFlag();
 				}
 			}
 
@@ -164,6 +166,7 @@ public class OfficeController {
 			SiteView view = new SiteView(
 					site,
 					maxPriority,
+					tStatusFlag,
 					dailyStatus,
 					safetyStatus,
 					mySite);
@@ -221,6 +224,7 @@ public class OfficeController {
 		}
 
 		int maxPriority = 0;
+		int tStatusFlag = 0;
 
 		for (Trouble trouble : site.getTroubleList()) {
 
@@ -296,6 +300,7 @@ public class OfficeController {
 		SiteView view = new SiteView(
 				site,
 				maxPriority,
+				tStatusFlag,
 				dailyStatus,
 				safetyStatus,
 				mySite);

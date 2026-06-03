@@ -10,6 +10,8 @@ public class SiteView {
 
     private Integer maxPriority;
     
+    private Integer tStatusFlag;
+    
     private boolean dailyChecked;
 
     private String dailyStatus;
@@ -25,6 +27,7 @@ public class SiteView {
     public SiteView(
             Site site,
             int maxPriority,
+            int tStatusFlag,
             String dailyStatus,
             String safetyStatus,
             boolean mySite) {
@@ -98,4 +101,16 @@ public class SiteView {
 	public void setMySite(boolean mySite) {
 	    this.mySite = mySite;
 	}
+
+
+	public Integer gettStatusFlag() {
+		return tStatusFlag;
+	}
+
+
+	public void settStatusFlag(Integer tStatusFlag) {
+		this.tStatusFlag = tStatusFlag;
+	}
+	
+	
 }

@@ -88,7 +88,7 @@
 
 		<div class="site-list">
 
-			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 3}" class="site-card high">
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 3 && view.tStatusFlag != 2}" class="site-card high">
 
 				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
 				</a>
@@ -187,7 +187,7 @@
 
 		<div class="site-list">
 
-			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 2}" class="site-card medium">
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 2 && view.tStatusFlag != 2}" class="site-card medium">
 
 				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
 				</a>
@@ -286,7 +286,7 @@
 
 		<div class="site-list">
 
-			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 1}" class="site-card low">
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 1 && view.tStatusFlag != 2}" class="site-card low">
 
 				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
 				</a>
@@ -384,7 +384,7 @@
 
 		<div class="site-list">
 
-			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 0}" class="site-card none">
+			<div th:each="view : ${siteViews}" th:if="${view.tStatusFlag != 0 && view.tStatusFlag != 1}" class="site-card none">
 
 				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
 				</a>

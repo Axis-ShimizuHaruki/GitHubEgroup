@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.User;
@@ -42,7 +43,7 @@ public class LoginController {
 	// IDとパスワードを取得、DBに存在すればsessionに情報を保存しリストへ、存在しなければloginへredirect
 	@PostMapping("/login")
 	public String logintoForm(@RequestParam int userid, @RequestParam String password, Model model,
-			HttpSession session) {
+			HttpSession session,RedirectAttributes redirectAttributes) {
 
 		Optional<User> result = Uservice.login(userid, password);
 
@@ -75,8 +76,11 @@ public class LoginController {
 
 		} else {
 			// 該当ユーザーが存在しなかった場合の処理
-			model.addAttribute("loginError", true);
-			return "nishikigi/login";
+			redirectAttributes.addFlashAttribute(
+					"loginError",
+					true);
+
+			return "redirect:/login";
 		}
 
 	}

@@ -272,9 +272,10 @@ main {
 /* 自分 */
 
 .me .message {
-    background: white;
-    border: 1px solid #dfe5f0;
-    border-bottom-left-radius: 4px;
+    background: #1f3c88;
+    color: white;
+
+    border-bottom-right-radius: 4px;
 }
 
 .me {
@@ -284,9 +285,12 @@ main {
 /* 相手 */
 
 .other .message {
-    background: #1f3c88;
-    color: white;
-    border-bottom-right-radius: 4px;
+    background: white;
+    color: #333;
+
+    border: 1px solid #dfe5f0;
+
+    border-bottom-left-radius: 4px;
 }
 
 /* 入力欄 */

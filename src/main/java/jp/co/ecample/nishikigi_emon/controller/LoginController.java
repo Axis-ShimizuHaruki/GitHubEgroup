@@ -98,10 +98,18 @@ public class LoginController {
 	@GetMapping("/complete")
 	public String homesite(HttpSession session) {
 
-		// ログインチャック
-		if (session.getAttribute("loginUser") == null) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
 			return "redirect:/login";
 		}
+
+		// 管理者以外は拒否
+		if (loginUser.getRoll() != 0) {
+			return "redirect:/login";
+		}
+		
 		return "nishikigi/complete";
 	}
 

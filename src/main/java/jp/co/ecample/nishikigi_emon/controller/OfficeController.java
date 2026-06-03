@@ -102,6 +102,8 @@ public class OfficeController {
 					maxPriority = trouble.getPriority();
 					tStatusFlag = trouble.gettStatusFlag();
 				}
+				
+				
 			}
 
 			// ====================

@@ -35,6 +35,7 @@ public class SiteView {
         this.site = site;
         this.maxPriority = maxPriority;
         this.dailyStatus = dailyStatus;
+        this.tStatusFlag = tStatusFlag;
         this.safetyStatus = safetyStatus;
         this.mySite = mySite;
     }

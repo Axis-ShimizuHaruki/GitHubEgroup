@@ -94,14 +94,21 @@ public class OfficeController {
 			}
 
 			int maxPriority = 0;
-			int tStatusFlag = 0;
+			int tStatusFlag = 2;
 
 			for (Trouble trouble : site.getTroubleList()) {
 
 				if (trouble.getPriority() > maxPriority) {
 					maxPriority = trouble.getPriority();
-					tStatusFlag = trouble.gettStatusFlag();
+					
 				}
+				
+				if (trouble.gettStatusFlag() < tStatusFlag) {
+					tStatusFlag = trouble.gettStatusFlag();
+					
+				}
+				
+				System.out.println(tStatusFlag);
 				
 				
 			}
@@ -164,7 +171,7 @@ public class OfficeController {
 					break;
 				}
 			}
-
+			System.out.println(tStatusFlag);
 			SiteView view = new SiteView(
 					site,
 					maxPriority,
@@ -191,8 +198,11 @@ public class OfficeController {
 
 				return 0;
 			});
+			
+			System.out.println(view);
 		}
-
+		
+		
 		model.addAttribute("siteViews", siteViews);
 
 		return "nishikigi/list";

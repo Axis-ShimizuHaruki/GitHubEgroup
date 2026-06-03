@@ -75,8 +75,8 @@ public class LoginController {
 
 		} else {
 			// 該当ユーザーが存在しなかった場合の処理
-			model.addAttribute("error", "ユーザーが見つかりません");
-			return "redirect:login";
+			model.addAttribute("loginError", true);
+			return "nishikigi/login";
 		}
 
 	}

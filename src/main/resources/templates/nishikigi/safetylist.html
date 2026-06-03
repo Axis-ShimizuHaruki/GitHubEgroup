@@ -79,7 +79,7 @@
 					       th:value="${sCreatedAt}">
 	            </div>
 
-				<div class="search-item">
+				<div th:if="${session.loginUser.roll == 0}" class="search-item">
 				    <label>現場名</label>
 
 				    <select name="siteId">
@@ -92,6 +92,7 @@
 						</option>
 				    </select>
 				</div>
+				<input th:if="${session.loginUser.roll != 1}" type="hidden" >
 				
 	            <!-- 判定 -->
 	            <div class="search-item">

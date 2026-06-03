@@ -301,28 +301,36 @@ main {
     border-top: 1px solid #e0e0e0;
     padding: 16px;
     display: flex;
+	align-items: flex-end;
     gap: 12px;
     background: white;
 }
 
 .chat-input textarea {
     flex: 1;
-    height: 52px;
+
+    min-height: 52px;
+    max-height: 120px;
+
+    padding: 12px 18px;
+
     border: 1px solid #ccc;
-    border-radius: 999px;
-    padding: 0 18px;
-    font-size: 16px;
-    outline: none;
+    border-radius: 16px;
+
+    resize: none;
+    overflow-y: auto;
 }
 
 .chat-input button {
     width: 100px;
+	height: 52px;
     border: none;
     border-radius: 999px;
     background: #1f3c88;
     color: white;
     font-weight: bold;
     cursor: pointer;
+	transition: 0.2s;
 }
 
 /* ===== 左下ステータス吹き出し ===== */

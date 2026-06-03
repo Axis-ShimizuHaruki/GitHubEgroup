@@ -131,7 +131,7 @@ public class TroubleController {
 		return "nishikigi/troubleedit";
 	}
 
-	// トラブル編集確認
+	// トラブル編集確認表示
 	@PostMapping("/trouble/{id}/edit/confirm")
 	public String confirm(@PathVariable Integer id, @ModelAttribute TroubleForm form, Model model) {
 
@@ -140,6 +140,7 @@ public class TroubleController {
 		return "nishikigi/troubleeditcheck";
 	}
 
+	// トラブル編集画面のフォーム送信
 	@PostMapping("/trouble/{id}/edit/complete")
 	public String complete(
 			@ModelAttribute TroubleForm form) {

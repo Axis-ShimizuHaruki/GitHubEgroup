@@ -96,9 +96,8 @@
 							<option value="1" th:selected="${trouble.priority == 1}">低</option>
 						</select>
 
-						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}">
-						</div>
-
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
+						<input type="hidden" name="priority" th:if="${role == 0}" th:value="${trouble.priority}">
 					</div>
 
 					<div class="item">
@@ -112,8 +111,8 @@
 							<option value="5" th:selected="${trouble.troubleType == 5}">その他</option>
 						</select>
 
-						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}">
-						</div>
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
+						<input type="hidden" name="troubleType" th:if="${role == 0}" th:value="${trouble.troubleType}">
 					</div>
 
 				</div>
@@ -123,8 +122,8 @@
 
 					<input type="text" name="overview" th:value="${trouble.overview}" th:if="${role == 1}">
 
-					<div class="value" th:if="${role == 0}" th:text="${trouble.overview}">
-					</div>
+					<div class="value" th:if="${role == 0}" th:text="${trouble.overview}"></div>
+					<input type="hidden" name="overview" th:if="${role == 0}" th:value="${trouble.overview}">
 				</div>
 
 			</div>
@@ -138,11 +137,11 @@
 
 				<div class="item">
 
-					<textarea name="detail" th:text="${trouble.detail}" th:if="${role == 1}">
-					</textarea>
+					<textarea name="detail" th:text="${trouble.detail}" th:if="${role == 1}"></textarea>
 
-					<div class="value" th:if="${role == 0}" th:text="${trouble.detail}">
-					</div>
+					<div class="value" th:if="${role == 0}" th:text="${trouble.detail}"></div>
+
+					<input type="hidden" name="detail" th:if="${role == 0}" th:value="${trouble.detail}">
 
 				</div>
 
@@ -157,11 +156,11 @@
 
 					<div class="label">現場対応メモ</div>
 
-					<textarea name="siteMemo" th:text="${trouble.siteMemo}" th:if="${role == 1}">
-					</textarea>
+					<textarea name="siteMemo" th:text="${trouble.siteMemo}" th:if="${role == 1}"></textarea>
 
-					<div class="value" th:if="${role == 0}" th:text="${trouble.siteMemo}">
-					</div>
+					<div class="value" th:if="${role == 0}" th:text="${trouble.siteMemo}"></div>
+
+					<input type="hidden" name="siteMemo" th:if="${role == 0}" th:value="${trouble.siteMemo}">
 
 				</div>
 
@@ -170,11 +169,11 @@
 
 					<div class="label">本社対応メモ</div>
 
-					<textarea name="hqMemo" th:text="${trouble.hqMemo}" th:if="${role == 0}">
-					</textarea>
+					<textarea name="hqMemo" th:text="${trouble.hqMemo}" th:if="${role == 0}"></textarea>
 
-					<div class="value" th:if="${role == 1}" th:text="${trouble.hqMemo}">
-					</div>
+					<div class="value" th:if="${role == 1}" th:text="${trouble.hqMemo}"></div>
+
+					<input type="hidden" name="hqMemo" th:if="${role == 1}" th:value="${trouble.hqMemo}">
 
 				</div>
 

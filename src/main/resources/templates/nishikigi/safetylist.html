@@ -92,7 +92,11 @@
 						</option>
 				    </select>
 				</div>
-				<input th:if="${session.loginUser.roll != 1}" type="hidden" >
+				<!-- 一般ユーザー -->
+				<input th:if="${session.loginUser.roll != 0}"
+				       type="hidden"
+				       name="siteId"
+				       th:value="${session.siteId}">
 				
 	            <!-- 判定 -->
 	            <div class="search-item">

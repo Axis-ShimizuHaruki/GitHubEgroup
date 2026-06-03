@@ -244,15 +244,17 @@ main {
 }
 
 .me .message {
-	background: white;
-	border: 1px solid #dfe5f0;
+	background: #1f3c88;
+	color: white;
 
 	border-bottom-right-radius: 4px;
 }
 
 .other .message {
-	background: #1f3c88;
-	color: white;
+	background: white;
+	color: #333;
+
+	border: 1px solid #dfe5f0;
 
 	border-bottom-left-radius: 4px;
 }

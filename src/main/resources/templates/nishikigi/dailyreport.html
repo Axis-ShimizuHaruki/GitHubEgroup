@@ -17,14 +17,21 @@
 
 			    <div class="header-top">
 
-			      <div class="logo-area">
-			        <a th:href="@{/homesite}">
-			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
-			        </a>
-			        <div class="site-system-name">
-			          日報登録
-			        </div>
-			      </div>
+					<div class="logo-area">
+					        
+					        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+					        </a>
+					        
+					        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
+					          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+					        </a>
+					        
+					        <div class="site-system-name">
+					          日報登録
+					        </div>
+					        
+					      </div>
 
 			      <div class="user-area">
 			        <div th:if="${session.loginUser != null}" class="user-info-box">

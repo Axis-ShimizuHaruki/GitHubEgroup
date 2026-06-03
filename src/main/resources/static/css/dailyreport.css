@@ -19,7 +19,7 @@ html, body {
 }
 
 /* =======================================================
-   2. 新・3段リンク付きヘッダー専用スタイル（最上部横いっぱいに固定）
+   2. 新・3段リンク付きヘッダー専用スタイル（home.cssの色合いを完全再現）
 ======================================================= */
 header.system-header {
     display: block !important;
@@ -27,15 +27,15 @@ header.system-header {
     position: sticky !important;
     top: 0 !important;
     z-index: 1000 !important;
-    background-color: #ffffff !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    background-color: #1f3c88 !important; /* ★home.cssのヘッダー上部の濃い青 */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
 header.system-header .header-top {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 12px 30px !important;
+    padding: 15px 25px !important;
     box-sizing: border-box !important;
 }
 
@@ -43,18 +43,22 @@ header.system-header .header-top {
 header.system-header .logo-area {
     display: flex !important;
     align-items: center !important;
-    gap: 15px !important;
+    gap: 14px !important;
 }
 
 header.system-header .logo-img {
-    height: 45px !important;
-    width: auto !important;
+    width: 62px !important;
+    height: 62px !important;
+    object-fit: contain !important;
+    background: white !important;
+    border-radius: 10px !important;
+    padding: 4px !important;
 }
 
 header.system-header .site-system-name {
-    font-size: 1.3rem !important;
+    font-size: 22px !important;
     font-weight: bold !important;
-    color: #1f3c88 !important; /* システムのテーマカラー */
+    color: white !important; /* ★白文字 */
 }
 
 /* 右側：ユーザー ＆ ログアウト */
@@ -62,60 +66,64 @@ header.system-header .user-area {
     display: flex !important;
     align-items: center !important;
     gap: 15px !important;
+    color: white !important; /* ★白文字 */
+    font-size: 14px !important;
 }
 
 header.system-header .user-info-box {
-    color: #2d3748 !important;
-    font-size: 0.95rem;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
 }
 
 header.system-header .logout-btn {
-    background-color: #e2e8f0 !important;
-    color: #4a5568 !important;
-    padding: 6px 14px !important;
-    border-radius: 6px !important;
+    background-color: white !important; /* ★白背景 */
+    color: #1f3c88 !important;          /* ★濃い青文字 */
+    padding: 8px 14px !important;
+    border-radius: 8px !important;
     border: none !important;
     cursor: pointer !important;
-    font-size: 0.9rem !important;
     font-weight: bold !important;
     transition: 0.2s !important;
+    font-size: 14px !important;
+    text-decoration: none !important;
+    display: inline-block !important;
 }
 
 header.system-header .logout-btn:hover {
-    background-color: #cbd5e0 !important;
+    background-color: #dfe6f7 !important; /* ★ホバー時の淡い青 */
 }
 
-/* 🌟 下段：ナビゲーションバー（絶対配置を破壊して横幅いっぱいに上書き） */
+/* 🌟 下段：ナビゲーションバー（home.cssの水色背景を完全再現） */
 header.system-header .page-title-bar {
-    position: static !important; /* home.cssの absolute を安全に解除 */
-    background-color: #1f3c88 !important; /* 統一感のある深い青 */
-    padding: 0 30px !important;
+    position: static !important;
+    background-color: #e9eefc !important; /* ★home.cssの下段タイトルの薄い水色 */
+    padding: 12px 25px !important;
     display: flex !important;
-    gap: 5px !important;
+    gap: 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-header.system-header .page-title-bar a.nav-link {
+/* リンクをシンプル文字リンクに変更 */
+header.system-header .page-title-bar a {
     display: inline-block !important;
-    color: #e2e8f0 !important;
+    color: #1f3c88 !important;     /* ★水色背景に映える濃い青文字 */
     text-decoration: none !important;
-    padding: 12px 20px !important;
-    font-size: 0.95rem !important;
-    font-weight: bold !important;
-    transition: all 0.2s !important;
-    border-bottom: 3px solid transparent !important;
+    font-size: 16px !important;
+    font-weight: bold !important;  
+    padding: 2px 0 !important;
+    transition: 0.2s !important;
+    background: none !important;
+    border: none !important;
 }
 
-header.system-header .page-title-bar a.nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: #ffffff !important;
+/* マウスを乗せたとき（ホバー）はシンプルに下線（アンダーライン）を表示 */
+header.system-header .page-title-bar a:hover {
+    color: #16316f !important;             
+    text-decoration: underline !important; 
 }
 
-/* 現在開いている画面のメニューの下に白い線を引くアクセント */
-header.system-header .page-title-bar a.nav-link.active {
-    color: #ffffff !important;
-    background-color: rgba(255, 255, 255, 0.15) !important;
-    border-bottom: 3px solid #ffffff !important;
-}
 
 /* =======================================================
    3. お気に入りのリッチなコンテンツ・フォーム装飾（100%維持）
@@ -330,6 +338,37 @@ textarea {
     display: inline-block;
 }
 
+/* 🔍 検索ボタン（メイン）：システムのテーマカラーである濃い青で、パッと目を引く */
+.search-btn {
+    background-color: #1f3c88 !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 11px 24px !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    transition: 0.2s !important;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-btn:hover {
+    background-color: #16316f !important;
+}
+
+/* 🔄 リセットボタン（補助）：一歩引いたグレー（灰色）にして、誤操作を防ぐ */
+.search-btn.btn-reset-gray {
+    background-color: #e2e8f0 !important; /* 薄いグレー */
+    color: #4a5568 !important;            /* 濃いグレーの文字 */
+    border: 1px solid #cbd5e0 !important; /* 軽い枠線 */
+}
+
+.search-btn.btn-reset-gray:hover {
+    background-color: #cbd5e0 !important; /* ホバー時に少し暗く */
+    color: #2d3748 !important;
+}
+
 .btn:hover {
     background: #218838 !important;
     transform: translateY(-2px);
@@ -355,6 +394,7 @@ textarea {
     background: #5a6268 !important;
     transform: translateY(-2px);
 }
+
 /* 詳細へ進む用の小さなリンクボタン（青） */
 .detail-btn {
     display: inline-block;

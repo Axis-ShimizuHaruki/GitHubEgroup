@@ -17,10 +17,16 @@
 
 	    <div class="header-top">
 
-	      <div class="logo-area">
-			<a th:href="${#strings.equals(session.loginUser.roll, '0') ? '/homeoffice' : '/homesite'}" class="btn btn-gray">
-	          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
-	        </a>
+			<div class="logo-area">
+			        
+			        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+			        </a>
+			        
+			        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
+			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+			        </a>
+					
 	        <div class="site-system-name">
 	          日報詳細
 	        </div>
@@ -182,7 +188,7 @@
 
 	      <span th:if="${#strings.equals(session.loginUser.roll, '1')}" style="display: flex; gap: 15px;">
 	        <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
-	        <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn_h" style="background-color: #3182ce;">編集</a>
+	        <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn" style="background-color: #3182ce;">編集</a>
 	      </span>
 
 	    </div>

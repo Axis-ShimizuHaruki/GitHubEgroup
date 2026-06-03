@@ -11,39 +11,41 @@
 </head>
 
 <body>
-	<header class="system-header">
+  <header class="system-header">
 
-				    <div class="header-top">
+    <div class="header-top">
 
-				      <div class="logo-area">
-						<a th:href="${#strings.equals(session.loginUser.roll, '0') ? '/homeoffice' : '/homesite'}" class="btn btn-gray">
-				          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
-				        </a>
-				        <div class="site-system-name">
-				          日報一覧
-				        </div>
-				      </div>
+      <div class="logo-area">
+        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+        </a>
+        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
+          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+        </a>
+        <div class="site-system-name">
+          日報一覧
+        </div>
+      </div>
 
-				      <div class="user-area">
-				        <div th:if="${session.loginUser != null}" class="user-info-box">
-				          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
-				          <form th:action="@{/logout}" method="post" style="display: inline;">
-				            <button type="submit" class="logout-btn">ログアウト</button>
-				          </form>
-				        </div>
+      <div class="user-area">
+        <div th:if="${session.loginUser != null}" class="user-info-box">
+          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
+          <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="logout-btn">ログアウト</button>
+          </form>
+        </div>
 
-				        <div th:unless="${session.loginUser != null}">
-				          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
-				        </div>
-				      </div>
+        <div th:unless="${session.loginUser != null}">
+          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
+        </div>
+      </div>
 
-				    </div>
-
-				    <div class="page-title-bar">
-				      <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
-				    </div>
-
-				  </header>
+    </div> 
+	<div class="page-title-bar">
+	  <a th:href="@{/dailyreport/list}">日報一覧</a>
+	</div>
+	
+  </header>
 
   <div class="container">
 
@@ -76,10 +78,10 @@
         </select>
       </div>
 
-      <div class="search-btn-area">
-        <button type="submit" class="search-btn btn-submit">検索</button>
-        <a th:href="@{/dailyreport/list}" class="btn-reset">リセット</a>
-      </div>
+	  <div class="search-btn-area">
+	    <button type="submit" class="search-btn">検索</button>
+	    <button type="button" th:onclick="|location.href='@{/dailyreport/list}'|" class="search-btn btn-reset-gray">リセット</button>
+	  </div>
 
     </form>
 

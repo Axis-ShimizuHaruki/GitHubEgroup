@@ -31,4 +31,6 @@ public class WebSocketConfig
         registry.enableSimpleBroker("/topic");
         registry.setApplicationDestinationPrefixes("/app");
     }
+    
+    
 }

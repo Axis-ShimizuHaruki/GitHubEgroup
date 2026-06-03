@@ -22,13 +22,16 @@ import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
+import jp.co.ecample.nishikigi_emon.service.TroubleService;
 
 @Controller
 public class OfficeController {
 	private final SiteRepository siteRepository;
+	private final TroubleService Tservice;
 
-	public OfficeController(SiteRepository siteRepository) {
+	public OfficeController(SiteRepository siteRepository, TroubleService Tservice) {
 		this.siteRepository = siteRepository;
+		this.Tservice = Tservice;
 	}
 
 	@Autowired
@@ -43,6 +46,14 @@ public class OfficeController {
 			return "redirect:/login";
 		}
 
+	    // 通知用
+	    List<Trouble> noticeList =
+	            Tservice.getActiveTroubles();
+
+	    model.addAttribute("noticeList", noticeList);
+	    
+	    
+		//
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		List<Site> siteList = siteRepository.findAll();

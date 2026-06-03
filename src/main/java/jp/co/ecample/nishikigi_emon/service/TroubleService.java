@@ -25,15 +25,33 @@ public class TroubleService {
 		return troubleRepository.findAll();
 	}
 
+	//	// トラブル登録処理
+	//	public void register(Trouble trouble) {
+	//
+	//		trouble.setOccurredAt(LocalDateTime.now());
+	//		trouble.settStatusFlag(0);
+	//		trouble.settCreatedAt(LocalDateTime.now());
+	//		trouble.settUpdatedAt(LocalDateTime.now());
+	//
+	//		troubleRepository.save(trouble);
+	//	}
+
 	// トラブル登録処理
-	public void register(Trouble trouble) {
+	public Trouble register(Trouble trouble) {
 
 		trouble.setOccurredAt(LocalDateTime.now());
 		trouble.settStatusFlag(0);
 		trouble.settCreatedAt(LocalDateTime.now());
 		trouble.settUpdatedAt(LocalDateTime.now());
 
-		troubleRepository.save(trouble);
+		return troubleRepository.save(trouble);
+	}
+	
+	// 通知表示用
+	public List<Trouble> getActiveTroubles() {
+
+	    return troubleRepository.findByPriorityNot(0);
+
 	}
 
 	// トラブル検索処理

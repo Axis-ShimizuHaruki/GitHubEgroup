@@ -1,9 +1,13 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jakarta.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,7 @@ import jp.co.ecample.nishikigi_emon.entity.Trouble;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.form.TroubleForm;
 import jp.co.ecample.nishikigi_emon.form.TroubleSearchForm;
+import jp.co.ecample.nishikigi_emon.service.SiteService;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 
 @Controller
@@ -26,6 +31,12 @@ public class TroubleController {
 	public TroubleController(TroubleService service) {
 		this.service = service;
 	}
+	
+	@Autowired
+	private SimpMessagingTemplate messagingTemplate;
+
+	@Autowired
+	private SiteService siteService;
 
 	// トラブル登録画面表示
 	@GetMapping("/trouble/new")
@@ -41,8 +52,35 @@ public class TroubleController {
 	}
 
 	// トラブル登録画面のフォーム送信
+//	@PostMapping("/troubles")
+//	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
+//
+//		Integer siteId = (Integer) session.getAttribute("siteId");
+//
+//		System.out.println("siteId = " + siteId);
+//
+//		Trouble trouble = new Trouble();
+//
+//		trouble.setPriority(form.getPriority());
+//		trouble.setTroubleType(form.getTroubleType());
+//		trouble.setOverview(form.getOverview());
+//		trouble.setDetail(form.getDetail());
+//
+//		Site site = new Site();
+//		site.setSiteId(siteId);
+//
+//		trouble.setSite(site);
+//
+//		service.register(trouble);
+//		return "redirect:/complete";
+//	}
+	
+	
+	
+	// トラブル登録画面のフォーム送信
 	@PostMapping("/troubles")
-	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
+	public String register(@ModelAttribute TroubleForm form,
+						   HttpSession session) {
 
 		Integer siteId = (Integer) session.getAttribute("siteId");
 
@@ -60,10 +98,53 @@ public class TroubleController {
 
 		trouble.setSite(site);
 
-		service.register(trouble);
+		// DB登録
+		Trouble savedTrouble = service.register(trouble);
+
+		// 現場取得
+		Site savedSite = siteService.findById(siteId);
+
+		// =========================
+		// 通知データ作成
+		// =========================
+
+		Map<String, Object> notice = new HashMap<>();
+
+		notice.put("type", "trouble");
+
+		notice.put("siteName", savedSite.getSiteName());
+
+		notice.put("overview", savedTrouble.getOverview());
+
+		notice.put("priority", savedTrouble.getPriority());
+
+		notice.put("troubleId", savedTrouble.getTroubleId());
+
+		// WebSocket送信
+		String json = """
+				{
+					"siteName":"%s",
+					"overview":"%s",
+					"priority":%d,
+					"troubleId":%d
+				}
+				""".formatted(
+					savedSite.getSiteName(),
+					savedTrouble.getOverview(),
+					savedTrouble.getPriority(),
+					savedTrouble.getTroubleId()
+				);
+
+				System.out.println(json);
+
+				messagingTemplate.convertAndSend(
+					"/topic/notice",
+					json
+				);
 
 		return "redirect:/complete";
 	}
+	
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")

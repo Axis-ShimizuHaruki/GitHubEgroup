@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="css/list.css" />
 </head>
 
+
+
+
 <body>
 
 	<!-- ===== ヘッダー ===== -->
@@ -96,8 +99,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
-							   日報確認
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -195,8 +198,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
-							   日報確認
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -294,8 +297,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
-							   日報確認
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -392,8 +395,8 @@
 
 						<div>
 							<a th:if="${view.todayReport != null}"
-							   th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
-							   日報確認
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
 							</a>
 
 							<span th:if="${view.todayReport == null}">
@@ -459,6 +462,145 @@
 	</div>
 
 
+	<!-- 通知表示エリア -->
+	<div id="notification-container" style="
+			position: fixed;
+			top: 200px;
+			right: 20px;
+			z-index: 9999;
+
+			display: flex;
+			flex-direction: column;
+
+			gap: 10px;
+		 ">
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+
+	// ★ /chat に変更
+	<script>
+
+		const socket =
+			new SockJS('/nishikigi/chat');
+
+		const stompClient =
+			Stomp.over(socket);
+
+		stompClient.connect({}, function () {
+
+			console.log("通知接続成功");
+
+			stompClient.subscribe(
+				'/topic/notice',
+				function (message) {
+
+					console.log("受信");
+					console.log(message.body);
+
+					const data =
+						JSON.parse(message.body);
+
+					showNotification(data);
+
+				}
+			);
+
+		});
+
+		function showNotification(data) {
+
+			const container =
+				document.getElementById(
+					"notification-container"
+				);
+
+			const notification =
+				document.createElement("div");
+
+			notification.className =
+				"notification";
+
+			// 優先度で色変更
+			if (data.priority == 3) {
+
+				notification.style.background =
+					"#e53935"; // 赤
+
+			} else if (data.priority == 2) {
+
+				notification.style.background =
+					"#fb8c00"; // オレンジ
+
+			} else if (data.priority == 1) {
+
+				notification.style.background =
+					"#43a047"; // 緑
+
+			} else {
+
+				notification.style.background =
+					"#757575"; // グレー
+			}
+
+			notification.style.color =
+				"white";
+
+			notification.style.padding =
+				"10px";
+
+			notification.style.marginBottom =
+				"5px";
+
+			notification.innerHTML = `
+					<div>
+						${data.siteName}
+					</div>
+
+					<div>
+						${data.overview}
+					</div>
+				`;
+
+			notification.onclick = () => {
+
+				location.href =
+					'/nishikigi/trouble/' +
+					data.troubleId;
+			};
+
+			container.prepend(notification);
+		}
+
+	</script>
+
+
+	<script th:inline="javascript">
+
+		window.addEventListener('load', function () {
+
+			/*[# th:each="trouble : ${noticeList}"]*/
+
+			showNotification({
+
+				siteName: '[[${trouble.site.siteName}]]',
+
+				overview: '[[${trouble.overview}]]',
+
+				priority: '[[${trouble.priority}]]',
+
+				troubleId: '[[${trouble.troubleId}]]'
+
+			});
+
+			/*[/]*/
+
+		});
+
+	</script>
 </body>
 
 </html>

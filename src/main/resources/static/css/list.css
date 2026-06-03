@@ -251,6 +251,136 @@ header {
 	font-weight: bold;
 }
 
+/* ===== 通知全体 ===== */
+#notification-container {
+
+	position: fixed;
+
+	top: 20px;
+	right: 20px;
+
+	z-index: 9999;
+
+	display: flex;
+	flex-direction: column;
+
+	gap: 12px;
+}
+
+/* ===== 通知カード ===== */
+.notification {
+
+	width: 340px;
+
+	padding: 16px 18px;
+
+	border-radius: 14px;
+
+	color: white;
+
+	box-shadow:
+		0 8px 20px rgba(0,0,0,0.25);
+
+	cursor: pointer;
+
+	animation: noticeSlide 0.25s ease;
+
+	border-left: 8px solid rgba(255,255,255,0.7);
+
+	backdrop-filter: blur(6px);
+
+	font-family: "Yu Gothic", sans-serif;
+
+	transition:
+		transform 0.2s,
+		opacity 0.2s;
+}
+
+/* ホバー */
+.notification:hover {
+
+	transform: translateY(-2px);
+}
+
+/* ===== 優先度 ===== */
+
+/* 高 */
+.notification.high {
+
+	background:
+		linear-gradient(
+			135deg,
+			#e53935,
+			#c62828
+		);
+}
+
+/* 中 */
+.notification.medium {
+
+	background:
+		linear-gradient(
+			135deg,
+			#fb8c00,
+			#ef6c00
+		);
+}
+
+/* 低 */
+.notification.low {
+
+	background:
+		linear-gradient(
+			135deg,
+			#43a047,
+			#2e7d32
+		);
+}
+
+/* ===== 現場名 ===== */
+.notice-site {
+
+	font-size: 13px;
+
+	font-weight: bold;
+
+	opacity: 0.9;
+
+	margin-bottom: 6px;
+
+	letter-spacing: 0.5px;
+}
+
+/* ===== 内容 ===== */
+.notice-overview {
+
+	font-size: 16px;
+
+	font-weight: bold;
+
+	line-height: 1.5;
+}
+
+/* ===== アニメーション ===== */
+@keyframes noticeSlide {
+
+	from {
+
+		opacity: 0;
+
+		transform:
+			translateX(50px);
+	}
+
+	to {
+
+		opacity: 1;
+
+		transform:
+			translateX(0);
+	}
+}
+
 /* ===== レスポンシブ ===== */
 @media(max-width:768px) {
 

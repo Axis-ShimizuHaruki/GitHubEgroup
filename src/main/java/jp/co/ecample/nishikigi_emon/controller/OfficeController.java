@@ -41,20 +41,24 @@ public class OfficeController {
 	@GetMapping("/homeoffice")
 	public String homeoffice(Model model, HttpSession session) {
 
-		// ログインチャック
-		if (session.getAttribute("loginUser") == null) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
 			return "redirect:/login";
 		}
 
-	    // 通知用
-	    List<Trouble> noticeList =
-	            Tservice.getActiveTroubles();
+		// 管理者以外は拒否
+		if (loginUser.getRoll() != 0) {
+			return "redirect:/login";
+		}
 
-	    model.addAttribute("noticeList", noticeList);
-	    
-	    
+		// 通知用
+		List<Trouble> noticeList = Tservice.getActiveTroubles();
+
+		model.addAttribute("noticeList", noticeList);
+
 		//
-		User loginUser = (User) session.getAttribute("loginUser");
 
 		List<Site> siteList = siteRepository.findAll();
 
@@ -176,14 +180,15 @@ public class OfficeController {
 			HttpSession session,
 			Model model) {
 
-		// ログインチャック
-		if (session.getAttribute("loginUser") == null) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
 			return "redirect:/login";
 		}
 
-		User loginUser = (User) session.getAttribute("loginUser");
-
-		if (loginUser == null) {
+		// 管理者以外は拒否
+		if (loginUser.getRoll() != 0) {
 			return "redirect:/login";
 		}
 

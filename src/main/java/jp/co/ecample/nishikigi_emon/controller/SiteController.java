@@ -21,105 +21,97 @@ import jp.co.ecample.nishikigi_emon.service.SiteService;
 @Controller
 public class SiteController {
 	private final SiteService service;
+
 	public SiteController(SiteService service) {
 		this.service = service;
 	}
-	
+
 	@Autowired
 	private ChatRepository chatRepository;
 
 	@GetMapping("/homesite")
 	public String showNewHome(
-	        HttpSession session,
-	        Model model) {
-		
+			HttpSession session,
+			Model model) {
+
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+
 		// ログインチャック
-				if (session.getAttribute("loginUser") == null) {
-					return "redirect:/login";
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
+		if (loginUser.getRoll() != 1 || loginUser.getRoll() != 2) {
+			return "redirect:/login";
+		}
+
+		Integer siteId = (Integer) session.getAttribute("siteId");
+
+		Site site = service.findById(siteId);
+
+		List<Chat> chatList = chatRepository
+				.findBySiteSiteIdOrderByDateTimeAsc(
+						siteId);
+
+		model.addAttribute("site", site);
+		model.addAttribute("chatList", chatList);
+		model.addAttribute("loginSiteId", siteId);
+
+		// 左下ステータス表示用
+		LocalDate today = LocalDate.now();
+
+		// ====================
+		// 日報
+		// ====================
+		String dailyStatus = "未提出";
+
+		Dailyreport todayReport = null;
+
+		for (Dailyreport report : site.getDailyreportList()) {
+
+			if (today.equals(report.getTargetDate())) {
+
+				todayReport = report;
+
+				dailyStatus = "未確認";
+
+				if (report.getDStatusFlag() == 1) {
+
+					dailyStatus = "確認済";
+					break;
 				}
-				if (loginUser.getRoll() != 1  ||loginUser.getRoll() != 2) {
-					return "/logout";
+			}
+		}
+
+		model.addAttribute("dailyStatus", dailyStatus);
+
+		// ====================
+		// 安全点検
+		// ====================
+
+		String safetyStatus = "未提出";
+
+		Safety todaySafety = null;
+
+		for (Safety safety : site.getSafetyList()) {
+
+			if (today.equals(
+					safety.getsCreatedAt().toLocalDate())) {
+
+				todaySafety = safety;
+
+				safetyStatus = "未確認";
+
+				if ("1".equals(safety.getsStatusFlag())) {
+
+					safetyStatus = "確認済";
+					break;
 				}
-		
-	    Integer siteId =
-	        (Integer) session.getAttribute("siteId");
+			}
+		}
 
-	    Site site =
-	        service.findById(siteId);
+		model.addAttribute("safetyStatus", safetyStatus);
 
-	    List<Chat> chatList =
-	        chatRepository
-	            .findBySiteSiteIdOrderByDateTimeAsc(
-	                siteId);
-
-	    model.addAttribute("site", site);
-	    model.addAttribute("chatList", chatList);
-	    model.addAttribute("loginSiteId", siteId);
-
-	    
-	    // 左下ステータス表示用
-	    LocalDate today = LocalDate.now();
-	    
-	    
-	    // ====================
-	    // 日報
-	    // ====================
-	    String dailyStatus = "未提出";
-
-	    Dailyreport todayReport = null;
-
-	    for (Dailyreport report : site.getDailyreportList()) {
-
-	        if (today.equals(report.getTargetDate())) {
-
-	            todayReport = report;
-
-	            dailyStatus = "未確認";
-
-	            if (report.getDStatusFlag() == 1) {
-
-	                dailyStatus = "確認済";
-	                break;
-	            }
-	        }
-	    }
-	    
-	    model.addAttribute("dailyStatus", dailyStatus);
-	    
-
-	    // ====================
-	    // 安全点検
-	    // ====================
-
-	    String safetyStatus = "未提出";
-
-	    Safety todaySafety = null;
-
-	    for (Safety safety : site.getSafetyList()) {
-
-	        if (today.equals(
-	                safety.getsCreatedAt().toLocalDate())) {
-
-	            todaySafety = safety;
-
-	            safetyStatus = "未確認";
-
-	            if ("1".equals(safety.getsStatusFlag())) {
-
-	                safetyStatus = "確認済";
-	                break;
-	            }
-	        }
-	    }
-
-	   
-	    model.addAttribute("safetyStatus", safetyStatus);
-
-	    
-	    return "nishikigi/home";
+		return "nishikigi/home";
 	}
-	
 
 }

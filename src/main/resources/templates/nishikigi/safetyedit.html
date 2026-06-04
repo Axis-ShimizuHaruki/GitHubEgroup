@@ -69,15 +69,15 @@
 			<div class="summary-box">
 				<!-- 登録日時 -->
 				<div>
-				    登録日時：
-				    <span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					登録日時：
+					<span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
 				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
-				    更新日時：
-				    <span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					更新日時：
+					<span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<div>
 					現場名：
@@ -135,16 +135,14 @@
 				点検項目編集
 			</div>
 
-			<form th:action="@{/safetyinspection/{id}/edit/confirm(id=${safety.safetyId})}"
-			method="post"
-			enctype="multipart/form-data"
-			th:object="${safety}">
+			<form th:action="@{/safetyinspection/{id}/edit/confirm(id=${safety.safetyId})}" method="post"
+				enctype="multipart/form-data" th:object="${safety}">
 
 				<input type="hidden" th:field="*{safetyId}">
 				<input type="hidden" th:field="*{sCreatedAt}">
 				<input type="hidden" th:field="*{sUpdatedAt}">
 				<input type="hidden" th:field="*{site.siteName}">
-<!--				<input th:if="*{photo != null}" type="hidden" th:field="*{photo}">-->
+				<!--				<input th:if="*{photo != null}" type="hidden" th:field="*{photo}">-->
 
 
 				<div class="check-item">
@@ -234,24 +232,38 @@
 						style="color:red">
 					</div>
 				</div>
+				
+				<input type="hidden" th:field="*{photo}">
 
 				<!-- 点検写真 -->
 				<div class="section">
 					<div class="section-title">
-						点検写真編集
+						点検写真アップロード
 					</div>
 
 					<div class="item">
-						<div class="label">
-							点検写真アップロード
-						</div>
-
 						<!-- 現在の画像表示 -->
 						<div th:if="${safety.photo != null}">
-							<img th:src="@{${safety.photo}}" width="300">
+							<div class="label">
+								変更前画像
+							</div>
+
+							<div>
+								<img th:src="@{${safety.photo}}" width="500">
+							</div>
 						</div>
 
-						<input type="file" name="photoFile" accept="image/*">
+						<!-- 新しく選択した画像のプレビュー -->
+						<div>
+							<div id="previewLabel" class="label" style="display:none;">
+								アップロード画像
+							</div>
+							<div>
+								<img id="preview" width="500" style="display:none;">
+							</div>
+						</div>
+
+						<input type="file" name="photoFile" id="photoFile" accept="image/*">
 					</div>
 				</div>
 
@@ -269,6 +281,32 @@
 				</div>
 			</form>
 		</div>
+
+		<script>
+			document.getElementById("photoFile")
+				.addEventListener("change", function (event) {
+
+					const file = event.target.files[0];
+
+					if (!file) {
+						document.getElementById("preview").style.display = "none";
+						document.getElementById("previewLabel").style.display = "none";
+						return;
+					}
+
+					const reader = new FileReader();
+
+					reader.onload = function (e) {
+
+						document.getElementById("preview").src = e.target.result;
+						document.getElementById("preview").style.display = "block";
+
+						document.getElementById("previewLabel").style.display = "block";
+					};
+
+					reader.readAsDataURL(file);
+				});
+		</script>
 </body>
 
 </html>

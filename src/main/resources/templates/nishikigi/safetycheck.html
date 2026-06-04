@@ -175,11 +175,14 @@
 
 		<!-- 登録 -->
 		<div class="btn-area">
-
-			<button class="btn" type="submit">
-				登録
+			<button type="button" class="btn btn-gray"
+				th:onclick="|location.href='@{/homesite}'|">
+				キャンセル
 			</button>
 
+			<button class="btn" type="submit">
+				確認
+			</button>
 		</div>
 	</form>
 

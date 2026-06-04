@@ -220,6 +220,7 @@
 	        <a th:href="@{/homeoffice}" th:if="${from == 'home'}" class="btn_h">本社ホームへ</a>
 	        
 			<a th:href="@{/dailyreport/list(
+			   from='list', 
 			   targetDate=${param.targetDate}, 
 			   siteId=${param.siteId}, 
 			   workDetails=${param.workDetails}, 

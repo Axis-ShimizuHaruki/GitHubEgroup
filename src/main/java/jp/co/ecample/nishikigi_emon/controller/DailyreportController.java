@@ -62,28 +62,33 @@ public class DailyreportController {
             @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
             @RequestParam(name = "workDetails", required = false) String workDetails,
             @RequestParam(name = "portalSiteId", required = false) Integer portalSiteId, 
-            @RequestParam(name = "clear", required = false) Boolean clear, // 🌟【追記】リセット判定用のパラメータを追加
+            @RequestParam(name = "clear", required = false) Boolean clear, 
+            @RequestParam(name = "from", required = false) String from, 
+            @RequestParam(name = "search", required = false) Boolean isSearch, // 検索フラグを受け取る
             HttpSession session, Model model) {
         String redirect = checkLogin(session); if (redirect != null) return redirect;
         User loginUser = (User) session.getAttribute("loginUser");
         
-        // 本社ユーザーの「スタート地点」を記憶するロジック
+     // 本社ユーザーの「スタート地点」を記憶するロジック
         if (loginUser.getRoll() == ROLE_HONSHA) {
             if (portalSiteId != null) {
                 // ポータルから新しく来た時
                 session.setAttribute("fromPortalSiteId", portalSiteId);
-                if (siteId == null) {
-                    siteId = portalSiteId; // 初回表示はスタートした現場で自動絞り込み
+                
+                // headerから来たとき以外（下部ボタンなど）の時だけ、その現場で初期ソートする
+                if (siteId == null && !"header".equals(from)) {
+                    siteId = portalSiteId; 
                 }
             } else if (Boolean.TRUE.equals(clear)) {
-                // 🌟【追記】リセットボタンが押された時：検索条件(siteId=null)にするが、ポータル起点のセッションは消さない
-                // siteIdはnullのまま、何もしない（全現場表示へ）
+                // リセットボタンが押された時
             } else {
                 // portalSiteIdもclearもない場合（通常のフォーム検索、または詳細からの戻りなど）
-                boolean isFormSearch = (targetDateStr != null && !targetDateStr.isEmpty()) 
+                boolean isFormSearch = Boolean.TRUE.equals(isSearch) // 🌟【追記】検索ボタン経由なら条件が空でも無条件でtrue！
+                                    || (targetDateStr != null && !targetDateStr.isEmpty()) 
                                     || siteId != null 
                                     || dStatusFlag != null 
-                                    || (workDetails != null && !workDetails.isEmpty());
+                                    || (workDetails != null && !workDetails.isEmpty())
+                                    || "list".equals(from);
                 if (!isFormSearch) {
                     // 検索でも戻りでもない完全な初期状態（メニュー等から直接開いた場合）は起点をクリア
                     session.removeAttribute("fromPortalSiteId");

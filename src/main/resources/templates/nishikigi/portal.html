@@ -77,9 +77,7 @@
 			<span th:text="${view.site.siteName}">
 			</span>
 
-			<a th:href="@{/dailyreport/list}">
-				日報一覧
-			</a>
+			<a th:href="@{/dailyreport/list(portalSiteId=${view.site.siteId}, from='header')}">日報一覧</a>
 
 			<a th:href="@{/safetyinspection/list}">
 				安全点検一覧

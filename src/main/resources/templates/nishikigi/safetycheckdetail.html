@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>安全点検詳細</title>
+	<link rel="stylesheet" th:href="@{/css/safety/safetycheckdetail.css}">
 
 	<style>
 
@@ -25,24 +26,46 @@
 			<!-- 左 -->
 			<div class="logo-area">
 
-				<a href="list.html">
-
-					<img src="icon.png" alt="ロゴ" class="logo-img">
-
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
 
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
 			</div>
 
 			<!-- 右 -->
 			<div class="user-area">
 
-				<div>
-					ログインユーザ：田中 太郎
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
 				</div>
 
-				<a href="logout.html" class="logout-btn">
-					ログアウト
-				</a>
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
 
 			</div>
 
@@ -69,15 +92,15 @@
 			<div class="summary-box">
 				<!-- 登録日時 -->
 				<div>
-				    登録日時：
-				    <span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					登録日時：
+					<span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
 				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
-				    更新日時：
-				    <span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					更新日時：
+					<span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<div>
 					現場名：
@@ -226,12 +249,12 @@
 
 				<div class="value">
 					<img th:src="@{${safety.photo}}" width="500">
-<!--					<img th:src="@{${safety.photo}}" alt="点検画像" style="-->
-<!--				          width:100%;-->
-<!--				          max-width:400px;-->
-<!--				          border-radius:10px;-->
-<!--				          border:1px solid #dfe6f7;-->
-<!--        			">-->
+					<!--					<img th:src="@{${safety.photo}}" alt="点検画像" style="-->
+					<!--				          width:100%;-->
+					<!--				          max-width:400px;-->
+					<!--				          border-radius:10px;-->
+					<!--				          border:1px solid #dfe6f7;-->
+					<!--        			">-->
 				</div>
 			</div>
 		</div>
@@ -244,8 +267,7 @@
 
 			<!-- role=1のみ -->
 			<form th:if="${session.loginUser != null and session.loginUser.roll == 1}"
-				th:action="@{/safetyinspection/{id}/edit(id=${safety.safetyId})}" 
-				method="post">
+				th:action="@{/safetyinspection/{id}/edit(id=${safety.safetyId})}" method="post">
 				<button type="submit" class="btn">
 					編集
 				</button>
@@ -253,17 +275,15 @@
 
 			<!-- role=0のみ -->
 			<form th:if="${session.loginUser != null and session.loginUser.roll == 0 and safety.sStatusFlag == 0}"
-				th:action="@{/safetyinspection/{id}/confirmed(id=${safety.safetyId})}" 
-				method="post">
+				th:action="@{/safetyinspection/{id}/confirmed(id=${safety.safetyId})}" method="post">
 				<button type="submit" class="btn">
 					確認完了
 				</button>
 			</form>
-			
+
 			<!-- role=0のみ -->
 			<form th:if="${session.loginUser != null and session.loginUser.roll == 0 and safety.sStatusFlag == 1}"
-				th:action="@{/safetyinspection/{id}/confirmed/cancel(id=${safety.safetyId})}" 
-				method="post">
+				th:action="@{/safetyinspection/{id}/confirmed/cancel(id=${safety.safetyId})}" method="post">
 				<button type="submit" class="btn">
 					確認解除
 				</button>

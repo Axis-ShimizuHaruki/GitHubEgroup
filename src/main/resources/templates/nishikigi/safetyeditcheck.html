@@ -5,6 +5,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>安全点検編集確認</title>
+	<link rel="stylesheet" th:href="@{/css/safety/safetyeditcheck.css}">
 
 	<style>
 
@@ -25,10 +26,8 @@
 			<!-- 左 -->
 			<div class="logo-area">
 
-				<a href="portal.html">
-
-					<img src="icon.png" alt="ロゴ" class="logo-img">
-
+				<a th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
 
 			</div>
@@ -36,13 +35,27 @@
 			<!-- 右 -->
 			<div class="user-area">
 
-				<div>
-					ログインユーザ：田中 太郎
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
 				</div>
 
-				<a href="logout.html" class="logout-btn">
-					ログアウト
-				</a>
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
 
 			</div>
 
@@ -212,9 +225,9 @@
      添付画像
 ========================= -->
 		<div th:if="${previewImage == null and safety.photo != null}" class="section">
-<!--			<div class="section-title">-->
-<!--				添付画像確認-->
-<!--			</div>-->
+			<!--			<div class="section-title">-->
+			<!--				添付画像確認-->
+			<!--			</div>-->
 
 			<div class="item">
 				<div class="label">
@@ -228,9 +241,9 @@
 		</div>
 
 		<div th:if="${previewImage != null}" class="section">
-<!--			<div class="section-title">-->
-<!--				添付画像確認-->
-<!--			</div>-->
+			<!--			<div class="section-title">-->
+			<!--				添付画像確認-->
+			<!--			</div>-->
 
 			<div class="item">
 				<div class="label">

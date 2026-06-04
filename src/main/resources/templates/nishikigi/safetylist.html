@@ -2,227 +2,238 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>安全点検一覧</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>安全点検一覧</title>
+	<link rel="stylesheet" th:href="@{/css/safety/safetylist.css}">
 
-  <style>
+	<style>
 
-  </style>
+	</style>
 </head>
 
 <body>
 
-  <!-- =========================
+	<!-- =========================
        ヘッダー
   ========================= -->
 
-  <header>
+	<header>
 
-    <!-- 上段 -->
-    <div class="header-top">
+		<!-- 上段 -->
+		<div class="header-top">
 
-      <!-- 左 -->
-      <div class="logo-area">
+			<!-- 左 -->
+			<div class="logo-area">
 
-        <a href="list.html">
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
 
-          <img src="icon.png" alt="ロゴ" class="logo-img">
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
 
-        </a>
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
 
-      </div>
+			</div>
 
-      <!-- 右 -->
-      <div class="user-area">
+			<!-- 右 -->
+			<div class="user-area">
 
-        <span class="user-name">
-          ログインユーザ：田中 太郎
-        </span>
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
 
-        <button class="logout-btn">
-          ログアウト
-        </button>
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
 
-      </div>
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
 
-    </div>
+				</form>
 
-    <!-- 下段 -->
-    <div class="page-title-bar">
-      安全点検一覧
-    </div>
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
 
-  </header>
+			</div>
 
-  <!-- =========================
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			安全点検一覧
+		</div>
+
+	</header>
+
+	<!-- =========================
        メイン
   ========================= -->
 
-  <main>
+	<main>
 
-	<form th:action="@{/safetyinspection/search}" method="get">
+		<form th:action="@{/safetyinspection/search}" method="get">
 
-	    <div class="search-box">
+			<div class="search-box">
 
-	        <div class="search-title">
-	            検索条件
-	        </div>
-
-	        <div class="search-grid">
-
-	            <!-- 登録日 -->
-	            <div class="search-item">
-	                <label>登録日</label>
-					<input type="date"
-					       name="sCreatedAt"
-					       th:value="${sCreatedAt}">
-	            </div>
-
-				<div th:if="${session.loginUser.roll == 0}" class="search-item">
-				    <label>現場名</label>
-
-				    <select name="siteId">
-				        <option value="">すべて</option>
-
-						<option th:each="site : ${siteList}"
-						        th:value="${site.siteId}"
-						        th:text="${site.siteName}"
-						        th:selected="${site.siteId == siteId}">
-						</option>
-				    </select>
+				<div class="search-title">
+					検索条件
 				</div>
-				<!-- 一般ユーザー -->
-				<input th:if="${session.loginUser.roll != 0}"
-				       type="hidden"
-				       name="siteId"
-				       th:value="${session.siteId}">
-				
-	            <!-- 判定 -->
-	            <div class="search-item">
-	                <label>判定</label>
-	                <select name="judgement">
-						<option value=""
-						        th:selected="${judgement == null or judgement == ''}">
-						    すべて
-						</option>
 
-						<option value="良好"
-						        th:selected="${judgement == '良好'}">
-						    良好
-						</option>
+				<div class="search-grid">
 
-						<option value="要対応"
-						        th:selected="${judgement == '要対応'}">
-						    要対応
-						</option>
-	                </select>
-	            </div>
+					<!-- 登録日 -->
+					<div class="search-item">
+						<label>登録日</label>
+						<input type="date" name="sCreatedAt" th:value="${sCreatedAt}">
+					</div>
 
-	            <!-- ボタン -->
-	            <button type="submit" class="search-btn">
-	                検索
-	            </button>
+					<div th:if="${session.loginUser.roll == 0}" class="search-item">
+						<label>現場名</label>
 
-				<button type="button"
-				        class="reset-btn"
-				        th:onclick="|location.href='@{/safetyinspection/list}'|">
-				    リセット
-				</button>
-	        </div>
+						<select name="siteId">
+							<option value="">すべて</option>
 
-	    </div>
+							<option th:each="site : ${siteList}" th:value="${site.siteId}" th:text="${site.siteName}"
+								th:selected="${site.siteId == siteId}">
+							</option>
+						</select>
+					</div>
+					<!-- 一般ユーザー -->
+					<input th:if="${session.loginUser.roll != 0}" type="hidden" name="siteId"
+						th:value="${session.siteId}">
 
-	</form>
-    <!-- テーブル -->
-    <div class="table-wrap">
+					<!-- 判定 -->
+					<div class="search-item">
+						<label>判定</label>
+						<select name="judgement">
+							<option value="" th:selected="${judgement == null or judgement == ''}">
+								すべて
+							</option>
 
-      <table class="check-table">
+							<option value="良好" th:selected="${judgement == '良好'}">
+								良好
+							</option>
 
-        <thead>
-          <tr>
-            <th>登録日</th>
-            <th>現場名</th>
-            <th>点検項目数</th>
-            <th>良好</th>
-            <th>不備</th>
-            <th>判定</th>
-			<th>確認ステータス</th>
-            <th>詳細</th>
-          </tr>
-        </thead>
+							<option value="要対応" th:selected="${judgement == '要対応'}">
+								要対応
+							</option>
+						</select>
+					</div>
 
-		<tbody>
+					<!-- ボタン -->
+					<button type="submit" class="search-btn">
+						検索
+					</button>
 
-		    <tr th:each="safety : ${safetyList}">
+					<button type="button" class="reset-btn" th:onclick="|location.href='@{/safetyinspection/list}'|">
+						リセット
+					</button>
+				</div>
 
-		        <!-- 登録日 -->
-		        <td th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd')}">
-		            2026/05/26
-		        </td>
+			</div>
 
-		        <!-- 現場名 -->
-		        <td th:text="${safety.site.siteName}">
-		        </td>
+		</form>
+		<!-- テーブル -->
+		<div class="table-wrap">
 
-		        <!-- 点検項目数 -->
-		        <td>7件</td>
+			<table class="check-table">
 
-		        <!-- 良好 -->
-		        <td class="status-ok">
-		            <span th:text="${safety.goodCount} + '件'"></span>
-		        </td>
+				<thead>
+					<tr>
+						<th>登録日</th>
+						<th>現場名</th>
+						<th>点検項目数</th>
+						<th>良好</th>
+						<th>不備</th>
+						<th>判定</th>
+						<th>確認ステータス</th>
+						<th>詳細</th>
+					</tr>
+				</thead>
 
-		        <!-- 不備 -->
-		        <td class="status-ng">
-		            <span th:text="${safety.badCount} + '件'"></span>
-		        </td>
+				<tbody>
 
-		        <!-- 判定 -->
-		        <td>
-		            <span
-		                  th:text="${safety.judgement}">
-		                良好
-		            </span>
-		        </td>
+					<tr th:each="safety : ${safetyList}">
 
-				<!-- 確認ステータス -->
-				<td>
-				    <span th:text="${safety.sStatusFlag == 0 ? '提出済み' : '確認済み'}">
-				    </span>
-				</td>
-				
-		        <!-- 詳細 -->
-		        <td>
-		            <a th:href="@{/safetyinspection/{id}(id=${safety.safetyId})}"
-		               class="detail-btn">
-		                詳細
-		            </a>
-		        </td>
+						<!-- 登録日 -->
+						<td th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd')}">
+							2026/05/26
+						</td>
 
-		    </tr>
+						<!-- 現場名 -->
+						<td th:text="${safety.site.siteName}">
+						</td>
 
-		</tbody>
-      </table>
+						<!-- 点検項目数 -->
+						<td>7件</td>
 
-    </div>
+						<!-- 良好 -->
+						<td class="status-ok">
+							<span th:text="${safety.goodCount} + '件'"></span>
+						</td>
 
-  </main>
+						<!-- 不備 -->
+						<td class="status-ng">
+							<span th:text="${safety.badCount} + '件'"></span>
+						</td>
 
-  <!-- 左下ステータス吹き出し -->
-  <div class="status-bubble">
+						<!-- 判定 -->
+						<td>
+							<span th:text="${safety.judgement}">
+								良好
+							</span>
+						</td>
 
-    <div class="status-item">
-      <span class="status-title">日報</span>
-      <span class="done">✔ 作成済み</span>
-    </div>
+						<!-- 確認ステータス -->
+						<td>
+							<span th:text="${safety.sStatusFlag == 0 ? '提出済み' : '確認済み'}">
+							</span>
+						</td>
 
-    <div class="status-item">
-      <span class="status-title">安全点検</span>
-      <span class="not-done blinking">⚠ 未作成</span>
-    </div>
+						<!-- 詳細 -->
+						<td>
+							<a th:href="@{/safetyinspection/{id}(id=${safety.safetyId})}" class="detail-btn">
+								詳細
+							</a>
+						</td>
 
-  </div>
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+
+	</main>
+
+	<!-- 左下ステータス吹き出し -->
+	<div class="status-bubble">
+
+		<div class="status-item">
+			<span class="status-title">日報</span>
+			<span class="done">✔ 作成済み</span>
+		</div>
+
+		<div class="status-item">
+			<span class="status-title">安全点検</span>
+			<span class="not-done blinking">⚠ 未作成</span>
+		</div>
+
+	</div>
 
 </body>
 

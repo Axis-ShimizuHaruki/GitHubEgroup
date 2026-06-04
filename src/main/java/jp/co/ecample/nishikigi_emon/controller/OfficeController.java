@@ -65,7 +65,7 @@ public class OfficeController {
 		
 		
 		List<Map<String, Object>> defectList = allSafetyList.stream()
-			    .filter(dto -> "要対応".equals(dto.getJudgement())) // 要対応のデータのみに絞り込む
+			    .filter(dto -> "要対応".equals(dto.getJudgement())&& dto.getsStatusFlag() == 0) // 要対応のデータのみに絞り込む
 			    .map(dto -> {
 			        Map<String, Object> map = new HashMap<String, Object>();
 			        map.put("siteName", dto.getSite().getSiteName()); // 現場名

@@ -34,5 +34,5 @@ public interface TroubleRepository extends JpaRepository<Trouble, Integer> {
 			Integer troubleType,
 			Integer statusFlag);
 
-	 List<Trouble> findByPriorityNot(Integer priority);
+	 List<Trouble> findByTStatusFlagNot(Integer priority);
 }

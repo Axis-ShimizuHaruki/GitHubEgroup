@@ -50,7 +50,7 @@ public class TroubleService {
 	// 通知表示用
 	public List<Trouble> getActiveTroubles() {
 
-		return troubleRepository.findByPriorityNot(0);
+		return troubleRepository.findByTStatusFlagNot(2);
 
 	}
 

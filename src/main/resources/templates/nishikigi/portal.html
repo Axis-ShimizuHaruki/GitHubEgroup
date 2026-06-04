@@ -159,7 +159,10 @@
 			<!-- トラブル -->
 			<div class="menu-group">
 
-				<a th:href="@{/trouble/list}" class="menu-button">
+				<a th:href="@{/trouble/list(
+				        siteId=${view.site.siteId},
+				        occurredDate=${#temporals.format(#temporals.createNow(),'yyyy-MM-dd')}
+				    )}" class="menu-button">
 					今日のトラブル
 				</a>
 

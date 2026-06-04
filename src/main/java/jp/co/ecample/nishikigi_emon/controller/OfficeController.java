@@ -151,7 +151,7 @@ public class OfficeController {
 
 					safetyStatus = "未確認";
 
-					if ("1".equals(safety.getsStatusFlag())) {
+					if (safety.getsStatusFlag() == 1) {
 
 						safetyStatus = "確認済";
 						break;

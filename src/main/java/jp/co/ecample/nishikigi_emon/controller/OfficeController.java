@@ -98,7 +98,7 @@ public class OfficeController {
 
 			for (Trouble trouble : site.getTroubleList()) {
 
-				if (trouble.getPriority() > maxPriority) {
+				if (trouble.getPriority() > maxPriority && trouble.gettStatusFlag() != 2) {
 					maxPriority = trouble.getPriority();
 					
 				}

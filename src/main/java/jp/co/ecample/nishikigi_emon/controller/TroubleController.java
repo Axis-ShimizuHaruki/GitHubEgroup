@@ -141,6 +141,20 @@ public class TroubleController {
 			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
+		// Sessionから前回検索条件を取得
+		TroubleSearchForm sessionForm = (TroubleSearchForm) session.getAttribute("troubleSearchForm");
+
+		// パラメータが何もない場合は前回条件を復元
+		if (sessionForm != null
+				&& form.getSiteName() == null
+				&& form.getOccurredDate() == null
+				&& form.getPriority() == null
+				&& form.getTroubleType() == null
+				&& form.getStatusFlag() == null) {
+
+			form = sessionForm;
+		}
+
 		// 現場ポータルから遷移時の初回表示
 		if (siteId != null
 				&& form.getSiteName() == null
@@ -179,6 +193,8 @@ public class TroubleController {
 				form.getStatusFlag());
 
 		List<Site> siteList = siteService.selectAll();
+
+		session.setAttribute("troubleSearchForm", form);
 
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);

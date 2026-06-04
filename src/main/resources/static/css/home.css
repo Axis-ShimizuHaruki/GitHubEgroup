@@ -220,21 +220,27 @@ main {
 
 .message-row {
 	display: flex;
-	align-items: flex-end;
-	gap: 10px;
+	margin-bottom: 8px;
+}
+
+.me {
+	justify-content: flex-end;
+}
+
+.other {
+	justify-content: flex-start;
 }
 
 .message {
-	max-width: 70%;
+    max-width: 100%;
 
-	padding: 14px 18px;
+    padding: 14px 18px;
+    border-radius: 18px;
 
-	border-radius: 18px;
+    font-size: 16px;
+    line-height: 1.5;
 
-	font-size: 16px;
-	line-height: 1.5;
-	
-	white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 .me {
@@ -255,6 +261,26 @@ main {
 	border: 1px solid #dfe5f0;
 
 	border-bottom-left-radius: 4px;
+}
+.message-wrapper {
+	display: flex;
+	flex-direction: column;
+	max-width: 70%;
+}
+
+.me .message-wrapper {
+	align-items: flex-end;
+}
+
+.other .message-wrapper {
+	align-items: flex-start;
+}
+
+.message-time {
+	font-size: 11px;
+	color: #888;
+	margin-top: 2px;
+	padding: 0 4px;
 }
 
 /* =========================

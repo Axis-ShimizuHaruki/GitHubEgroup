@@ -174,9 +174,17 @@
 			                  ? 'message-row other'
 			                  : 'message-row me'">
 
-					<div class="message" th:text="${chat.message}">
-					</div>
+							  <div class="message-wrapper">
 
+							          <div class="message"
+							               th:text="${chat.message}">
+							          </div>
+
+							          <div class="message-time"
+							               th:text="${#temporals.format(chat.dateTime,'MM/dd HH:mm')}">
+							          </div>
+
+							      </div>
 				</div>
 
 			</div>

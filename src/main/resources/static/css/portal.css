@@ -240,7 +240,7 @@ main {
 }
 
 .message {
-	max-width: 70%;
+	
 
 	padding: 14px 18px;
 
@@ -270,6 +270,39 @@ main {
 	border: 1px solid #dfe5f0;
 
 	border-bottom-left-radius: 4px;
+}
+.message-row {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+.me {
+	justify-content: flex-end;
+}
+
+.other {
+	justify-content: flex-start;
+}
+
+.message-wrapper {
+	display: flex;
+	flex-direction: column;
+	max-width: 70%;
+}
+
+.me .message-wrapper {
+	align-items: flex-end;
+}
+
+.other .message-wrapper {
+	align-items: flex-start;
+}
+
+.message-time {
+	font-size: 11px;
+	color: #888;
+	margin-top: 3px;
+	padding: 0 4px;
 }
 
 /* =========================

@@ -31,12 +31,23 @@
  }
 
  /* 左側 */
+ .logo-area {
+ 	display: flex;
+ 	align-items: center;
+ 	gap: 14px;
+ }
 
  .logo-area a {
  	display: flex;
  	align-items: center;
  	gap: 14px;
  	text-decoration: none;
+ 	color: white;
+ }
+
+ .pageTitle {
+ 	font-size: 24px;
+ 	font-weight: bold;
  	color: white;
  }
 

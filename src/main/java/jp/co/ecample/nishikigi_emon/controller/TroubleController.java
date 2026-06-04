@@ -151,6 +151,8 @@ public class TroubleController {
 
 			Site site = siteService.findById(siteId);
 
+			session.setAttribute("portalSiteId", siteId);
+
 			form.setSiteName(site.getSiteName());
 		}
 
@@ -181,12 +183,15 @@ public class TroubleController {
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
+		model.addAttribute(
+				"portalSiteId",
+				session.getAttribute("portalSiteId"));
 		return "nishikigi/troublelist";
 	}
 
 	// 検索リセット表示
 	@GetMapping("/trouble/list/reset")
-	public String reset(Model model) {
+	public String reset(Model model, HttpSession session) {
 
 		TroubleSearchForm form = new TroubleSearchForm();
 
@@ -202,6 +207,7 @@ public class TroubleController {
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
+		model.addAttribute("portalSiteId", session.getAttribute("portalSiteId"));
 
 		return "nishikigi/troublelist";
 	}

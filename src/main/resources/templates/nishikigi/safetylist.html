@@ -41,6 +41,9 @@
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
 
+				<div class="pageTitle">
+					安全点検一覧
+				</div>
 			</div>
 
 			<!-- 右 -->
@@ -75,6 +78,11 @@
 		<!-- 下段 -->
 		<div class="page-title-bar">
 			安全点検一覧
+			
+			<!-- 現場ポータルへ戻る -->
+			<a th:if="${siteId != null}" th:href="@{/portal/{id}(id=${siteId})}" class="btn_back">
+				現場ポータルへ戻る
+			</a>
 		</div>
 
 	</header>
@@ -210,16 +218,20 @@
 								詳細
 							</a>
 						</td>
-
 					</tr>
-
 				</tbody>
 			</table>
-
 		</div>
+		
+		<!-- ボタン -->
+<!--		<div class="btn-area">-->
+<!--			 一覧へ戻る -->
+<!--			<a th:if="${siteId != null}" th:href="@{/portal/{id}(id=${siteId})}" class="btn_back">-->
+<!--				一覧へ戻る-->
+<!--			</a>-->
+<!--		</div>-->
 
 	</main>
-
 
 </body>
 

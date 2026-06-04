@@ -54,6 +54,12 @@ public class SafetyController {
 			Model model,
 			HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
+		
+		// ログインしていない
+		if (user == null) {
+			return "redirect:/login";
+		}
+		
 		List<SafetyList> safetyList;
 
 		List<Site> siteList = siteService.selectAll();
@@ -91,6 +97,11 @@ public class SafetyController {
 		//			return "redirect:/login";
 		//		}
 		User loginUser = (User) session.getAttribute("loginUser");
+		
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
 
 		// 管理者以外は強制的に自分の現場にする
 		if (loginUser.getRoll() != 0) {
@@ -119,6 +130,13 @@ public class SafetyController {
 			@PathVariable Integer id,
 			Model model,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+
 		Optional<Safety> result = service.findById(id);
 		Safety safety = result.get();
 
@@ -129,7 +147,21 @@ public class SafetyController {
 
 	// 安全点検登録画面表示
 	@GetMapping("/safetyinspection/new")
-	public String showSafetyNewForm(Model model) {
+	public String showSafetyNewForm(Model model, HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+
 		model.addAttribute("safety", new SafetyForm());
 
 		return "nishikigi/safetycheck";
@@ -139,7 +171,21 @@ public class SafetyController {
 	@PostMapping("/safetyinspection/new")
 	public String backSafetyInput(
 			@ModelAttribute("safety") SafetyForm safety,
-			Model model) {
+			Model model,
+			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
 
 		model.addAttribute("safety", safety);
 
@@ -151,7 +197,22 @@ public class SafetyController {
 	public String showSafetyConfirm(
 			@Valid @ModelAttribute("safety") SafetyForm safety,
 			BindingResult result,
-			Model model) {
+			Model model,
+			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+
 		// バリデーションNGなら登録画面に戻す
 		if (result.hasErrors()) {
 			return "nishikigi/safetycheck";
@@ -166,6 +227,20 @@ public class SafetyController {
 	@PostMapping("/safetyinspection/new/comfirmed")
 	public String createSafety(@ModelAttribute("safety") SafetyForm safety,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+		
 		service.saveSafety(
 				safety.getScaffolding(),
 				safety.getProtectingOpenings(),
@@ -220,6 +295,20 @@ public class SafetyController {
 			@PathVariable Integer id,
 			Model model,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+
 		Optional<Safety> result = service.findById(id);
 		Safety safety = result.get();
 
@@ -235,6 +324,20 @@ public class SafetyController {
 			BindingResult result,
 			Model model,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+
 		if (result.hasErrors()) {
 			return "nishikigi/safetyedit";
 		}
@@ -267,6 +370,20 @@ public class SafetyController {
 			@RequestParam("previewImage") String previewImage,
 			@RequestParam("fileName") String fileName,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 現場管理者でなければそれぞれのホームに戻す
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
+		}
+
 		byte[] bytes = Base64.getDecoder().decode(previewImage);
 		
 		String photo = safety.getPhoto();
@@ -295,6 +412,17 @@ public class SafetyController {
 			@PathVariable Integer id,
 			RedirectAttributes redirectAttributes,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 本社ユーザーでなければホームに戻す
+		if (loginUser.getRoll() != 0) {
+			return "redirect:/homesite";
+		}
+
 		service.confirmSafety(id);
 
 		redirectAttributes.addAttribute("id", id);
@@ -308,6 +436,17 @@ public class SafetyController {
 			@PathVariable Integer id,
 			RedirectAttributes redirectAttributes,
 			HttpSession session) {
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインしていない
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		// 本社ユーザーでなければホームに戻す
+		if (loginUser.getRoll() != 0) {
+			return "redirect:/homesite";
+		}
+
 		service.confirmCancelSafety(id);
 
 		redirectAttributes.addAttribute("id", id);

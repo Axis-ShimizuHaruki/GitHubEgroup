@@ -260,11 +260,11 @@
 			<!-- 対応状況を進める -->
 			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post" th:if="${role == 0}">
 
-				<button type="submit" th:if="${trouble.tStatusFlag == 0}">
+				<button type="submit" class="btn btn-gray" th:if="${trouble.tStatusFlag == 0}">
 					確認完了
 				</button>
 
-				<button type="submit" th:if="${trouble.tStatusFlag == 1}">
+				<button type="submit" class="btn btn-gray" th:if="${trouble.tStatusFlag == 1}">
 					対応完了
 				</button>
 

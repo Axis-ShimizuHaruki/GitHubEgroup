@@ -115,7 +115,7 @@
 			<!-- 日報 -->
 			<div class="menu-group">
 
-				<a th:if="${view.todayReport != null}" th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId})}"
+				<a th:if="${view.todayReport != null}" th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='portal')}"
 					class="menu-button">
 
 					今日の日報

@@ -155,7 +155,8 @@ public class TroubleController {
 		}
 
 		// 現場管理者の初回表示
-		if (loginUser.getRoll() == 1 || loginUser.getRoll() == 2
+		if ((loginUser.getRoll() == 1 || loginUser.getRoll() == 2)
+				&& siteId == null
 				&& form.getSiteName() == null
 				&& form.getOccurredDate() == null
 				&& form.getPriority() == null

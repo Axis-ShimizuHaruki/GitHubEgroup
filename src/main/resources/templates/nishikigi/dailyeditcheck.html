@@ -46,9 +46,24 @@
 
 				    </div>
 
-				    <div class="page-title-bar">
-				      <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
-				    </div>
+					<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">	  
+						<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">	 
+							   
+							<span th:if="${session.loginUser.roll != 0}">
+								<span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+							</span>
+							    
+							<span th:if="${session.loginUser.roll == 0 && param.siteId != null && param.siteId != ''}">
+								<span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, param.siteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+							</span>
+							    
+							<span th:if="${session.loginUser.roll == 0 && (param.siteId == null || param.siteId == '')}">
+								全現場対象エリア
+							</span>	    
+							
+						</div>
+						<a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>				  
+					</div>
 
 				  </header>
 
@@ -66,11 +81,20 @@
       <input type="hidden" th:field="*{workDetails}" />
       <input type="hidden" th:field="*{workerDetails}" id="hiddenWorkerDetails" />
       <input type="hidden" th:field="*{progressPercent}" />
-      <input type="hidden" th:field="*{photoBefore}" />
-      <input type="hidden" th:field="*{photoDuring}" />
-      <input type="hidden" th:field="*{photoAfter}" />
-      <input type="hidden" th:field="*{photoInspection}" />
-      <input type="hidden" th:field="*{photoSafety}" />
+<!--      <input type="hidden" th:field="*{photoBefore}" />-->
+<!--      <input type="hidden" th:field="*{photoDuring}" />-->
+<!--      <input type="hidden" th:field="*{photoAfter}" />-->
+<!--      <input type="hidden" th:field="*{photoInspection}" />-->
+<!--      <input type="hidden" th:field="*{photoSafety}" />-->
+
+<!--画像データはサーバーのセッションから送るようになったため、HTMLから巨大なデータを送信する hidden タグをすべて消し去ります。-->
+<!--（画面に画像を描画した後に送信データを空にするイメージ-->
+<!--	  <input type="hidden" th:field="*{photoBeforeBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoDuringBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoAfterBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoInspectionBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoSafetyBase64}" />-->
+
       <input type="hidden" th:field="*{safetyKy}" />
       <input type="hidden" th:field="*{safetyMeasure}" />
       <input type="hidden" th:field="*{safetyEducation}" />
@@ -141,16 +165,37 @@
         </div>
         </div>
 
-      <div class="section">
-        <div class="section-title">写真記録（ファイル名）</div>
-        <div class="checkbox-list">
-          <div class="tag" th:if="*{!#strings.isEmpty(photoBefore)}" th:text="'着工前: ' + *{photoBefore}"></div>
-          <div class="tag" th:if="*{!#strings.isEmpty(photoDuring)}" th:text="'施工中: ' + *{photoDuring}"></div>
-          <div class="tag" th:if="*{!#strings.isEmpty(photoAfter)}" th:text="'完了: ' + *{photoAfter}"></div>
-          <div class="tag" th:text="'配筋検査: ' + *{photoInspection}"></div>
-          <div class="tag" th:text="'安全帯使用: ' + *{photoSafety}"></div>
-        </div>
-      </div>
+		<div class="section">
+		        <div class="section-title">写真記録</div>
+		        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+		          
+		          <div th:if="*{!#strings.isEmpty(photoBeforeBase64)}">
+		            <div class="label" style="font-weight: bold;">着工前</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoBeforeBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoDuringBase64)}">
+		            <div class="label" style="font-weight: bold;">施工中</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoDuringBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoAfterBase64)}">
+		            <div class="label" style="font-weight: bold;">完了</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoAfterBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoInspectionBase64)}">
+		            <div class="label" style="font-weight: bold;">配筋検査</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoInspectionBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoSafetyBase64)}">
+		            <div class="label" style="font-weight: bold;">安全帯使用状況</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoSafetyBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+
+		        </div>
+		      </div>
 
       <div class="section">
         <div class="section-title">安全管理</div>

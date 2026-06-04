@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -24,7 +25,7 @@ public class Dailyreport {
     @Column(name = "report_id")
     private Integer reportId;
 
-    // ★ site_id カラムを外部キーとして Site エンティティと結合
+    // site_id カラムを外部キーとして Site エンティティと結合
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName = "site_id", nullable = false)
     private Site site;
@@ -50,20 +51,25 @@ public class Dailyreport {
     @Column(name = "progress_percent", nullable = false)
     private Integer progressPercent;
 
-    @Column(name = "photo_before", length = 100)
-    private String photoBefore;
+    @Lob
+    @Column(name = "photo_before", columnDefinition="LONGBLOB")
+    private byte[] photoBefore;
 
-    @Column(name = "photo_during", length = 100)
-    private String photoDuring;
+    @Lob
+    @Column(name = "photo_during", columnDefinition="LONGBLOB")
+    private byte[] photoDuring;
 
-    @Column(name = "photo_after", length = 100)
-    private String photoAfter;
+    @Lob
+    @Column(name = "photo_after", columnDefinition="LONGBLOB")
+    private byte[] photoAfter;
 
-    @Column(name = "photo_inspection", length = 100, nullable = false)
-    private String photoInspection;
+    @Lob
+    @Column(name = "photo_inspection", columnDefinition="LONGBLOB")
+    private byte[] photoInspection; 
 
-    @Column(name = "photo_safety", length = 100, nullable = false)
-    private String photoSafety;
+    @Lob
+    @Column(name = "photo_safety", columnDefinition="LONGBLOB", nullable = false)
+    private byte[] photoSafety;
 
     @Column(name = "safety_ky", length = 500, nullable = false)
     private String safetyKy;
@@ -190,43 +196,43 @@ public class Dailyreport {
     	this.progressPercent = progressPercent; 
     }
     
-    public String getPhotoBefore() { 
+    public byte[] getPhotoBefore() { 
     	return photoBefore; 
     }
     
-    public void setPhotoBefore(String photoBefore) { 
+    public void setPhotoBefore(byte[] photoBefore) { 
     	this.photoBefore = photoBefore; 
     }
     
-    public String getPhotoDuring() { 
+    public byte[] getPhotoDuring() { 
     	return photoDuring; 
     }
     
-    public void setPhotoDuring(String photoDuring) { 
+    public void setPhotoDuring(byte[] photoDuring) { 
     	this.photoDuring = photoDuring; 
     }
     
-    public String getPhotoAfter() { 
+    public byte[] getPhotoAfter() { 
     	return photoAfter; 
     }
     
-    public void setPhotoAfter(String photoAfter) { 
+    public void setPhotoAfter(byte[] photoAfter) { 
     	this.photoAfter = photoAfter; 
     }
     
-    public String getPhotoInspection() { 
+    public byte[] getPhotoInspection() { 
     	return photoInspection; 
     }
     
-    public void setPhotoInspection(String photoInspection) { 
+    public void setPhotoInspection(byte[] photoInspection) { 
     	this.photoInspection = photoInspection; 
     }
     
-    public String getPhotoSafety() { 
+    public byte[] getPhotoSafety() { 
     	return photoSafety; 
     }
     
-    public void setPhotoSafety(String photoSafety) { 
+    public void setPhotoSafety(byte[] photoSafety) { 
     	this.photoSafety = photoSafety; 
     }
     

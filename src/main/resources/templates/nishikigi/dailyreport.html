@@ -38,14 +38,27 @@
 			</div>
 	    </div>
 
-	    <div class="page-title-bar">
-	        <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
-	    </div>
+		<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">	  
+			<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">	    
+				<span th:if="${session.loginUser.roll != 0}">
+					<span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+				</span>
+				    
+				<span th:if="${session.loginUser.roll == 0 && param.siteId != null && param.siteId != ''}">
+					<span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, param.siteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+				</span>
+				    
+				<span th:if="${session.loginUser.roll == 0 && (param.siteId == null || param.siteId == '')}">
+					全現場対象エリア
+				</span>	    
+			</div>
+			<a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>				  
+		</div>
 	</header>
 
   <div class="container">
 
-    <form th:action="@{/dailyreport/new/confirm}" th:object="${dailyreport}" method="post" id="reportForm" novalidate>
+    <form th:action="@{/dailyreport/new/confirm}" th:object="${dailyreport}" method="post" id="reportForm" novalidate enctype="multipart/form-data">
 
       <div class="section">
         <div class="section-title">作業実績</div>
@@ -125,35 +138,46 @@
 		<div th:if="${#fields.hasErrors('progressPercent')}" th:errors="*{progressPercent}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
-      <div class="section">
-        <div class="section-title">写真記録（ファイル名を入力）</div>
-        <div class="check-item">
-          <label for="photoBefore">写真_着工前</label>
-          <input type="text" id="photoBefore" th:field="*{photoBefore}" placeholder="例：before.jpg">
-		  <div th:if="${#fields.hasErrors('photoBefore')}" th:errors="*{photoBefore}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
-        <div class="check-item">
-          <label interpreter="true" for="photoDuring">写真_施工中</label>
-          <input type="text" id="photoDuring" th:field="*{photoDuring}" placeholder="例：during.jpg">
-		  <div th:if="${#fields.hasErrors('photoDuring')}" th:errors="*{photoDuring}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
-        <div class="check-item">
-          <label for="photoAfter">写真_完了</label>
-          <input type="text" id="photoAfter" th:field="*{photoAfter}" placeholder="例：after.jpg">
-		  <div th:if="${#fields.hasErrors('photoAfter')}" th:errors="*{photoAfter}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
-        <div class="check-item">
-          <label for="photoInspection">配筋検査写真（必須）</label>
-          <input type="text" id="photoInspection" th:field="*{photoInspection}" placeholder="例：inspection.jpg">
-		  <div th:if="${#fields.hasErrors('photoInspection')}" th:errors="*{photoInspection}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
-        <div class="check-item">
-          <label for="photoSafety">安全帯使用状況写真（必須）</label>
-          <input type="text" id="photoSafety" th:field="*{photoSafety}" placeholder="例：safety.jpg">
-		  <div th:if="${#fields.hasErrors('photoSafety')}" th:errors="*{photoSafety}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
-        </div>
-      </div>
-
+	  <div class="section">
+	          <div class="section-title">写真記録（ファイルを選択）</div>
+	          
+	          <div class="check-item" style="margin-bottom: 20px;">
+	            <label>写真_着工前</label>
+	            <input type="file" th:field="*{uploadPhotoBefore}" accept="image/*">
+	            <input type="hidden" th:field="*{photoBeforeBase64}">
+	            <img th:if="*{!#strings.isEmpty(photoBeforeBase64)}" th:src="'data:image/jpeg;base64,' + *{photoBeforeBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	          </div>
+	          
+	          <div class="check-item" style="margin-bottom: 20px;">
+	            <label>写真_施工中</label>
+	            <input type="file" th:field="*{uploadPhotoDuring}" accept="image/*">
+	            <input type="hidden" th:field="*{photoDuringBase64}">
+	            <img th:if="*{!#strings.isEmpty(photoDuringBase64)}" th:src="'data:image/jpeg;base64,' + *{photoDuringBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	          </div>
+	          
+	          <div class="check-item" style="margin-bottom: 20px;">
+	            <label>写真_完了</label>
+	            <input type="file" th:field="*{uploadPhotoAfter}" accept="image/*">
+	            <input type="hidden" th:field="*{photoAfterBase64}">
+	            <img th:if="*{!#strings.isEmpty(photoAfterBase64)}" th:src="'data:image/jpeg;base64,' + *{photoAfterBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	          </div>
+	          
+	          <div class="check-item" style="margin-bottom: 20px;">
+	            <label>配筋検査写真</label>
+	            <input type="file" th:field="*{uploadPhotoInspection}" accept="image/*">
+	            <input type="hidden" th:field="*{photoInspectionBase64}">
+	            <img th:if="*{!#strings.isEmpty(photoInspectionBase64)}" th:src="'data:image/jpeg;base64,' + *{photoInspectionBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	          </div>
+	          
+	          <div class="check-item" style="margin-bottom: 20px;">
+	            <label>安全帯使用状況写真（必須）</label>
+	            <input type="file" th:field="*{uploadPhotoSafety}" accept="image/*">
+	            <input type="hidden" th:field="*{photoSafetyBase64}">
+	            <img th:if="*{!#strings.isEmpty(photoSafetyBase64)}" th:src="'data:image/jpeg;base64,' + *{photoSafetyBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	            <div th:if="${#fields.hasErrors('photoSafetyBase64')}" th:errors="*{photoSafetyBase64}" style="color: #e74c3c; font-size: 13px; font-weight: bold; margin-top: 5px;"></div>
+	          </div>
+	        </div>
+			
 	  <div class="section">
 	          <div class="section-title">安全管理</div>
 	          
@@ -261,7 +285,7 @@
       container.appendChild(newRow);
     }
 
-    // 🌟 改善：データを途中で消し去らず、ありのまま集計してJavaのControllerへ送る
+    // データを途中で消し去らず、ありのまま集計してJavaのControllerへ送る
     function serializeWorkerDetails() {
       const rows = document.querySelectorAll('.worker-row');
       const workerList = [];

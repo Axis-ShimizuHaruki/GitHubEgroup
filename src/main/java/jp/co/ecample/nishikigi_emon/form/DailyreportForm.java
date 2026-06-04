@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 日報登録・更新フォーム
@@ -55,24 +56,41 @@ public class DailyreportForm {
     @Max(value = 100, message = "進捗率は100%以下で入力してください")
     private Integer progressPercent;
 
-    /** 写真関係（任意・上限100文字） */
-    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
-    private String photoBefore;
+//    /** 写真関係（任意・上限100文字） */
+//    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
+//    private String photoBefore;
+//
+//    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
+//    private String photoDuring;
+//
+//    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
+//    private String photoAfter;
+//
+//    /** 写真関係（必須・上限100文字） */
+////    @NotBlank(message = "配筋検査写真のファイル名を入力してください")
+////    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
+////    private String photoInspection;
+//
+//    @NotBlank(message = "安全帯使用状況写真のファイル名を入力してください")
+//    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
+//    private String photoSafety;
+    
+    
+    /** 写真関係（ファイルアップロード用 ＆ 確認画面データ引き回し用） */
+    private MultipartFile uploadPhotoBefore;
+    private String photoBeforeBase64;
 
-    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
-    private String photoDuring;
+    private MultipartFile uploadPhotoDuring;
+    private String photoDuringBase64;
 
-    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
-    private String photoAfter;
+    private MultipartFile uploadPhotoAfter;
+    private String photoAfterBase64;
 
-    /** 写真関係（必須・上限100文字） */
-    @NotBlank(message = "配筋検査写真のファイル名を入力してください")
-    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
-    private String photoInspection;
+    private MultipartFile uploadPhotoInspection;
+    private String photoInspectionBase64;
 
-    @NotBlank(message = "安全帯使用状況写真のファイル名を入力してください")
-    @Size(max = 100, message = "ファイル名は100文字以内で入力してください")
-    private String photoSafety;
+    private MultipartFile uploadPhotoSafety;
+    private String photoSafetyBase64;
 
     /** 安全管理関係 */
     @NotBlank(message = "KY項目を入力してください")
@@ -197,46 +215,125 @@ public class DailyreportForm {
     	this.progressPercent = progressPercent; 
     }
 
-    public String getPhotoBefore() { 
-    	return photoBefore; 
+//    public String getPhotoBefore() { 
+//    	return photoBefore; 
+//    }
+//    
+//    public void setPhotoBefore(String photoBefore) { 
+//    	this.photoBefore = photoBefore; 
+//    }
+//
+//    public String getPhotoDuring() { 
+//    	return photoDuring; 
+//    }
+//    
+//    public void setPhotoDuring(String photoDuring) { 
+//    	this.photoDuring = photoDuring; 
+//    }
+//
+//    public String getPhotoAfter() { 
+//    	return photoAfter; 
+//    }
+//    
+//    public void setPhotoAfter(String photoAfter) { 
+//    	this.photoAfter = photoAfter; 
+//    }
+
+//    public String getPhotoInspection() { 
+//    	return photoInspection; 
+//    }
+//    
+//    public void setPhotoInspection(String photoInspection) { 
+//    	this.photoInspection = photoInspection; 
+//    }
+
+//    public String getPhotoSafety() { 
+//    	return photoSafety; 
+//    }
+//    
+//    public void setPhotoSafety(String photoSafety) { 
+//    	this.photoSafety = photoSafety; 
+//    }
+    public MultipartFile getUploadPhotoBefore() { 
+    	return uploadPhotoBefore; 
     }
     
-    public void setPhotoBefore(String photoBefore) { 
-    	this.photoBefore = photoBefore; 
-    }
-
-    public String getPhotoDuring() { 
-    	return photoDuring; 
+    public void setUploadPhotoBefore(MultipartFile uploadPhotoBefore) { 
+    	this.uploadPhotoBefore = uploadPhotoBefore; 
     }
     
-    public void setPhotoDuring(String photoDuring) { 
-    	this.photoDuring = photoDuring; 
-    }
-
-    public String getPhotoAfter() { 
-    	return photoAfter; 
+    public String getPhotoBeforeBase64() { 
+    	return photoBeforeBase64; 
     }
     
-    public void setPhotoAfter(String photoAfter) { 
-    	this.photoAfter = photoAfter; 
+    public void setPhotoBeforeBase64(String photoBeforeBase64) { 
+    	this.photoBeforeBase64 = photoBeforeBase64; 
     }
 
-    public String getPhotoInspection() { 
-    	return photoInspection; 
+    public MultipartFile getUploadPhotoDuring() { 
+    	return uploadPhotoDuring; 
     }
     
-    public void setPhotoInspection(String photoInspection) { 
-    	this.photoInspection = photoInspection; 
-    }
-
-    public String getPhotoSafety() { 
-    	return photoSafety; 
+    public void setUploadPhotoDuring(MultipartFile uploadPhotoDuring) { 
+    	this.uploadPhotoDuring = uploadPhotoDuring; 
     }
     
-    public void setPhotoSafety(String photoSafety) { 
-    	this.photoSafety = photoSafety; 
+    public String getPhotoDuringBase64() { 
+    	return photoDuringBase64; 
+    }
+    
+    public void setPhotoDuringBase64(String photoDuringBase64) { 
+    	this.photoDuringBase64 = photoDuringBase64; 
     }
 
+    public MultipartFile getUploadPhotoAfter() { 
+    	return uploadPhotoAfter; 
+    }
+    
+    public void setUploadPhotoAfter(MultipartFile uploadPhotoAfter) { 
+    	this.uploadPhotoAfter = uploadPhotoAfter; 
+    }
+    
+    public String getPhotoAfterBase64() { 
+    	return photoAfterBase64; 
+    }
+    
+    public void setPhotoAfterBase64(String photoAfterBase64) { 
+    	this.photoAfterBase64 = photoAfterBase64; 
+    }
+
+    public MultipartFile getUploadPhotoInspection() { 
+    	return uploadPhotoInspection; 
+    }
+    
+    public void setUploadPhotoInspection(MultipartFile uploadPhotoInspection) { 
+    	this.uploadPhotoInspection = uploadPhotoInspection; 
+    }
+    
+    public String getPhotoInspectionBase64() { 
+    	return photoInspectionBase64; 
+    }
+    
+    public void setPhotoInspectionBase64(String photoInspectionBase64) { 
+    	this.photoInspectionBase64 = photoInspectionBase64; 
+    }
+
+    public MultipartFile getUploadPhotoSafety() { 
+    	return uploadPhotoSafety; 
+    }
+    
+    public void setUploadPhotoSafety(MultipartFile uploadPhotoSafety) { 
+    	this.uploadPhotoSafety = uploadPhotoSafety; 
+    }
+    
+    public String getPhotoSafetyBase64() { 
+    	return photoSafetyBase64; 
+    }
+    
+    public void setPhotoSafetyBase64(String photoSafetyBase64) { 
+    	this.photoSafetyBase64 = photoSafetyBase64; 
+    }
+    
     public String getSafetyKy() { 
     	return safetyKy; 
     }

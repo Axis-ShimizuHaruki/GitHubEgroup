@@ -53,7 +53,7 @@ public class DailyreportController {
     private String checkSiteAccess(HttpSession session, Integer reportSiteId) { User u = (User) session.getAttribute("loginUser"); if (u == null) return "redirect:/login"; if (u.getRoll() == ROLE_HONSHA) return null; Integer sId = (Integer) session.getAttribute("siteId"); return (sId == null || !sId.equals(reportSiteId)) ? "redirect:/dailyreport/list" : null; }
 
     /**
-     * 一覧画面表示（検索パラメータを明示的に保持する）
+     * 一覧画面表示（検索パラメータとポータル起点を明確に分ける）
      */
     @GetMapping("/list") 
     public String showList(
@@ -61,9 +61,32 @@ public class DailyreportController {
             @RequestParam(name = "siteId", required = false) Integer siteId,
             @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
             @RequestParam(name = "workDetails", required = false) String workDetails,
+            @RequestParam(name = "portalSiteId", required = false) Integer portalSiteId, // 🌟【追記】ポータル起点のIDを別名で受け取る
             HttpSession session, Model model) {
         String redirect = checkLogin(session); if (redirect != null) return redirect;
         User loginUser = (User) session.getAttribute("loginUser");
+        
+        // 🌟【重要】本社ユーザーの「スタート地点」を記憶するロジック
+        if (loginUser.getRoll() == ROLE_HONSHA) {
+            if (portalSiteId != null) {
+                // ポータルから新しく来た時、またはリセットボタンを押した時
+                session.setAttribute("fromPortalSiteId", portalSiteId);
+                if (siteId == null) {
+                    siteId = portalSiteId; // 初回表示はスタートした現場で自動絞り込み
+                }
+            } else {
+                // portalSiteIdが送られてこなかった場合、フォームでの検索中なのか、メニューから直接来たのかを判定
+                boolean isFormSearch = (targetDateStr != null && !targetDateStr.isEmpty()) 
+                                    || siteId != null 
+                                    || dStatusFlag != null 
+                                    || (workDetails != null && !workDetails.isEmpty());
+                if (!isFormSearch) {
+                    // 検索フォームからでもなくパラメータが完全に出荷状態 ＝ メニュー等から直接一覧を開いた時は起点をクリア
+                    session.removeAttribute("fromPortalSiteId");
+                }
+            }
+        }
+
         Integer userSiteId = (Integer) session.getAttribute("siteId");
         model.addAttribute("siteList", siteService.selectAll());
         java.time.LocalDate targetDate = null;
@@ -73,13 +96,12 @@ public class DailyreportController {
         List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag, workDetails);
         model.addAttribute("reportList", reportList);
 
-        // 🌟【重要】検索パラメータを配列バグを防ぐためにModelに明示的に格納
         model.addAttribute("currentSiteId", siteId);
         model.addAttribute("currentTargetDate", targetDateStr);
         model.addAttribute("currentDStatusFlag", dStatusFlag);
         model.addAttribute("currentWorkDetails", workDetails);
         
-        // ヘッダー現場名表示用
+        // ヘッダー現場名表示用（ここは現在絞り込んでいる現場名にする）
         model.addAttribute("headerSiteId", siteId);
 
         return "nishikigi/dailylist";
@@ -121,6 +143,17 @@ public class DailyreportController {
             bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
         } else if (wd.contains("\"company\":\"\"") || wd.contains("\"count\":\"\"") || wd.contains("\"names\":\"\"")) {
             bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+        }
+        
+     // 同じ日の日報が既に登録されていないか重複チェック
+        if (form.getSiteId() != null && form.getTargetDate() != null) {
+            // 同じ現場・同じ日付で日報を検索してみる
+            List<Dailyreport> existingReports = dailyreportService.searchReports(form.getTargetDate(), form.getSiteId(), null, null);
+            
+            // もし1件でも見つかったらエラーを出す
+            if (!existingReports.isEmpty()) {
+                bindingResult.rejectValue("targetDate", "", "選択された日付の日報は既に登録されています。");
+            }
         }
         
         form.setPhotoBeforeBase64(convertToBase64(form.getUploadPhotoBefore(), form.getPhotoBeforeBase64()));

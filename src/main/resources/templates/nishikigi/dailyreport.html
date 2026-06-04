@@ -66,6 +66,7 @@
 		<div class="grid-2">
 			<div>
 			  <label>現場名</label>
+			  <div th:if="${#fields.hasErrors('siteId')}" th:errors="*{siteId}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 			  <input type="hidden" th:field="*{siteId}" />
 			  <select disabled style="background-color: #e2e8f0; cursor: not-allowed;">
 			    <option th:each="site : ${siteList}" 
@@ -73,23 +74,23 @@
 			            th:text="${site.siteName}"
 			            th:selected="${site.siteId == dailyreport.siteId}"> </option>
 			  </select>
-			  <div th:if="${#fields.hasErrors('siteId')}" th:errors="*{siteId}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 			</div>
 
 			<div>
 				<label for="projectNumber">工事番号</label>
+				<div th:if="${#fields.hasErrors('projectNumber')}" th:errors="*{projectNumber}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 				<input type="text" id="projectNumber" th:field="*{projectNumber}" maxlength="10">
-				<div th:if="${#fields.hasErrors('projectNumber')}" th:errors="*{projectNumber}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 			</div>
 
 			<div>
 				<label for="targetDate">日付</label>
+				<div th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 				<input type="date" id="targetDate" name="targetDate" th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}">
-				<div th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 			</div>
 
 			<div>
 				<label for="weather">天候</label>
+				<div th:if="${#fields.hasErrors('weather')}" th:errors="*{weather}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 				<select id="weather" th:field="*{weather}">
 					<option value="">-- 選択してください --</option>
 					<option value="1">晴れ</option>
@@ -97,19 +98,18 @@
 					<option value="3">雨</option>
 					<option value="4">雪</option>
 				</select>
-				<div th:if="${#fields.hasErrors('weather')}" th:errors="*{weather}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 			</div>
 
 			<div>
 				<label for="temperature">気温 (℃)</label>
+				<div th:if="${#fields.hasErrors('temperature')}" th:errors="*{temperature}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 				<input type="number" id="temperature" th:field="*{temperature}" placeholder="例：25">
-				<div th:if="${#fields.hasErrors('temperature')}" th:errors="*{temperature}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 			</div>
         </div>
 
         <label for="workDetails">当日作業内容（工種別）</label>
+        <div th:if="${#fields.hasErrors('workDetails')}" th:errors="*{workDetails}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="workDetails" th:field="*{workDetails}" placeholder="鉄筋・型枠・コンクリ打設・設備などの作業内容" maxlength="500"></textarea>
-		<div th:if="${#fields.hasErrors('workDetails')}" th:errors="*{workDetails}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
@@ -133,9 +133,9 @@
       <div class="section">
         <div class="section-title">工程進捗</div>
         <label for="progressPercent">全体進捗（%）</label>
+        <div th:if="${#fields.hasErrors('progressPercent')}" th:errors="*{progressPercent}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
         <span id="rangeVal">50%</span>
-		<div th:if="${#fields.hasErrors('progressPercent')}" th:errors="*{progressPercent}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
 	  <div class="section">
@@ -143,38 +143,48 @@
 	          
 	          <div class="check-item" style="margin-bottom: 20px;">
 	            <label>写真_着工前</label>
-	            <input type="file" th:field="*{uploadPhotoBefore}" accept="image/*">
+	            <input type="file" th:field="*{uploadPhotoBefore}" accept="image/*" class="photo-input">
 	            <input type="hidden" th:field="*{photoBeforeBase64}">
-	            <img th:if="*{!#strings.isEmpty(photoBeforeBase64)}" th:src="'data:image/jpeg;base64,' + *{photoBeforeBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	            <img th:src="*{!#strings.isEmpty(photoBeforeBase64)} ? 'data:image/jpeg;base64,' + *{photoBeforeBase64} : ''" 
+	                 th:style="*{!#strings.isEmpty(photoBeforeBase64)} ? 'max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;' : 'max-height: 100px; display: none; margin-top: 10px; border-radius: 6px;'" 
+	                 class="img-preview">
 	          </div>
 	          
 	          <div class="check-item" style="margin-bottom: 20px;">
 	            <label>写真_施工中</label>
-	            <input type="file" th:field="*{uploadPhotoDuring}" accept="image/*">
+	            <input type="file" th:field="*{uploadPhotoDuring}" accept="image/*" class="photo-input">
 	            <input type="hidden" th:field="*{photoDuringBase64}">
-	            <img th:if="*{!#strings.isEmpty(photoDuringBase64)}" th:src="'data:image/jpeg;base64,' + *{photoDuringBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	            <img th:src="*{!#strings.isEmpty(photoDuringBase64)} ? 'data:image/jpeg;base64,' + *{photoDuringBase64} : ''" 
+	                 th:style="*{!#strings.isEmpty(photoDuringBase64)} ? 'max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;' : 'max-height: 100px; display: none; margin-top: 10px; border-radius: 6px;'" 
+	                 class="img-preview">
 	          </div>
 	          
 	          <div class="check-item" style="margin-bottom: 20px;">
 	            <label>写真_完了</label>
-	            <input type="file" th:field="*{uploadPhotoAfter}" accept="image/*">
+	            <input type="file" th:field="*{uploadPhotoAfter}" accept="image/*" class="photo-input">
 	            <input type="hidden" th:field="*{photoAfterBase64}">
-	            <img th:if="*{!#strings.isEmpty(photoAfterBase64)}" th:src="'data:image/jpeg;base64,' + *{photoAfterBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	            <img th:src="*{!#strings.isEmpty(photoAfterBase64)} ? 'data:image/jpeg;base64,' + *{photoAfterBase64} : ''" 
+	                 th:style="*{!#strings.isEmpty(photoAfterBase64)} ? 'max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;' : 'max-height: 100px; display: none; margin-top: 10px; border-radius: 6px;'" 
+	                 class="img-preview">
 	          </div>
 	          
 	          <div class="check-item" style="margin-bottom: 20px;">
 	            <label>配筋検査写真</label>
-	            <input type="file" th:field="*{uploadPhotoInspection}" accept="image/*">
+	            <input type="file" th:field="*{uploadPhotoInspection}" accept="image/*" class="photo-input">
 	            <input type="hidden" th:field="*{photoInspectionBase64}">
-	            <img th:if="*{!#strings.isEmpty(photoInspectionBase64)}" th:src="'data:image/jpeg;base64,' + *{photoInspectionBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
+	            <img th:src="*{!#strings.isEmpty(photoInspectionBase64)} ? 'data:image/jpeg;base64,' + *{photoInspectionBase64} : ''" 
+	                 th:style="*{!#strings.isEmpty(photoInspectionBase64)} ? 'max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;' : 'max-height: 100px; display: none; margin-top: 10px; border-radius: 6px;'" 
+	                 class="img-preview">
 	          </div>
 	          
 	          <div class="check-item" style="margin-bottom: 20px;">
 	            <label>安全帯使用状況写真（必須）</label>
-	            <input type="file" th:field="*{uploadPhotoSafety}" accept="image/*">
+	            <div th:if="${#fields.hasErrors('photoSafetyBase64')}" th:errors="*{photoSafetyBase64}" style="color: #e74c3c; font-size: 13px; font-weight: bold; margin-bottom: 5px;"></div>
+	            <input type="file" th:field="*{uploadPhotoSafety}" accept="image/*" class="photo-input">
 	            <input type="hidden" th:field="*{photoSafetyBase64}">
-	            <img th:if="*{!#strings.isEmpty(photoSafetyBase64)}" th:src="'data:image/jpeg;base64,' + *{photoSafetyBase64}" style="max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;">
-	            <div th:if="${#fields.hasErrors('photoSafetyBase64')}" th:errors="*{photoSafetyBase64}" style="color: #e74c3c; font-size: 13px; font-weight: bold; margin-top: 5px;"></div>
+	            <img th:src="*{!#strings.isEmpty(photoSafetyBase64)} ? 'data:image/jpeg;base64,' + *{photoSafetyBase64} : ''" 
+	                 th:style="*{!#strings.isEmpty(photoSafetyBase64)} ? 'max-height: 100px; display: block; margin-top: 10px; border-radius: 6px;' : 'max-height: 100px; display: none; margin-top: 10px; border-radius: 6px;'" 
+	                 class="img-preview">
 	          </div>
 	        </div>
 			
@@ -182,57 +192,57 @@
 	          <div class="section-title">安全管理</div>
 	          
 	          <label for="safetyKy">KY項目</label>
+	          <div th:if="${#fields.hasErrors('safetyKy')}" th:errors="*{safetyKy}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="safetyKy" th:field="*{safetyKy}" placeholder="例：高所作業時における外部足場からの墜落・転落の危険..."></textarea>
-			  <div th:if="${#fields.hasErrors('safetyKy')}" th:errors="*{safetyKy}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
 	          <label for="safetyMeasure">対策</label>
+	          <div th:if="${#fields.hasErrors('safetyMeasure')}" th:errors="*{safetyMeasure}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="safetyMeasure" th:field="*{safetyMeasure}" placeholder="例：フルハーネス型安全帯の完全着用の徹底..."></textarea>
-			  <div th:if="${#fields.hasErrors('safetyMeasure')}" th:errors="*{safetyMeasure}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
 	          <label for="safetyEducation">新規入場者教育</label>
+	          <div th:if="${#fields.hasErrors('safetyEducation')}" th:errors="*{safetyEducation}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="safetyEducation" th:field="*{safetyEducation}" placeholder="例：株式会社A工業の新規入場者3名に対し..."></textarea>
-			  <div th:if="${#fields.hasErrors('safetyEducation')}" th:errors="*{safetyEducation}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
 	          <label for="nearMiss">ヒヤリハット</label>
+	          <div th:if="${#fields.hasErrors('nearMiss')}" th:errors="*{nearMiss}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="nearMiss" th:field="*{nearMiss}" placeholder="例：2階通路の段差に足元を取られ、つまずきそうになった..."></textarea>
-			  <div th:if="${#fields.hasErrors('nearMiss')}" th:errors="*{nearMiss}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 	        </div>
 
 	        <div class="section">
 	          <div class="section-title">資材・機材</div>
 	          
 	          <label for="materials">搬入物</label>
+	          <div th:if="${#fields.hasErrors('materials')}" th:errors="*{materials}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="materials" th:field="*{materials}" placeholder="例：生コンクリート（21-18-20BB） 12.5m3..."></textarea>
-			  <div th:if="${#fields.hasErrors('materials')}" th:errors="*{materials}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
 	          <label for="equipments">レンタル機材稼働</label>
+	          <div th:if="${#fields.hasErrors('equipments')}" th:errors="*{equipments}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
 	          <textarea id="equipments" th:field="*{equipments}" placeholder="例：25tラフタークレーン（錦木リース） 1台終日稼働..."></textarea>
-			  <div th:if="${#fields.hasErrors('equipments')}" th:errors="*{equipments}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 	        </div>
 
       <div class="section">
         <div class="section-title">問題・調整事項</div>
         <label for="designChange">設計変更指示</label>
+        <div th:if="${#fields.hasErrors('designChange')}" th:errors="*{designChange}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="designChange" th:field="*{designChange}" placeholder="設計変更指示の内容"></textarea>
-		<div th:if="${#fields.hasErrors('designChange')}" th:errors="*{designChange}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="customerRequest">客先追加要望</label>
+        <div th:if="${#fields.hasErrors('customerRequest')}" th:errors="*{customerRequest}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="customerRequest" th:field="*{customerRequest}" placeholder="客先追加要望の内容"></textarea>
-		<div th:if="${#fields.hasErrors('customerRequest')}" th:errors="*{customerRequest}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="partnerCoordination">協力会社調整</label>
+        <div th:if="${#fields.hasErrors('partnerCoordination')}" th:errors="*{partnerCoordination}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="partnerCoordination" th:field="*{partnerCoordination}" placeholder="協力会社調整の内容"></textarea>
-		<div th:if="${#fields.hasErrors('partnerCoordination')}" th:errors="*{partnerCoordination}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
 
         <label for="nextDaySchedule">翌日予定</label>
+        <div th:if="${#fields.hasErrors('nextDaySchedule')}" th:errors="*{nextDaySchedule}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="nextDaySchedule" th:field="*{nextDaySchedule}" placeholder="翌日の作業予定"></textarea>
-		<div th:if="${#fields.hasErrors('nextDaySchedule')}" th:errors="*{nextDaySchedule}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="section">
         <div class="section-title">コメント</div>
+        <div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
         <textarea id="notes" th:field="*{notes}" placeholder="一日の総括（任意のコメント）" maxlength="500"></textarea>
-		<div th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}" style="color: #e74c3c; font-size: 13px; margin-top: 5px; font-weight: bold;"></div>
       </div>
 
       <div class="btn-area">
@@ -250,7 +260,6 @@
         try {
           const workerList = JSON.parse(jsonStr);
           if (workerList.length > 0) {
-            // エラーから戻ってきた際に、前回のガタガタな入力データ状態のまま行を完全に復元
             const container = document.getElementById('worker-rows');
             container.innerHTML = ''; 
             workerList.forEach(worker => {
@@ -285,7 +294,6 @@
       container.appendChild(newRow);
     }
 
-    // データを途中で消し去らず、ありのまま集計してJavaのControllerへ送る
     function serializeWorkerDetails() {
       const rows = document.querySelectorAll('.worker-row');
       const workerList = [];
@@ -295,18 +303,40 @@
         const count = row.querySelector('.input-count').value.trim();
         const names = row.querySelector('.input-names').value.trim();
         
-        // 3つのうち「どれか1つでも」入力があれば、不完全な状態（空欄あり）でもそのまま保持して送信
         if (company || count || names) {
           workerList.push({ company: company, count: count, names: names });
         }
       });
 
-      // 完全に全消しの場合は「[]」という文字列がセットされ、Java側で確実に未入力検知させます
       document.getElementById('workerDetails').value = JSON.stringify(workerList);
     }
 
     document.getElementById('reportForm').addEventListener('submit', function(e) {
       serializeWorkerDetails(); 
+    });
+
+    // 🌟【新規実装】写真のリアルタイムプレビュー処理
+    document.querySelectorAll('.photo-input').forEach(input => {
+      input.addEventListener('change', function() {
+        const file = this.files[0];
+        const preview = this.parentElement.querySelector('.img-preview');
+        
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block'; // 画像をその場で即座に表示
+          }
+          reader.readAsDataURL(file);
+        } else {
+          // ファイルの選択が解除され、サーバー側のキャッシュ（既存Base64データ）も無ければ隠す
+          const base64Input = this.parentElement.querySelector('input[type="hidden"]');
+          if (!base64Input || !base64Input.value) {
+            preview.src = '';
+            preview.style.display = 'none';
+          }
+        }
+      });
     });
   </script>
 </body>

@@ -55,8 +55,8 @@
 	        </span>
 	    </div>
 
-		<a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
-		   th:href="@{/portal/{id}(id=${headerSiteId})}" 
+		<a th:if="${session.loginUser.roll == 0 && session.fromPortalSiteId != null}" 
+		   th:href="@{/portal/{id}(id=${session.fromPortalSiteId})}" 
 		   class="nav-link" 
 		   style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
 		   ◀ 現場ポータルへ戻る
@@ -94,7 +94,7 @@
 	  </div>
 
       <div class="search-item">
-        <label class="search-label">判定</label>
+        <label class="search-label">本社確認</label>
         <select name="dStatusFlag" class="search-select">
           <option value="">すべて</option>
           <option value="0" th:selected="${#strings.equals(param.dStatusFlag, '0')}">未確認</option>
@@ -104,7 +104,9 @@
 
 	  <div class="search-btn-area">
 	    <button type="submit" class="search-btn">検索</button>
-	    <button type="button" th:onclick="|location.href='@{/dailyreport/list}'|" class="search-btn btn-reset-gray">リセット</button>
+	    <button type="button" 
+	            th:onclick="${session.fromPortalSiteId != null} ? |location.href='@{/dailyreport/list(portalSiteId=${session.fromPortalSiteId})}'| : |location.href='@{/dailyreport/list}'|" 
+	            class="search-btn btn-reset-gray">リセット</button>
 	  </div>
 
     </form>
@@ -115,7 +117,7 @@
           <th>日付</th>
           <th th:if="${session.loginUser.roll == 0}">現場名</th>
           <th>当日作業内容</th>
-          <th>判定</th>
+          <th>本社確認</th>
           <th>詳細</th>
         </tr>
       </thead>

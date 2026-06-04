@@ -74,6 +74,9 @@
 		<!-- 下段 -->
 		<div class="page-title-bar">
 
+			<span th:text="${view.site.siteName}">
+			</span>
+
 			<a th:href="@{/dailyreport/list}">
 				日報一覧
 			</a>
@@ -95,18 +98,6 @@
 		<!-- ===== 左メニュー ===== -->
 
 		<div class="button-area">
-
-			<!-- タイトルカード -->
-			<div class="portal-header-card">
-
-				<div class="portal-site-name">
-
-					<span th:text="${view.site.siteName}">
-					</span>
-
-				</div>
-
-			</div>
 
 			<!-- 日報 -->
 			<div class="menu-group">

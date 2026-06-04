@@ -66,7 +66,7 @@
 
 		<!-- 下段 -->
 		<div class="page-title-bar">
-<!--			安全点検編集-->
+			<!--			安全点検編集-->
 		</div>
 
 	</header>
@@ -158,17 +158,21 @@
 				<input type="hidden" th:field="*{sCreatedAt}">
 				<input type="hidden" th:field="*{sUpdatedAt}">
 				<input type="hidden" th:field="*{site.siteName}">
+
+				<input type="hidden" th:field="*{scaffolding}">
+				<input type="hidden" th:field="*{protectingOpenings}">
+				<input type="hidden" th:field="*{safetyHarness}">
+				<input type="hidden" th:field="*{equipmentInspection}">
+				<input type="hidden" th:field="*{fireExtinguisher}">
+				<input type="hidden" th:field="*{organization}">
+				<input type="hidden" th:field="*{electricalInsulation}">
 				<!--				<input th:if="*{photo != null}" type="hidden" th:field="*{photo}">-->
 
 
 				<div class="check-item">
 					<label>足場（手すり・幅木・滑り止め）</label>
 
-					<select th:field="*{scaffolding}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+					<input th:value="*{scaffolding == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('scaffolding')}" th:errors="*{scaffolding}" style="color:red">
 					</div>
 				</div>
@@ -176,11 +180,8 @@
 				<div class="check-item">
 					<label>開口部養生</label>
 
-					<select th:field="*{protectingOpenings}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+
+					<input th:value="*{protectingOpenings == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('protectingOpenings')}" th:errors="*{protectingOpenings}"
 						style="color:red">
 					</div>
@@ -189,11 +190,8 @@
 				<div class="check-item">
 					<label>高所作業の安全帯使用</label>
 
-					<select th:field="*{safetyHarness}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+
+					<input th:value="*{safetyHarness == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('safetyHarness')}" th:errors="*{safetyHarness}" style="color:red">
 					</div>
 				</div>
@@ -201,11 +199,7 @@
 				<div class="check-item">
 					<label>重機点検記録</label>
 
-					<select th:field="*{equipmentInspection}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+					<input th:value="*{equipmentInspection == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('equipmentInspection')}" th:errors="*{equipmentInspection}"
 						style="color:red">
 					</div>
@@ -214,11 +208,8 @@
 				<div class="check-item">
 					<label>火気使用時の消火器配置</label>
 
-					<select th:field="*{fireExtinguisher}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+
+					<input th:value="*{fireExtinguisher == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('fireExtinguisher')}" th:errors="*{fireExtinguisher}"
 						style="color:red">
 					</div>
@@ -227,11 +218,7 @@
 				<div class="check-item">
 					<label>整理整頓（つまずきリスク）</label>
 
-					<select th:field="*{organization}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+					<input th:value="*{organization == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}" style="color:red">
 					</div>
 				</div>
@@ -239,11 +226,7 @@
 				<div class="check-item">
 					<label>仮設電気の絶縁</label>
 
-					<select th:field="*{electricalInsulation}" required>
-						<option value="">選択してください</option>
-						<option value="0">良好</option>
-						<option value="1">不備</option>
-					</select>
+					<input th:value="*{electricalInsulation == 0 ? '良好' : '不備'}" readonly></input>
 					<div th:if="${#fields.hasErrors('electricalInsulation')}" th:errors="*{electricalInsulation}"
 						style="color:red">
 					</div>

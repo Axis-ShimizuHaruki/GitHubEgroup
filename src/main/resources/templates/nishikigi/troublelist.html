@@ -239,7 +239,10 @@
 						<span th:if="${trouble.tStatusFlag == 2}"> 完了 </span>
 					</td>
 
-					<td> <a class="detail-btn" th:href="@{/trouble/{id}(id=${trouble.troubleId})}">
+					<td>
+						<a class="detail-btn" th:href="@{/trouble/{id}(
+					        id=${trouble.troubleId},
+					        portalSiteId=${portalSiteId})}">
 							詳細
 						</a>
 					</td>

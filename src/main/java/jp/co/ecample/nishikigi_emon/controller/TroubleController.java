@@ -214,7 +214,8 @@ public class TroubleController {
 
 	// トラブル詳細表示
 	@GetMapping("/trouble/{id}")
-	public String detail(@PathVariable Integer id, Model model, HttpSession session) {
+	public String detail(@PathVariable Integer id, @RequestParam(required = false) Integer portalSiteId, Model model,
+			HttpSession session) {
 		Trouble trouble = service.findById(id);
 
 		if (trouble == null) {
@@ -224,6 +225,7 @@ public class TroubleController {
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		model.addAttribute("trouble", trouble);
+		model.addAttribute("portalSiteId", portalSiteId);
 		model.addAttribute("role", loginUser.getRoll());
 
 		return "nishikigi/troubledetail";

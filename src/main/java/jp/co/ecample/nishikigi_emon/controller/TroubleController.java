@@ -175,6 +175,10 @@ public class TroubleController {
 				form.getPriority(),
 				form.getTroubleType(),
 				form.getStatusFlag());
+
+		List<Site> siteList = siteService.selectAll();
+
+		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
 		return "nishikigi/troublelist";
@@ -193,6 +197,9 @@ public class TroubleController {
 				null,
 				null);
 
+		List<Site> siteList = siteService.selectAll();
+
+		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
 

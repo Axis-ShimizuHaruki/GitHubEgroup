@@ -93,7 +93,13 @@
 
 				<div class="search-item">
 					<label class="search-label">現場名</label>
-					<input type="text" th:field="*{siteName}" class="search-input">
+
+					<select th:field="*{siteName}" class="search-select">
+						<option value="">すべて</option>
+
+						<option th:each="site : ${siteList}" th:value="${site.siteName}" th:text="${site.siteName}">
+						</option>
+					</select>
 				</div>
 
 				<div class="search-item">

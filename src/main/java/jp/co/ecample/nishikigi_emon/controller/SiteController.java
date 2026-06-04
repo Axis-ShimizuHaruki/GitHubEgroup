@@ -14,6 +14,7 @@ import jp.co.ecample.nishikigi_emon.entity.Chat;
 import jp.co.ecample.nishikigi_emon.entity.Dailyreport;
 import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
+import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ChatRepository;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
 
@@ -32,11 +33,15 @@ public class SiteController {
 	        HttpSession session,
 	        Model model) {
 		
+		User loginUser = (User) session.getAttribute("loginUser");
+		
 		// ログインチャック
 				if (session.getAttribute("loginUser") == null) {
 					return "redirect:/login";
 				}
-		
+				if (loginUser.getRoll() != 1) {
+					return "redirect:/login";
+				}
 		
 	    Integer siteId =
 	        (Integer) session.getAttribute("siteId");

@@ -241,37 +241,41 @@
 				'/topic/chat/' + siteId,
 				function (message) {
 
-					const msg =
-						JSON.parse(message.body);
+					const msg = JSON.parse(message.body);
 
-					addMessage(msg.message, false);
-				}
-			);
-		});
+					addMessage(
+					    msg.message,
+					    msg.senderSiteId == senderSiteId
+						);
+						        }
+						    );
+
+						});
 
 	</script>
 	<script>
 
 		function addMessage(text, isMe) {
 
-			const row =
-				document.createElement("div");
+		    const row =
+		        document.createElement("div");
 
-			row.className =
-				isMe ? "message-row other"
-					: "message-row me";
+		    row.className =
+		        isMe
+		            ? "message-row me"
+		            : "message-row other";
 
-			const message =
-				document.createElement("div");
+		    const message =
+		        document.createElement("div");
 
-			message.className = "message";
-			message.textContent = text;
+		    message.className = "message";
+		    message.textContent = text;
 
-			row.appendChild(message);
+		    row.appendChild(message);
 
-			document
-				.getElementById("chatMessages")
-				.appendChild(row);
+		    document
+		        .getElementById("chatMessages")
+		        .appendChild(row);
 		}
 
 	</script>

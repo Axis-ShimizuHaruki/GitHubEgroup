@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.co.ecample.nishikigi_emon.entity.Site;
 import jp.co.ecample.nishikigi_emon.entity.Trouble;
@@ -136,8 +137,22 @@ public class TroubleController {
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")
-	public String list(@ModelAttribute TroubleSearchForm form, Model model, HttpSession session) {
+	public String list(@RequestParam(required = false) Integer siteId, @ModelAttribute TroubleSearchForm form,
+			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
+
+		// 現場ポータルから遷移時の初回表示
+		if (siteId != null
+				&& form.getSiteName() == null
+				&& form.getOccurredDate() == null
+				&& form.getPriority() == null
+				&& form.getTroubleType() == null
+				&& form.getStatusFlag() == null) {
+
+			Site site = siteService.findById(siteId);
+
+			form.setSiteName(site.getSiteName());
+		}
 
 		// 現場管理者の初回表示
 		if (loginUser.getRoll() == 1 || loginUser.getRoll() == 2
@@ -147,9 +162,9 @@ public class TroubleController {
 				&& form.getTroubleType() == null
 				&& form.getStatusFlag() == null) {
 
-			Integer siteId = (Integer) session.getAttribute("siteId");
+			Integer sessionSiteId = (Integer) session.getAttribute("siteId");
 
-			Site site = siteService.findById(siteId);
+			Site site = siteService.findById(sessionSiteId);
 
 			form.setSiteName(site.getSiteName());
 		}

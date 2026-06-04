@@ -27,6 +27,7 @@
 			<!-- 左 -->
 			<div class="logo-area">
 
+
 				<!-- 本社 -->
 				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
@@ -34,6 +35,11 @@
 
 				<!-- 現場 -->
 				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
 

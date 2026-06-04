@@ -285,7 +285,8 @@
 				編集
 			</button>
 
-			<button type="button" class="btn btn-gray" th:onclick="|location.href='@{/trouble/list}'|">
+			<button type="button" class="btn btn-gray"
+				th:onclick="|location.href='@{/trouble/list(siteId=${trouble.site.siteId})}'|">
 				トラブル一覧へ
 			</button>
 

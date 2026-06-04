@@ -108,8 +108,6 @@ public class OfficeController {
 					
 				}
 				
-				System.out.println(tStatusFlag);
-				
 				
 			}
 
@@ -171,7 +169,6 @@ public class OfficeController {
 					break;
 				}
 			}
-			System.out.println(tStatusFlag);
 			SiteView view = new SiteView(
 					site,
 					maxPriority,
@@ -199,7 +196,6 @@ public class OfficeController {
 				return 0;
 			});
 			
-			System.out.println(view);
 		}
 		
 		

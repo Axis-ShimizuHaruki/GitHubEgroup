@@ -140,7 +140,7 @@ public class TroubleController {
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		// 現場管理者の初回表示
-		if (loginUser.getRoll() == 1
+		if (loginUser.getRoll() == 1 || loginUser.getRoll() == 2
 				&& form.getSiteName() == null
 				&& form.getOccurredDate() == null
 				&& form.getPriority() == null

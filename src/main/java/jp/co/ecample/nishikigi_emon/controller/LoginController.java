@@ -106,8 +106,11 @@ public class LoginController {
 		}
 
 		// 閲覧者は拒否
-		if (loginUser.getRoll() == 2) {
-			return "redirect:/homesite";
+		if (loginUser.getRoll() != 1) {
+			if(loginUser.getRoll() == 0)
+				return "redirect:/homeoffice";
+			if(loginUser.getRoll() == 2)
+				return "redirect:/homesite";
 		}
 		
 		return "nishikigi/complete";

@@ -133,13 +133,21 @@ header {
 	margin-bottom: 6px;
 }
 
-.value {
-	background: #f7f9fc;
-	border-radius: 10px;
+input,
+textarea,
+select {
+	width: 100%;
 	padding: 12px;
+	border-radius: 10px;
+	border: 1px solid #ddd;
+	background: #fff;
 	font-size: 15px;
-	line-height: 1.7;
-	white-space: pre-wrap;
+}
+
+textarea {
+	min-height: 140px;
+	resize: vertical;
+	line-height: 1.6;
 }
 
 .summary-box {
@@ -148,15 +156,15 @@ header {
 	padding: 16px;
 	border-radius: 10px;
 	line-height: 1.8;
-	font-size: 15px;
 }
 
-.badge {
+.badge-preview {
 	display: inline-block;
 	padding: 6px 12px;
 	border-radius: 8px;
 	font-size: 13px;
 	font-weight: bold;
+	margin-top: 10px;
 }
 
 .high {
@@ -175,32 +183,44 @@ header {
 }
 
 .btn-area {
-	text-align: right;
-	margin-top: 30px;
+	text-align: center;
+	margin-top: 40px;
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
 }
 
 .btn {
-	background: #1f3c88;
+	background: #28a745;
 	color: #fff;
 	border: none;
-	padding: 14px 24px;
+	padding: 16px 40px;
 	border-radius: 10px;
+	font-size: 16px;
 	cursor: pointer;
-	font-size: 15px;
-	margin-left: 12px;
 	transition: 0.2s;
 }
 
 .btn:hover {
-	background: #16306d;
+	background: #218838;
 }
 
-.btn-secondary {
-	background: #777;
+.btn-gray {
+	background: #6c757d;
 }
 
-.btn-secondary:hover {
-	background: #555;
+.btn-gray:hover {
+	background: #5a6268;
+}
+
+/* =========================
+       エラー
+    ========================= */
+.error {
+	color: red;
+	font-size: 14px;
+	margin-top: 4px;
 }
 
 /* =========================
@@ -224,13 +244,8 @@ header {
 		grid-template-columns: 1fr;
 	}
 
-	.btn-area {
-		text-align: center;
-	}
-
 	.btn {
 		width: 100%;
-		margin: 8px 0;
 	}
 
 }

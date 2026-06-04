@@ -40,7 +40,7 @@ public class SiteController {
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/login";
 		}
-		if (loginUser.getRoll() != 1 || loginUser.getRoll() != 2) {
+		if (loginUser.getRoll() == 0) {
 			return "redirect:/login";
 		}
 

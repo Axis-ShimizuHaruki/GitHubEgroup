@@ -30,12 +30,10 @@ header {
 	flex-wrap: wrap;
 }
 
-.logo-area a {
-	display: flex;
-	align-items: center;
-	gap: 14px;
-	text-decoration: none;
-	color: white;
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
 }
 
 .logo-img {

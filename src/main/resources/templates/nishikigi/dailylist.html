@@ -77,15 +77,14 @@
 
       <div class="search-item" th:if="${session.loginUser.roll == 0}">
         <label class="search-label">現場名</label>
-        <select name="siteId" class="search-select">
-          <option value="">すべて</option>
-          <option th:each="site : ${siteList}" 
-                  th:if="${site.siteId != 1}"
-                  th:value="${site.siteId}" 
-                  th:text="${site.siteName}"
-                  th:selected="${#strings.equals(param.siteId, site.siteId)}">
-          </option>
-        </select>
+		<select name="siteId" class="search-select">
+		  <option value="" th:selected="${currentSiteId == null}">すべて</option>
+		  <option th:each="site : ${siteList}" 
+		          th:if="${site.siteId != 1}"
+		          th:value="${site.siteId}" 
+		          th:text="${site.siteName}"
+		          th:selected="${site.siteId == currentSiteId}"> </option>
+		</select>
       </div>
 	  
 	  <div class="search-item">
@@ -104,9 +103,7 @@
 
 	  <div class="search-btn-area">
 	    <button type="submit" class="search-btn">検索</button>
-	    <button type="button" 
-	            th:onclick="${session.fromPortalSiteId != null} ? |location.href='@{/dailyreport/list(portalSiteId=${session.fromPortalSiteId})}'| : |location.href='@{/dailyreport/list}'|" 
-	            class="search-btn btn-reset-gray">リセット</button>
+	    <button type="button" th:onclick="|location.href='@{/dailyreport/list(clear=true)}'|" class="search-btn btn-reset-gray">リセット</button>
 	  </div>
 
     </form>

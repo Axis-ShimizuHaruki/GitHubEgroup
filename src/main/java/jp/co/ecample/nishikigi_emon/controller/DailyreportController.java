@@ -61,27 +61,31 @@ public class DailyreportController {
             @RequestParam(name = "siteId", required = false) Integer siteId,
             @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
             @RequestParam(name = "workDetails", required = false) String workDetails,
-            @RequestParam(name = "portalSiteId", required = false) Integer portalSiteId, // 🌟【追記】ポータル起点のIDを別名で受け取る
+            @RequestParam(name = "portalSiteId", required = false) Integer portalSiteId, 
+            @RequestParam(name = "clear", required = false) Boolean clear, // 🌟【追記】リセット判定用のパラメータを追加
             HttpSession session, Model model) {
         String redirect = checkLogin(session); if (redirect != null) return redirect;
         User loginUser = (User) session.getAttribute("loginUser");
         
-        // 🌟【重要】本社ユーザーの「スタート地点」を記憶するロジック
+        // 本社ユーザーの「スタート地点」を記憶するロジック
         if (loginUser.getRoll() == ROLE_HONSHA) {
             if (portalSiteId != null) {
-                // ポータルから新しく来た時、またはリセットボタンを押した時
+                // ポータルから新しく来た時
                 session.setAttribute("fromPortalSiteId", portalSiteId);
                 if (siteId == null) {
                     siteId = portalSiteId; // 初回表示はスタートした現場で自動絞り込み
                 }
+            } else if (Boolean.TRUE.equals(clear)) {
+                // 🌟【追記】リセットボタンが押された時：検索条件(siteId=null)にするが、ポータル起点のセッションは消さない
+                // siteIdはnullのまま、何もしない（全現場表示へ）
             } else {
-                // portalSiteIdが送られてこなかった場合、フォームでの検索中なのか、メニューから直接来たのかを判定
+                // portalSiteIdもclearもない場合（通常のフォーム検索、または詳細からの戻りなど）
                 boolean isFormSearch = (targetDateStr != null && !targetDateStr.isEmpty()) 
                                     || siteId != null 
                                     || dStatusFlag != null 
                                     || (workDetails != null && !workDetails.isEmpty());
                 if (!isFormSearch) {
-                    // 検索フォームからでもなくパラメータが完全に出荷状態 ＝ メニュー等から直接一覧を開いた時は起点をクリア
+                    // 検索でも戻りでもない完全な初期状態（メニュー等から直接開いた場合）は起点をクリア
                     session.removeAttribute("fromPortalSiteId");
                 }
             }
@@ -96,12 +100,13 @@ public class DailyreportController {
         List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag, workDetails);
         model.addAttribute("reportList", reportList);
 
+        // 検索条件を保持する変数をModelに格納
         model.addAttribute("currentSiteId", siteId);
         model.addAttribute("currentTargetDate", targetDateStr);
         model.addAttribute("currentDStatusFlag", dStatusFlag);
         model.addAttribute("currentWorkDetails", workDetails);
         
-        // ヘッダー現場名表示用（ここは現在絞り込んでいる現場名にする）
+        // ヘッダー現場名表示用
         model.addAttribute("headerSiteId", siteId);
 
         return "nishikigi/dailylist";

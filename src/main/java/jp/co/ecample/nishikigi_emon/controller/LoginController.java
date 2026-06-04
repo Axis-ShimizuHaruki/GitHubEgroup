@@ -36,7 +36,8 @@ public class LoginController {
 
 	// ログイン画面の表示
 	@GetMapping("/login")
-	public String loginForm() {
+	public String loginForm(HttpSession session) {
+		session.invalidate();
 		return "nishikigi/login";
 	}
 

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import jp.co.ecample.nishikigi_emon.dto.SafetyList;
 import jp.co.ecample.nishikigi_emon.entity.Safety;
@@ -213,32 +211,27 @@ public class SafetyService {
 	}
 	
 	// 写真を保存
-	public String savePhoto(MultipartFile photoFile) {
-	    if (photoFile.isEmpty()) {
-	        return null;
-	    }
-
-	    try {
-	        String fileName =
-	                UUID.randomUUID()
-	                + "_"
-	                + photoFile.getOriginalFilename();
-
-	        Path uploadPath =
-	                Paths.get("src/main/resources/static/images");
-
-	        Files.createDirectories(uploadPath);
-
-	        Files.copy(
-	                photoFile.getInputStream(),
-	                uploadPath.resolve(fileName),
-	                StandardCopyOption.REPLACE_EXISTING);
-
-	        return "/images/" + fileName;
-
-	    } catch (IOException e) {
-	        throw new RuntimeException(e);
-	    }
+	public String savePhoto(
+			byte[] imageBytes,
+	        String fileName) {
+		String newFileName =
+		        UUID.randomUUID() + "_" + fileName;
+		
+        Path uploadPath =
+                Paths.get("src/main/resources/static/images/safety");
+        
+        try {
+			Files.createDirectories(uploadPath);
+			
+	        Files.write(
+	                uploadPath.resolve(newFileName),
+	                imageBytes);
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+        
+        return "/images/safety/" + newFileName;
 	}
 
 	// 安全点検情報を更新
@@ -255,6 +248,9 @@ public class SafetyService {
 			) {
 		Safety safety = repository.findById(safetyId)
 				.orElseThrow(() -> new RuntimeException("Not found"));
+		
+	    // 既存画像パスを保存
+	    String oldPhoto = safety.getPhoto();
 
 		safety.setScaffolding(scaffolding);
 		safety.setProtectingOpenings(protectingOpenings);
@@ -265,6 +261,19 @@ public class SafetyService {
 		safety.setElectricalInsulation(electricalInsulation);
 		safety.setPhoto(photo);
 		safety.setsUpdatedAt(LocalDateTime.now());
+		
+	    // 画像が変更された場合のみ更新＆削除
+	    if (photo != null && !photo.isEmpty() && oldPhoto != null && !oldPhoto.equals(photo)) {
+	        // 古い画像削除
+	            try {
+	                Path oldPath = Paths.get("src/main/resources/static", oldPhoto);
+
+	                Files.deleteIfExists(oldPath);
+
+	            } catch (Exception e) {
+	                System.out.println("旧画像削除失敗: " + e.getMessage());
+	            }
+	    }
 
 		repository.save(safety);
 	}

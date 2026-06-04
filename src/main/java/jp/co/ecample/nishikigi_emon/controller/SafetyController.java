@@ -1,8 +1,10 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +23,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.ecample.nishikigi_emon.dto.SafetyList;
 import jp.co.ecample.nishikigi_emon.entity.Safety;
 import jp.co.ecample.nishikigi_emon.entity.Site;
+import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.form.SafetyForm;
 import jp.co.ecample.nishikigi_emon.service.SafetyService;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
@@ -39,7 +43,7 @@ public class SafetyController {
 		this.service = service;
 		this.siteService = siteService;
 	}
-	
+
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
@@ -47,17 +51,22 @@ public class SafetyController {
 	@GetMapping("/safetyinspection/list")
 	public String showSafetyList(
 			@RequestParam(required = false) Integer siteId,
-			Model model) {
+			Model model,
+			HttpSession session) {
+		User user = (User) session.getAttribute("loginUser");
 		List<SafetyList> safetyList;
 
 		List<Site> siteList = siteService.selectAll();
 		siteList.removeIf(site -> site.getOfficecheck() == true);
 
-		if (siteId == null) {
+		if (user.getRoll() == 0 && siteId == null) {
 			// ホーム画面から
 			safetyList = service.selectAll();
-		} else {
+		} else if (user.getRoll() == 0 && siteId != null) {
 			// 現場ポータルから
+			safetyList = service.search(null, siteId, null);
+		} else {
+			siteId = (Integer) session.getAttribute("siteId");
 			safetyList = service.search(null, siteId, null);
 		}
 
@@ -81,6 +90,12 @@ public class SafetyController {
 		//		if(session.getAttribute("loginUser") == null) {
 		//			return "redirect:/login";
 		//		}
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// 管理者以外は強制的に自分の現場にする
+		if (loginUser.getRoll() != 0) {
+			siteId = (Integer) session.getAttribute("siteId");
+		}
 
 		List<SafetyList> safetyList = service.search(sCreatedAt, siteId, judgement);
 
@@ -160,7 +175,7 @@ public class SafetyController {
 				safety.getOrganization(),
 				safety.getElectricalInsulation(),
 				(Integer) session.getAttribute("siteId"));
-		
+
 		// =========================
 		// どれか1件でも不備なら通知
 		// =========================
@@ -177,17 +192,13 @@ public class SafetyController {
 		// =========================
 		if (hasProblem) {
 
-			Integer siteId =
-					(Integer) session.getAttribute("siteId");
+			Integer siteId = (Integer) session.getAttribute("siteId");
 
-			Site site =
-					siteService.findById(siteId);
+			Site site = siteService.findById(siteId);
 
-			DateTimeFormatter formatter =
-					DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
 
-			String createdAt =
-					LocalDateTime.now().format(formatter);
+			String createdAt = LocalDateTime.now().format(formatter);
 
 			Map<String, Object> notice = new HashMap<>();
 
@@ -198,8 +209,7 @@ public class SafetyController {
 
 			messagingTemplate.convertAndSend(
 					"/topic/notice",
-					(Object) notice
-			);
+					(Object) notice);
 		}
 		return "redirect:/complete";
 	}
@@ -221,21 +231,30 @@ public class SafetyController {
 	// 編集確認画面を表示
 	@PostMapping("/safetyinspection/{id}/edit/confirm")
 	public String showSafetyEditConfirm(
-			@Valid @ModelAttribute("safety") SafetyForm safety,
+			@Valid @ModelAttribute SafetyForm safety,
 			BindingResult result,
 			Model model,
 			HttpSession session) {
-
 		if (result.hasErrors()) {
 			return "nishikigi/safetyedit";
 		}
 
 		if (!safety.getPhotoFile().isEmpty()) {
-			String photoPath = service.savePhoto(safety.getPhotoFile());
-
-			safety.setPhoto(photoPath);
+			MultipartFile photoFile = safety.getPhotoFile();
+		    byte[] bytes;
+		    String previewImageStr;
+			try {
+				bytes = safety.getPhotoFile().getBytes();
+			    previewImageStr =
+				        Base64.getEncoder().encodeToString(bytes);
+			    model.addAttribute("previewImage", previewImageStr);
+			    model.addAttribute("fileName", photoFile.getOriginalFilename());
+			    model.addAttribute("contentType", photoFile.getContentType());
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
 		}
-		System.out.println("photo = " + safety.getPhoto());
 		model.addAttribute("safety", safety);
 
 		return "nishikigi/safetyeditcheck";
@@ -245,7 +264,17 @@ public class SafetyController {
 	@PostMapping("/safetyinspection/{id}/edit/confirmed")
 	public String updateSafety(
 			@ModelAttribute("safety") Safety safety,
+			@RequestParam("previewImage") String previewImage,
+			@RequestParam("fileName") String fileName,
 			HttpSession session) {
+		byte[] bytes = Base64.getDecoder().decode(previewImage);
+		
+		String photo = safety.getPhoto();
+
+		if (previewImage != null && previewImage != "") {
+			photo = service.savePhoto(bytes, fileName);
+		}
+
 		service.updateSafety(
 				safety.getSafetyId(),
 				safety.getScaffolding(),
@@ -255,7 +284,7 @@ public class SafetyController {
 				safety.getFireExtinguisher(),
 				safety.getOrganization(),
 				safety.getElectricalInsulation(),
-				safety.getPhoto());
+				photo);
 
 		return "redirect:/complete";
 	}

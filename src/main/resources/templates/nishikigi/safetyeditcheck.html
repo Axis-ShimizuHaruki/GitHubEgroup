@@ -69,15 +69,15 @@
 			<div class="summary-box">
 				<!-- 登録日時 -->
 				<div>
-				    登録日時：
-				    <span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					登録日時：
+					<span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
 				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
-				    更新日時：
-				    <span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
-				    </span>
+					更新日時：
+					<span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
 				</div>
 				<div>
 					現場名：
@@ -211,26 +211,35 @@
 		<!-- =========================
      添付画像
 ========================= -->
-
-		<div th:if="${safety.photo != null}" class="section">
-			<div>
-			    photo:
-			    <span th:text="${safety.photo}"></span>
-			</div>
-			<div class="section-title">
-				添付画像確認
-			</div>
+		<div th:if="${previewImage == null and safety.photo != null}" class="section">
+<!--			<div class="section-title">-->
+<!--				添付画像確認-->
+<!--			</div>-->
 
 			<div class="item">
 				<div class="label">
 					点検時の画像
 				</div>
 
+				<div>
+					<img th:src="@{${safety.photo}}" width="500">
+				</div>
+			</div>
+		</div>
+
+		<div th:if="${previewImage != null}" class="section">
+<!--			<div class="section-title">-->
+<!--				添付画像確認-->
+<!--			</div>-->
+
+			<div class="item">
+				<div class="label">
+					アップロード画像
+				</div>
+
 				<div class="value">
-					<!-- 現在の画像表示 -->
-					<div th:if="${safety.photo != null}">
-						<img th:src="@{${safety.photo}}" width="300">
-					</div>
+					<!-- 保存する画像表示 -->
+					<img th:src="'data:' + ${contentType} + ';base64,' + ${previewImage}" width="500">
 				</div>
 			</div>
 		</div>
@@ -242,8 +251,7 @@
 			</button>
 
 			<!-- 登録 -->
-			<form th:action="@{/safetyinspection/{id}/edit/confirmed(id=${safety.safetyId})}"
-				th:object="${safety}"
+			<form th:action="@{/safetyinspection/{id}/edit/confirmed(id=${safety.safetyId})}" th:object="${safety}"
 				method="post">
 				<input type="hidden" th:field="*{safetyId}">
 				<input type="hidden" th:field="*{scaffolding}">
@@ -254,6 +262,9 @@
 				<input type="hidden" th:field="*{organization}">
 				<input type="hidden" th:field="*{electricalInsulation}">
 				<input type="hidden" th:field="*{photo}">
+
+				<input type="hidden" name="previewImage" th:value="${previewImage}">
+				<input type="hidden" name="fileName" th:value="${fileName}">
 
 				<button type="submit" class="btn">
 					登録

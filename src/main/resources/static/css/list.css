@@ -503,6 +503,14 @@ header {
 	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
+/* ===== 通知ないとき非表示 ===== */
+#notification-container,
+#safety-notification-container {
+	display: none;
+	flex-direction: column;
+	gap: 10px;
+}
+
 /* ===== レスポンシブ ===== */
 @media(max-width:768px) {
 

@@ -41,13 +41,27 @@
 			<!-- 右 -->
 			<div class="user-area">
 
-				<span class="user-name">
-					ログインユーザ：山田 太郎
-				</span>
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
 
-				<button class="logout-btn">
-					ログアウト
-				</button>
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
 
 			</div>
 

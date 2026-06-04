@@ -479,6 +479,8 @@
 
 	<script>
 
+		let hasNotification = false;
+
 		const socket =
 			new SockJS('/nishikigi/chat');
 
@@ -513,7 +515,14 @@
 
 		});
 
+		// =========================
+		// トラブル通知
+		// =========================
+
 		function showNotification(data) {
+
+			// 通知あり
+			hasNotification = true;
 
 			const container =
 				document.getElementById(
@@ -554,13 +563,16 @@
 				<div class="notice-overview">
 					${data.overview}
 				</div>
-				
+
 				<div class="notice-time">
-						${data.createdAt}
-					</div>
+					${data.createdAt}
+				</div>
 			`;
 
 			notification.onclick = () => {
+
+				// 通知画面へ行く時は警告しない
+				hasNotification = false;
 
 				location.href =
 					'/nishikigi/trouble/' +
@@ -590,7 +602,14 @@
 			});
 		}
 
+		// =========================
+		// 安全点検通知
+		// =========================
+
 		function showSafetyNotification(data) {
+
+			// 通知あり
+			hasNotification = true;
 
 			console.log("安全通知");
 			console.log(data);
@@ -621,15 +640,57 @@
 					${data.createdAt}
 				</div>
 			`;
+
 			notification.onclick = () => {
+
+				// 通知画面へ行く時は警告しない
+				hasNotification = false;
 
 				location.href =
 					'/nishikigi/safetyinspection/' +
 					data.safetyId;
 			};
+
 			container.prepend(notification);
 		}
 
+	
+		document.addEventListener('click', function (e) {
+
+			const link = e.target.closest('a');
+
+			if (!link) {
+				return;
+			}
+
+			if (hasNotification) {
+
+				const ok = confirm(
+					'未確認の通知があります。\n本当に移動しますか？'
+				);
+
+				if (!ok) {
+
+					e.preventDefault();
+				}
+			}
+		});
+		
+		document.addEventListener('submit', function (e) {
+
+			if (!hasNotification) {
+				return;
+			}
+
+			const ok = confirm(
+				'未確認の通知があります。\n本当に実行しますか？'
+			);
+
+			if (!ok) {
+
+				e.preventDefault();
+			}
+		});
 	</script>
 
 

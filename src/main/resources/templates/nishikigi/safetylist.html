@@ -139,7 +139,7 @@
 						検索
 					</button>
 
-					<button type="button" class="reset-btn" th:onclick="|location.href='@{/safetyinspection/list}'|">
+					<button type="button" class="search-btn" th:onclick="|location.href='@{/safetyinspection/list}'|">
 						リセット
 					</button>
 				</div>
@@ -221,7 +221,7 @@
 	</main>
 
 	<!-- 左下ステータス吹き出し -->
-	<div class="status-bubble">
+	<div class="status-bubble" th:if="${session.loginUser.roll == 1 && session.loginUser.roll == 2}">
 
 		<div class="status-item">
 			<span class="status-title">日報</span>

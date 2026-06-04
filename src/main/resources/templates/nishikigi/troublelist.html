@@ -100,9 +100,11 @@
 				</div>
 
 				<!-- ポータルへ戻る -->
-				<a th:if="${portalSiteId != null}" th:href="@{/portal/{id}(id=${portalSiteId})}" class="nav-link">
-					◀ 現場ポータルへ戻る
-				</a>
+				<div class="back-area" th:if="${portalSiteId != null}">
+					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
+						現場ポータルへ戻る
+					</a>
+				</div>
 
 				<a th:href="@{/trouble/list}" class="nav-link active"> トラブル一覧
 				</a>
@@ -241,8 +243,9 @@
 
 					<td>
 						<a class="detail-btn" th:href="@{/trouble/{id}(
-					        id=${trouble.troubleId},
-					        portalSiteId=${portalSiteId})}">
+						        id=${trouble.troubleId},
+						        portalSiteId=${portalSiteId}
+						)}">
 							詳細
 						</a>
 					</td>

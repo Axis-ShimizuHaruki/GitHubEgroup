@@ -56,6 +56,12 @@
 				    
 				  </div>
 
+				  <a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
+				     th:href="@{/portal/{id}(id=${headerSiteId})}" 
+				     class="nav-link" 
+				     style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
+				     ◀ 現場ポータルへ戻る
+				  </a>
 				  <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
 				  
 				</div>

@@ -53,7 +53,7 @@ public class DailyreportController {
     private String checkSiteAccess(HttpSession session, Integer reportSiteId) { User u = (User) session.getAttribute("loginUser"); if (u == null) return "redirect:/login"; if (u.getRoll() == ROLE_HONSHA) return null; Integer sId = (Integer) session.getAttribute("siteId"); return (sId == null || !sId.equals(reportSiteId)) ? "redirect:/dailyreport/list" : null; }
 
     /**
-     * 一覧画面表示（変更なし）
+     * 一覧画面表示（検索パラメータを明示的に保持する）
      */
     @GetMapping("/list") 
     public String showList(
@@ -72,6 +72,16 @@ public class DailyreportController {
         model.addAttribute("workDetails", workDetails);
         List<Dailyreport> reportList = dailyreportService.searchReports(targetDate, siteId, dStatusFlag, workDetails);
         model.addAttribute("reportList", reportList);
+
+        // 🌟【重要】検索パラメータを配列バグを防ぐためにModelに明示的に格納
+        model.addAttribute("currentSiteId", siteId);
+        model.addAttribute("currentTargetDate", targetDateStr);
+        model.addAttribute("currentDStatusFlag", dStatusFlag);
+        model.addAttribute("currentWorkDetails", workDetails);
+        
+        // ヘッダー現場名表示用
+        model.addAttribute("headerSiteId", siteId);
+
         return "nishikigi/dailylist";
     }
     
@@ -137,7 +147,6 @@ public class DailyreportController {
             }
         }
         
-        // 🌟【最終対策】新規登録側でも引き換え券（UUID）を発行してMapに逃がす
         String keyBefore = UUID.randomUUID().toString();
         String keyDuring = UUID.randomUUID().toString();
         String keyAfter = UUID.randomUUID().toString();
@@ -157,6 +166,11 @@ public class DailyreportController {
         session.setAttribute("create_key_Safety", keySafety);
         
         model.addAttribute("dailyreport", form);
+        
+        // 🌟【重要】POSTでもヘッダーで現場名を表示できるよう siteList と headerSiteId を確実に渡す
+        model.addAttribute("siteList", siteService.selectAll());
+        model.addAttribute("headerSiteId", form.getSiteId());
+        
         return "nishikigi/dailyreportcheck";
     }
 
@@ -194,22 +208,37 @@ public class DailyreportController {
     }
     
     /**
-     * 動作：日報詳細画面（変更なし）
+     * 動作：日報詳細画面（検索パラメータを引数に追加して回収）
      */
     @GetMapping("/{id}")
-    public String showDetail(@PathVariable("id") Integer reportId, @RequestParam(name = "from", required = false, defaultValue = "list") String from, HttpSession session, Model model) {
+    public String showDetail(
+            @PathVariable("id") Integer reportId, 
+            @RequestParam(name = "from", required = false, defaultValue = "list") String from, 
+            @RequestParam(name = "targetDate", required = false) String targetDate,
+            @RequestParam(name = "siteId", required = false) Integer siteId,
+            @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
+            @RequestParam(name = "workDetails", required = false) String workDetails,
+            HttpSession session, Model model) {
         String redirect = checkLogin(session); if (redirect != null) return redirect;
         Dailyreport report = dailyreportService.getReportById(reportId); if (report == null) return "error/404";
         String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId()); if (accessRedirect != null) return accessRedirect;
         
-     // DBから取得した画像（byte[]）をBase64文字列に変換してModelへ格納
         model.addAttribute("photoBeforeBase64", encodeBase64(report.getPhotoBefore()));
         model.addAttribute("photoDuringBase64", encodeBase64(report.getPhotoDuring()));
         model.addAttribute("photoAfterBase64", encodeBase64(report.getPhotoAfter()));
         model.addAttribute("photoInspectionBase64", encodeBase64(report.getPhotoInspection()));
         model.addAttribute("photoSafetyBase64", encodeBase64(report.getPhotoSafety()));
         
-        model.addAttribute("report", report); model.addAttribute("from", from);
+        model.addAttribute("report", report); 
+        model.addAttribute("from", from);
+        
+        // 🌟【重要】一覧画面から引き継いだ検索条件を、詳細画面のModelにしっかり保管する
+        model.addAttribute("siteList", siteService.selectAll());
+        model.addAttribute("headerSiteId", siteId); // 検索で選ばれていたsiteId
+        model.addAttribute("targetDate", targetDate);
+        model.addAttribute("dStatusFlag", dStatusFlag);
+        model.addAttribute("workDetails", workDetails);
+        
         return "nishikigi/dailyreportdetail";
     }
 
@@ -306,7 +335,6 @@ public class DailyreportController {
             }
         }
         
-        // 🌟【最終対策】巨大な画像は専用のMapに逃がし、セッションにはただの「引き換え券キー（UUID）」を保存する
         String keyBefore = UUID.randomUUID().toString();
         String keyDuring = UUID.randomUUID().toString();
         String keyAfter = UUID.randomUUID().toString();
@@ -326,6 +354,11 @@ public class DailyreportController {
         session.setAttribute("edit_key_Safety", keySafety);
         
         model.addAttribute("dailyreport", form);
+        
+        // POSTでもヘッダーで現場名を表示できるよう siteList と headerSiteId を確実に渡す
+        model.addAttribute("siteList", siteService.selectAll());
+        model.addAttribute("headerSiteId", form.getSiteId());
+        
         return "nishikigi/dailyeditcheck";
     }
 

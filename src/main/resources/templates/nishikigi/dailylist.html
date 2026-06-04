@@ -43,33 +43,26 @@
     </div>
 	
 	<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">
-			  
-		<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
-			    
-			<span th:if="${session.loginUser.roll != 0}">
-				<span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
-			</span>
-			    
-			<span th:if="${session.loginUser.roll == 0 && param.siteId != null && param.siteId != ''}">
-				<span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, param.siteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
-			</span>
-			    
-			<span th:if="${session.loginUser.roll == 0 && (param.siteId == null || param.siteId == '')}">
-				全現場対象エリア
-			</span>
-			    
-		</div>
+	    <div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
+	        <span th:if="${session.loginUser.roll != 0}">
+	            <span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+	        </span>
+	        <span th:if="${session.loginUser.roll == 0}">
+	            <span th:if="${headerSiteId != null && headerSiteId != ''}">
+	                <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, headerSiteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+	            </span>
+	            <span th:if="${headerSiteId == null || headerSiteId == ''}">全現場対象エリア</span>
+	        </span>
+	    </div>
 
-			  <a th:if="${session.loginUser.roll == 0 && param.siteId != null && param.siteId != ''}" 
-			     th:href="@{/portal/{id}(id=${param.siteId})}" 
-			     class="nav-link" 
-			     style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
-			     ◀ 現場ポータルへ戻る
-			  </a>
-
-			  <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>
-			  
-		</div>
+		<a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
+		   th:href="@{/portal/{id}(id=${headerSiteId})}" 
+		   class="nav-link" 
+		   style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
+		   ◀ 現場ポータルへ戻る
+		</a>
+<!--	    <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>-->
+	</div>
 	
   </header>
 
@@ -140,9 +133,15 @@
               未確認
             </span>
           </td>
-          <td>
-            <a th:href="@{/dailyreport/{id}(id=${report.reportId}, from='list')}" class="detail-btn">詳細</a>
-          </td>
+		  <td>
+		    <a th:href="@{/dailyreport/{id}(id=${report.reportId}, 
+		       from='list', 
+		       targetDate=${currentTargetDate}, 
+		       siteId=${currentSiteId}, 
+		       workDetails=${currentWorkDetails}, 
+		       dStatusFlag=${currentDStatusFlag}
+		    )}" class="detail-btn">詳細</a>
+		  </td>
         </tr>
         
         <tr th:if="${#lists.isEmpty(reportList)}">
@@ -153,17 +152,6 @@
       </tbody>
     </table>
 
-  </div>
-
-  <div class="status-bubble">
-    <div class="status-item">
-      <span class="status-title">日報</span>
-      <span class="done">✔ 作成済み</span>
-    </div>
-    <div class="status-item">
-      <span class="status-title">安全点検</span>
-      <span class="not-done blinking">⚠ 未作成</span>
-    </div>
   </div>
 
 </body>

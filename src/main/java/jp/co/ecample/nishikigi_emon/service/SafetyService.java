@@ -98,6 +98,17 @@ public class SafetyService {
 	    return safetyListDto;
 	}
 	
+	// 今日の安全点検を検索
+	public Optional<Safety> todaysSafety(
+		    LocalDateTime start,
+		    LocalDateTime end,
+		    Integer siteId
+			) {
+		Optional<Safety> safety = repository.findBySCreatedAtBetweenAndSiteSiteId(start, end, siteId);
+		
+		return safety;
+	}
+	
 	// 検索機能
 	public List<SafetyList> search(
 			LocalDate sCreatedAt,

@@ -256,6 +256,10 @@ public class TroubleController {
 			HttpSession session) {
 		Trouble trouble = service.findById(id);
 
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		Integer sessionSiteId = (Integer) session.getAttribute("siteId");
+
 		if (trouble == null) {
 			return "redirect:/trouble/list";
 		}
@@ -264,14 +268,28 @@ public class TroubleController {
 			portalSiteId = trouble.getSite().getSiteId();
 		}
 
-		session.setAttribute("portalSiteId", portalSiteId);
+		// =========================
+		// ロール別 siteList 制御
+		// =========================
+		List<Site> siteList;
 
-		User loginUser = (User) session.getAttribute("loginUser");
+		if (loginUser.getRoll() == 0) {
+			// 本社 → 全現場OK
+			siteList = siteService.selectAll();
+		} else {
+			// 現場・閲覧者 → 自分の現場だけ
+			siteList = siteService.selectAll()
+					.stream()
+					.filter(s -> s.getSiteId().equals(sessionSiteId))
+					.toList();
+		}
+
+		session.setAttribute("portalSiteId", portalSiteId);
 
 		model.addAttribute("trouble", trouble);
 		model.addAttribute("portalSiteId", portalSiteId);
 		model.addAttribute("role", loginUser.getRoll());
-		model.addAttribute("siteList", siteService.selectAll());
+		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleSearchForm", new TroubleSearchForm());
 		model.addAttribute("siteName", trouble.getSite().getSiteName());
 		model.addAttribute("siteId", trouble.getSite().getSiteId());

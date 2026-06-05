@@ -1,7 +1,9 @@
 package jp.co.ecample.nishikigi_emon.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -53,4 +55,10 @@ public interface SafetyRepository extends JpaRepository<Safety, Integer> {
 			@Param("sCreatedAt") LocalDate sCreatedAt,
 			@Param("siteId") Integer siteId,
 			@Param("judgement") String judgement);
+	
+	Optional<Safety> findBySCreatedAtBetweenAndSiteSiteId(
+		    LocalDateTime start,
+		    LocalDateTime end,
+		    Integer siteId
+		);
 }

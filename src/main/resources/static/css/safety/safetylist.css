@@ -161,23 +161,32 @@ main {
 }
 
 .search-btn {
-	background: #1f3c88;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 10px 20px;
+
+	background-color: #1f3c88;
 	color: white;
+
 	border: none;
-	padding: 0 24px;
-	border-radius: 10px;
-	cursor: pointer;
-	font-size: 15px;
+	border-radius: 6px;
+
+	font-size: 14px;
 	font-weight: bold;
-	transition: 0.2s;
-	height: 46px;
-	white-space: nowrap;
+
+	text-decoration: none;
+	cursor: pointer;
+
+	height: 42px;
+	box-sizing: border-box;
 }
 
+/* hover */
 .search-btn:hover {
-	background: #16306d;
+	background-color: #16316f;
 }
-
 /* =========================
        テーブル
     ========================= */

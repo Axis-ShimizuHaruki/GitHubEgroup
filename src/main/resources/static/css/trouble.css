@@ -433,12 +433,22 @@ textarea {
 }
 
 /* トラブル一覧テーブル */
+/*.issue-table {*/
+/*	width: 100%;*/
+/*	border-collapse: collapse;*/
+/*	background-color: white;*/
+/*	border-radius: 12px;*/
+/*	overflow: hidden;*/
+/*	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);*/
+/*}*/
+
 .issue-table {
 	width: 100%;
 	border-collapse: collapse;
 	background-color: white;
 	border-radius: 12px;
-	overflow: hidden;
+	/* 🌟 stickyやスクロールの邪魔をしないように visible に変更するか、削除します */
+	overflow: visible !important; 
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
@@ -460,11 +470,21 @@ textarea {
 	background-color: #f0f4ff;
 }
 
+/*.table-scroll {*/
+/*	max-height: 550px;*/
+/*	overflow-y: auto;*/
+/*	border-radius: 12px;*/
+/*}*/
+
 .table-scroll {
-	max-height: 550px;
-	overflow-y: auto;
+	/* 🌟テスト用：一時的に高さを「200px」など低くして、確実にデータがはみ出るか試してみてください */
+	max-height: 550px; 
+	
+	/* 🌟「auto」から「scroll」に変えることで、件数が少なくても常にスクロール用の溝を表示させます */
+	overflow-y: scroll; 
 	border-radius: 12px;
 }
+
 /* 左下ステータス吹き出し */
 .status-bubble {
 	position: fixed;

@@ -188,6 +188,11 @@ public class SafetyController {
 			if(loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
+		
+		// 今日の安全点検が既にあれば拒否
+		if((boolean)session.getAttribute("todaysSafety")) {
+			return "redirect:/homesite";
+		}
 
 		model.addAttribute("safety", new SafetyForm());
 
@@ -313,6 +318,9 @@ public class SafetyController {
 					"/topic/notice",
 					(Object) notice);
 		}
+		
+		session.setAttribute("todaysSafety", true);
+		
 		return "redirect:/complete";
 	}
 

@@ -1,5 +1,6 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import jp.co.ecample.nishikigi_emon.entity.Manager;
 import jp.co.ecample.nishikigi_emon.entity.User;
 import jp.co.ecample.nishikigi_emon.repository.ManagerRepository;
 import jp.co.ecample.nishikigi_emon.repository.SiteRepository;
+import jp.co.ecample.nishikigi_emon.service.SafetyService;
 import jp.co.ecample.nishikigi_emon.service.SiteService;
 import jp.co.ecample.nishikigi_emon.service.TroubleService;
 import jp.co.ecample.nishikigi_emon.service.UserService;
@@ -22,15 +24,18 @@ import jp.co.ecample.nishikigi_emon.service.UserService;
 @Controller
 public class LoginController {
 	private final UserService Uservice;
+	private final SafetyService safetyService;
 	private final ManagerRepository managerRepository;
 
 
 	public LoginController(UserService Uservice,
 			SiteService Sservice,
 			TroubleService Tservice,
+			SafetyService safetyService,
 			ManagerRepository managerRepository,
 			SiteRepository siteRepository) {
 		this.Uservice = Uservice;
+		this.safetyService = safetyService;
 		this.managerRepository = managerRepository;
 	}
 
@@ -72,6 +77,14 @@ public class LoginController {
 			if (user.getRoll() == 0) {
 				return "redirect:/homeoffice";
 			} else {
+				// 現場ユーザーが安全点検を登録したか確認するため
+				session.setAttribute(
+						"todaysSafety",
+						safetyService.todaysSafety(
+								LocalDate.now().atStartOfDay(),
+								LocalDate.now().plusDays(1).atStartOfDay(),
+								(Integer)session.getAttribute("siteId")).isPresent());
+				
 				return "redirect:/homesite";
 			}
 

@@ -37,7 +37,7 @@
 				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
-				
+
 				<div class="site-system-name">
 					トラブル詳細
 				</div>
@@ -74,7 +74,41 @@
 
 		<!-- 下段 -->
 		<div class="page-title-bar">
-<!--			トラブル詳細-->
+			<!--			トラブル詳細-->
+			<div class="page-title-bar"
+				style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">
+
+				<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
+
+					<!-- 現場管理者・閲覧者 -->
+					<span th:if="${session.loginUser.roll != 0}" th:text="${siteName}">
+						担当現場名
+					</span>
+					<!-- 本社＋現場絞り込み -->
+					<span th:if="${session.loginUser.roll == 0
+					              && troubleSearchForm.siteName != null
+					              && troubleSearchForm.siteName != ''}" th:text="${troubleSearchForm.siteName + '（絞り込み中）'}">
+					</span>
+
+					<!-- 本社＋全体表示 -->
+					<span th:if="${session.loginUser.roll == 0
+					              && (troubleSearchForm.siteName == null
+					              || troubleSearchForm.siteName == '')}">
+						全現場対象エリア
+					</span>
+
+				</div>
+
+				<!-- ポータルへ戻る -->
+				<div class="back-area" th:if="${session.loginUser.roll == 0 && portalSiteId != null}">
+					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
+						現場ポータルへ戻る
+					</a>
+				</div>
+
+			</div>
+
+
 		</div>
 
 	</header>

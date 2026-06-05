@@ -99,7 +99,10 @@
 			<div>
 				<label for="targetDate">日付</label>
 				<div th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
-				<input type="date" id="targetDate" name="targetDate" th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" readonly style="background-color: #e2e8f0; cursor: not-allowed;">
+				<input type="date" id="targetDate" name="targetDate" 
+				       th:value="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}" 
+				       th:max="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}"
+				       readonly style="background-color: #e2e8f0; cursor: not-allowed;">
 			</div>
 
 			<div>

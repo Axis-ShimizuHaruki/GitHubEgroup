@@ -15,6 +15,7 @@ public class TroubleForm {
 	private Integer troubleType;
 
 	@NotBlank(message = "概要を入力してください")
+	@Size(max = 100, message = "詳細は100文字以内で入力してください")
 	private String overview;
 
 	@NotBlank(message = "詳細を入力してください")

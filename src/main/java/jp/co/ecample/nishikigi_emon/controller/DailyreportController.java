@@ -34,6 +34,7 @@ import jp.co.ecample.nishikigi_emon.service.SiteService;
  */
 @Controller
 @RequestMapping("/dailyreport")
+@org.springframework.validation.annotation.Validated
 public class DailyreportController {
 
 	// ロール（権限）定数
@@ -100,6 +101,7 @@ public class DailyreportController {
 			@RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag, // 検索：本社確認ステータス
 			@RequestParam(name = "workDetails", required = false) String workDetails, // 検索：作業内容キーワード
 			@RequestParam(name = "portalSiteId", required = false) Integer portalSiteId, // 起点：どの現場ポータルから来たかのID
+			@jakarta.validation.constraints.Size(max = 50, message = "検索キーワードは50文字以内で入力してください")
 			@RequestParam(name = "clear", required = false) Boolean clear, // 合図：リセットボタンが押されたか
 			@RequestParam(name = "from", required = false) String from, // 合図：どこから遷移してきたか（header/listなど）
 			@RequestParam(name = "search", required = false) Boolean isSearch, // フラグ：検索フォームのボタンが押されたか

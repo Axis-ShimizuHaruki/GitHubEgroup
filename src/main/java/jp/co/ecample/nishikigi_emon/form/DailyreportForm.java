@@ -41,6 +41,8 @@ public class DailyreportForm {
 
     /** 気温 */
     @NotNull(message = "気温を入力してください")
+    @Min(value = -99, message = "気温は-99以上の数値を入力してください")
+    @Max(value = 999, message = "気温は999以下の数値を入力してください")
     private Integer temperature;
 
     /** 当日作業内容 */

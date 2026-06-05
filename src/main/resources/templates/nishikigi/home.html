@@ -325,8 +325,56 @@
 	    }
 	});
 	</script>
+	
+	<script th:inline="javascript" th:if="${session.loginUser.roll == 1}">
+			
+			// コントローラーから渡されているステータスをJavaScriptで受け取る
+			const dailyStatus = /*[[${dailyStatus}]]*/ '未提出';
+			const safetyStatus = /*[[${safetyStatus}]]*/ '未提出';
 
+			// どちらか1つでも「未提出」なら true になる
+			const hasUnsubmitted = (dailyStatus === '未提出' || safetyStatus === '未提出');
 
+			// リンクをクリックして他の画面に行こうとしたときの処理
+			document.addEventListener('click', function (e) {
+				const link = e.target.closest('a');
+				if (!link) return;
+
+				// 【重要】「日報作成」と「安全点検作成」へのリンクは、提出するための移動なので警告を免除する
+				const href = link.getAttribute('href') || '';
+				if (href.includes('/dailyreport/new') || href.includes('/safetyinspection/new')) {
+					return;
+				}
+
+				// 未提出がある場合のポップアップ処理
+				if (hasUnsubmitted) {
+					let msg = '⚠️ 以下の項目が「未提出」です。\n';
+					if (dailyStatus === '未提出') msg += '・今日の日報\n';
+					if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
+					msg += '\n提出せずに他の画面へ移動してもよろしいですか？';
+
+					const ok = confirm(msg);
+					if (!ok) {
+						e.preventDefault(); // キャンセルを押したら移動をストップ
+					}
+				}
+			});
+
+			// ログアウトボタン（form送信）を押したときの処理
+			document.addEventListener('submit', function (e) {
+				if (hasUnsubmitted) {
+					let msg = '⚠️ 以下の項目が「未提出」です。\n';
+					if (dailyStatus === '未提出') msg += '・今日の日報\n';
+					if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
+					msg += '\n提出せずにログアウトしてもよろしいですか？';
+
+					const ok = confirm(msg);
+					if (!ok) {
+						e.preventDefault(); // キャンセルを押したらログアウトをストップ
+					}
+				}
+			});
+		</script>
 </body>
 
 </html>

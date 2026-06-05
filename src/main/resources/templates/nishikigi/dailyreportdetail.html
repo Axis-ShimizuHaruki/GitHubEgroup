@@ -53,13 +53,16 @@
 		            <span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
 		        </span>
 		        <span th:if="${session.loginUser.roll == 0}">
-		            <span th:if="${headerSiteId != null && headerSiteId != ''}">
-		                <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, headerSiteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+		            <!-- 一覧から特定の現場で絞り込んできた場合のみ「（絞り込み中）」と表示 -->
+		            <span th:if="${from == 'list' && searchSiteId != null && searchSiteId != ''}">
+		                <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, searchSiteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
 		            </span>
-		            <span th:if="${headerSiteId == null || headerSiteId == ''}">全現場対象エリア</span>
+		            <!-- ホームから直接、または一覧で現場「すべて」の状態で来た場合は、この日報の現場名を表示 -->
+		            <span th:if="${from != 'list' || searchSiteId == null || searchSiteId == ''}" th:text="${report.site.siteName}">対象現場名</span>
 		        </span>
 		    </div>
 		    
+		    <!-- headerSiteIdが日報データから自動補完されるため、ホーム直接ルートでも確実に表示されるようになります -->
 		    <a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
 		       th:href="@{/portal/{id}(id=${headerSiteId})}" 
 		       class="nav-link" 
@@ -67,7 +70,8 @@
 		       ◀ 現場ポータルへ戻る
 		    </a>
 		    
-		    <a th:href="@{/dailyreport/list(targetDate=${targetDate}, siteId=${headerSiteId}, workDetails=${workDetails}, dStatusFlag=${dStatusFlag})}" class="nav-link active">日報一覧</a>				  
+		    <!-- 一覧に戻るときの条件。ホーム直接のときは検索条件（searchSiteId=null）を渡すことで、綺麗に全現場一覧へ戻れます -->
+		    <a th:href="@{/dailyreport/list(targetDate=${targetDate}, siteId=${searchSiteId}, workDetails=${workDetails}, dStatusFlag=${dStatusFlag})}" class="nav-link active">日報一覧</a>				  
 		</div>
 
 	  </header>

@@ -100,7 +100,7 @@
 				</div>
 
 				<!-- ポータルへ戻る -->
-				<div class="back-area" th:if="${portalSiteId != null}">
+				<div class="back-area" th:if="${session.loginUser.roll == 0 && portalSiteId != null}">
 					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
 						現場ポータルへ戻る
 					</a>

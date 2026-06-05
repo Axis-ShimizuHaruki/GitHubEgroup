@@ -100,8 +100,7 @@
 				</div>
 
 				<!-- ポータルへ戻る -->
-				<div class="back-area"
-				     th:if="${session.loginUser.roll == 0 
+				<div class="back-area" th:if="${session.loginUser.roll == 0 
 				             && portalSiteId != null 
 				             && session.hidePortalBack != true}">
 					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
@@ -196,65 +195,67 @@
 
 		<!-- ===== テーブル ===== -->
 
-		<table class="issue-table">
+		<div class="table-scroll">
+			<table class="issue-table">
 
-			<thead>
-				<tr>
-					<th>登録日</th>
-					<th>現場名</th>
-					<th>優先度</th>
-					<th>種別</th>
-					<th>一言</th>
-					<th>本社対応</th>
-					<th>詳細</th>
-				</tr>
-			</thead>
+				<thead>
+					<tr>
+						<th>登録日</th>
+						<th>現場名</th>
+						<th>優先度</th>
+						<th>種別</th>
+						<th>一言</th>
+						<th>本社対応</th>
+						<th>詳細</th>
+					</tr>
+				</thead>
 
-			<tbody>
-				<tr th:if="${#lists.isEmpty(troubleList)}">
-					<td colspan="7"> 該当するトラブル情報はありません </td>
-				</tr>
-				<tr th:each="trouble : ${troubleList}">
+				<tbody>
+					<tr th:if="${#lists.isEmpty(troubleList)}">
+						<td colspan="7"> 該当するトラブル情報はありません </td>
+					</tr>
+					<tr th:each="trouble : ${troubleList}">
 
-					<td th:text="${#temporals.format(trouble.occurredAt,'yyyy/MM/dd')}"></td>
+						<td th:text="${#temporals.format(trouble.occurredAt,'yyyy/MM/dd')}"></td>
 
-					<td th:text="${trouble.site.siteName}"></td>
+						<td th:text="${trouble.site.siteName}"></td>
 
-					<td>
-						<span class="badge high" th:if="${trouble.priority == 0}"> なし </span>
-						<span class="badge high" th:if="${trouble.priority == 3}"> 高 </span>
-						<span class="badge middle" th:if="${trouble.priority == 2}"> 中 </span>
-						<span class="badge low" th:if="${trouble.priority == 1}"> 低 </span>
-					</td>
+						<td>
+							<span class="badge high" th:if="${trouble.priority == 0}"> なし </span>
+							<span class="badge high" th:if="${trouble.priority == 3}"> 高 </span>
+							<span class="badge middle" th:if="${trouble.priority == 2}"> 中 </span>
+							<span class="badge low" th:if="${trouble.priority == 1}"> 低 </span>
+						</td>
 
-					<td>
-						<span th:if="${trouble.troubleType == 1}">事故</span>
-						<span th:if="${trouble.troubleType == 2}">資材不足</span>
-						<span th:if="${trouble.troubleType == 3}">納品遅れ</span>
-						<span th:if="${trouble.troubleType == 4}">工程遅延</span>
-						<span th:if="${trouble.troubleType == 5}">その他</span>
-					</td>
+						<td>
+							<span th:if="${trouble.troubleType == 1}">事故</span>
+							<span th:if="${trouble.troubleType == 2}">資材不足</span>
+							<span th:if="${trouble.troubleType == 3}">納品遅れ</span>
+							<span th:if="${trouble.troubleType == 4}">工程遅延</span>
+							<span th:if="${trouble.troubleType == 5}">その他</span>
+						</td>
 
-					<td th:text="${trouble.overview}"></td>
+						<td th:text="${trouble.overview}"></td>
 
-					<td>
-						<span th:if="${trouble.tStatusFlag == 0}"> 未対応 </span>
-						<span th:if="${trouble.tStatusFlag == 1}"> 対応中 </span>
-						<span th:if="${trouble.tStatusFlag == 2}"> 完了 </span>
-					</td>
+						<td>
+							<span th:if="${trouble.tStatusFlag == 0}"> 未対応 </span>
+							<span th:if="${trouble.tStatusFlag == 1}"> 対応中 </span>
+							<span th:if="${trouble.tStatusFlag == 2}"> 完了 </span>
+						</td>
 
-					<td>
-						<a class="detail-btn" th:href="@{/trouble/{id}(
+						<td>
+							<a class="detail-btn" th:href="@{/trouble/{id}(
 						        id=${trouble.troubleId},
 						        portalSiteId=${portalSiteId}
 						)}">
-							詳細
-						</a>
-					</td>
-				</tr>
-			</tbody>
+								詳細
+							</a>
+						</td>
+					</tr>
+				</tbody>
 
-		</table>
+			</table>
+		</div>
 
 	</main>
 
@@ -275,7 +276,7 @@
 	<!--		</div>-->
 
 	<!--	</div>-->
-	
+
 
 </body>
 

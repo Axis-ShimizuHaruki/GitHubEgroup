@@ -123,7 +123,8 @@ header {
 }
 
 /* 表記の揺れ(username と user-name)を共通化 */
-.username, .user-name {
+.username,
+.user-name {
 	font-weight: bold;
 }
 
@@ -157,11 +158,13 @@ header {
 /* ==========================================================================
    3. フォーム・ボタン・バッジ共通
    ========================================================================== */
-.form-group, .item {
+.form-group,
+.item {
 	margin-bottom: 20px;
 }
 
-label, .label {
+label,
+.label {
 	display: block;
 	margin-bottom: 8px;
 	font-weight: bold;
@@ -170,7 +173,10 @@ label, .label {
 }
 
 /* 入力項目 */
-input[type="text"], input[type="password"], textarea, select {
+input[type="text"],
+input[type="password"],
+textarea,
+select {
 	width: 100%;
 	padding: 12px;
 	border: 1px solid #ccc;
@@ -203,16 +209,29 @@ textarea {
 }
 
 /* 優先度バッジ */
-.badge, .badge-preview {
+.badge,
+.badge-preview {
 	display: inline-block;
 	padding: 6px 12px;
 	border-radius: 8px;
 	font-size: 13px;
 	font-weight: bold;
 }
-.high { background: #ffe5e5; color: #d63031; }
-.middle { background: #fff4d6; color: #f39c12; }
-.low { background: #e6f4ea; color: #27ae60; }
+
+.high {
+	background: #ffe5e5;
+	color: #d63031;
+}
+
+.middle {
+	background: #fff4d6;
+	color: #f39c12;
+}
+
+.low {
+	background: #e6f4ea;
+	color: #27ae60;
+}
 
 /* ボタンエリア */
 .btn-area {
@@ -225,7 +244,10 @@ textarea {
 }
 
 /* 共通ボタンの基本スタイル */
-.btn, .btn-gray, .btn-secondary, .btn_h {
+.btn,
+.btn-gray,
+.btn-secondary,
+.btn_h {
 	display: inline-block;
 	padding: 14px 35px;
 	border: none;
@@ -255,14 +277,42 @@ textarea {
 }
 
 /* 各種ボタンカラー */
-.btn { background: #28a745 !important; color: #fff !important; } /* 通常の確定・保存・緑 */
-.btn:hover { background: #218838 !important; transform: translateY(-2px); }
+.btn {
+	background: #28a745 !important;
+	color: #fff !important;
+}
 
-.btn-primary-blue { background: #1f3c88 !important; color: #fff !important; } /* 案内・詳細用青ボタン */
-.btn-primary-blue:hover { background: #16306d !important; transform: translateY(-2px); }
+/* 通常の確定・保存・緑 */
+.btn:hover {
+	background: #218838 !important;
+	transform: translateY(-2px);
+}
 
-.btn-gray, .btn-secondary, .btn_h { background: #6c757d !important; color: #fff !important; } /* 戻る・修正・グレー */
-.btn-gray:hover, .btn-secondary:hover, .btn_h:hover { background: #5a6268 !important; transform: translateY(-2px); }
+.btn-primary-blue {
+	background: #1f3c88 !important;
+	color: #fff !important;
+}
+
+/* 案内・詳細用青ボタン */
+.btn-primary-blue:hover {
+	background: #16306d !important;
+	transform: translateY(-2px);
+}
+
+.btn-gray,
+.btn-secondary,
+.btn_h {
+	background: #6c757d !important;
+	color: #fff !important;
+}
+
+/* 戻る・修正・グレー */
+.btn-gray:hover,
+.btn-secondary:hover,
+.btn_h:hover {
+	background: #5a6268 !important;
+	transform: translateY(-2px);
+}
 
 
 /* ==========================================================================
@@ -284,17 +334,20 @@ textarea {
 	border-radius: 10px;
 	line-height: 1.8;
 }
+
 .summary-title {
 	font-weight: bold;
 	margin-bottom: 8px;
 	color: #1f3c88;
 }
+
 /* 詳細画面用：項目の下線区切り */
 .section .item.border-style {
 	margin-bottom: 12px;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #eee;
 }
+
 .section .item.border-style:last-child {
 	border-bottom: none;
 }
@@ -312,17 +365,21 @@ textarea {
 	flex-wrap: wrap;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
+
 .search-item {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
 }
+
 .search-label {
 	font-size: 13px;
 	font-weight: bold;
 	color: #666;
 }
-.search-input, .search-select {
+
+.search-input,
+.search-select {
 	padding: 10px 12px;
 	border: 1px solid #ccc;
 	border-radius: 8px;
@@ -330,10 +387,13 @@ textarea {
 	font-size: 14px;
 	background: white;
 }
+
 .search-btn-area {
 	display: flex;
 	gap: 10px;
 }
+
+
 
 /* 🌟 dailyreport.css から移植した検索ボタン（メインの濃い青） */
 .search-btn {
@@ -347,7 +407,7 @@ textarea {
 	font-weight: bold !important;
 	transition: 0.2s !important;
 	display: inline-block;
-	box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 	text-decoration: none;
 	text-align: center;
 }
@@ -358,13 +418,17 @@ textarea {
 
 /* 🌟 dailyreport.css から移植したリセットボタン（補助の薄いグレー） */
 .search-btn.btn-reset-gray {
-	background-color: #e2e8f0 !important; /* 薄いグレー */
-	color: #4a5568 !important;            /* 濃いグレーの文字 */
-	border: 1px solid #cbd5e0 !important; /* 軽い枠線 */
+	background-color: #e2e8f0 !important;
+	/* 薄いグレー */
+	color: #4a5568 !important;
+	/* 濃いグレーの文字 */
+	border: 1px solid #cbd5e0 !important;
+	/* 軽い枠線 */
 }
 
 .search-btn.btn-reset-gray:hover {
-	background-color: #cbd5e0 !important; /* ホバー時に少し暗く */
+	background-color: #cbd5e0 !important;
+	/* ホバー時に少し暗く */
 	color: #2d3748 !important;
 }
 
@@ -377,19 +441,30 @@ textarea {
 	overflow: hidden;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
+
 .issue-table thead {
 	background-color: #1f3c88;
 	color: white;
+	position: sticky;
+		top: 0;
 }
-.issue-table th, .issue-table td {
+
+.issue-table th,
+.issue-table td {
 	padding: 16px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 }
+
 .issue-table tbody tr:hover {
 	background-color: #f0f4ff;
 }
 
+.table-scroll {
+	max-height: 550px;
+	overflow-y: auto;
+	border-radius: 12px;
+}
 /* 左下ステータス吹き出し */
 .status-bubble {
 	position: fixed;
@@ -405,24 +480,45 @@ textarea {
 	gap: 18px;
 	z-index: 999;
 }
+
 .status-item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	font-size: 18px;
 }
+
 .status-title {
 	font-size: 16px;
 	opacity: 0.75;
 }
-.done { color: #2ecc71; font-weight: bold; }
-.not-done { color: #e67e22; font-weight: bold; }
-.blinking { animation: blink 1.2s infinite; }
+
+.done {
+	color: #2ecc71;
+	font-weight: bold;
+}
+
+.not-done {
+	color: #e67e22;
+	font-weight: bold;
+}
+
+.blinking {
+	animation: blink 1.2s infinite;
+}
 
 @keyframes blink {
-	0% { opacity: 1; }
-	50% { opacity: 0.3; }
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0.3;
+	}
+
+	100% {
+		opacity: 1;
+	}
 }
 
 
@@ -454,24 +550,32 @@ textarea {
 		grid-template-columns: 1fr;
 	}
 
-	.btn, .btn-gray, .btn-secondary, .btn_h {
+	.btn,
+	.btn-gray,
+	.btn-secondary,
+	.btn_h {
 		width: 100%;
 		margin: 8px 0;
 	}
-	
+
 	/* 一覧画面用スマホ対応 */
 	.search-area {
 		flex-direction: column;
 		align-items: stretch;
 	}
-	.search-input, .search-select {
+
+	.search-input,
+	.search-select {
 		width: 100%;
 		min-width: auto;
 	}
+
 	.search-btn {
 		width: 100%;
 	}
-	.issue-table th, .issue-table td {
+
+	.issue-table th,
+	.issue-table td {
 		padding: 10px;
 		font-size: 14px;
 	}

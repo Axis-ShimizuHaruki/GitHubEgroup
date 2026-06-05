@@ -190,7 +190,7 @@
 
 
 		<!-- ボタン -->
-		<form th:action="@{/trouble/{id}/edit/complete(id=${form.troubleId})}" method="post">
+		<form th:action="@{/trouble/{id}/edit/complete(id=${form.troubleId})}" method="post" class="btn-area">
 
 			<input type="hidden" name="troubleId" th:value="${form.troubleId}">
 

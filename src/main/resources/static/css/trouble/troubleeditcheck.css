@@ -191,27 +191,40 @@ textarea {
 	flex-wrap: wrap;
 }
 
-.btn {
-	background: #28a745;
-	color: #fff;
-	border: none;
-	padding: 16px 40px;
-	border-radius: 10px;
-	font-size: 16px;
-	cursor: pointer;
-	transition: 0.2s;
-}
-
-.btn:hover {
-	background: #218838;
-}
-
+/* 共通ボタン */
+.btn,
 .btn-gray {
-	background: #6c757d;
+    display: inline-block;
+
+    padding: 12px 24px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
 }
 
+/* 更新ボタン */
+.btn {
+    background: #28a745;
+    color: white;
+}
+
+/* 修正ボタン */
+.btn-gray {
+    background: #888;
+    color: white;
+}
+
+/* ホバー */
+.btn:hover,
 .btn-gray:hover {
-	background: #5a6268;
+    opacity: 0.85;
 }
 
 /* =========================

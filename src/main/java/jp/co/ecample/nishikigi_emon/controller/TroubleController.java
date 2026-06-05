@@ -120,6 +120,11 @@ public class TroubleController {
 		// 現場取得
 		Site savedSite = siteService.findById(siteId);
 
+		// ★追加：本社は登録不可
+		if (siteId != null && siteId == 1) {
+			return "redirect:/error"; // or エラーページ or メッセージ
+		}
+
 		// =========================
 		// 通知データ作成
 		// =========================
@@ -357,9 +362,8 @@ public class TroubleController {
 
 		// これだけでOK
 		messagingTemplate.convertAndSend(
-			    "/topic/notice",
-			    "{\"type\":\"reload\"}"
-			);
+				"/topic/notice",
+				"{\"type\":\"reload\"}");
 
 		return "redirect:/complete";
 	}

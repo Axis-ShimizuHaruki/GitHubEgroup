@@ -39,6 +39,11 @@ public class TroubleService {
 	// トラブル登録処理
 	public Trouble register(Trouble trouble) {
 
+		// ★追加：本社は登録禁止
+		if (trouble.getSite() != null && trouble.getSite().getSiteId() == 1) {
+			throw new IllegalArgumentException("本社はトラブル登録できません");
+		}
+
 		trouble.setOccurredAt(LocalDateTime.now());
 		trouble.settStatusFlag(0);
 		trouble.settCreatedAt(LocalDateTime.now());

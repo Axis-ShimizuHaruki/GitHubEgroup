@@ -44,7 +44,18 @@ public class TroubleController {
 
 	// トラブル登録画面表示
 	@GetMapping("/trouble/new")
-	public String input(@ModelAttribute TroubleForm form) {
+	public String input(@ModelAttribute TroubleForm form, HttpSession session) {
+
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
+		if (loginUser.getRoll() == 0 && loginUser.getRoll() == 2) {
+			return "redirect:/login";
+		}
+
 		return "nishikigi/trouble";
 	}
 
@@ -280,11 +291,19 @@ public class TroubleController {
 
 		Trouble trouble = service.findById(id);
 
+		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
+		if (loginUser.getRoll() == 2) {
+			return "redirect:/login";
+		}
+
 		if (trouble == null) {
 			return "redirect:/trouble/list";
 		}
-
-		User loginUser = (User) session.getAttribute("loginUser");
 		model.addAttribute("trouble", trouble);
 		model.addAttribute("troubleForm", trouble);
 		model.addAttribute("role", loginUser.getRoll());

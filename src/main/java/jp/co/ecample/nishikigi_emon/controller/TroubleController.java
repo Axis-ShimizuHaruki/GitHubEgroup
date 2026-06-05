@@ -210,7 +210,10 @@ public class TroubleController {
 				form.getTroubleType(),
 				form.getStatusFlag());
 
-		List<Site> siteList = siteService.selectAll();
+		List<Site> siteList = siteService.selectAll()
+				.stream()
+				.filter(site -> site.getSiteId() != 1)
+				.toList();
 
 		session.setAttribute("troubleSearchForm", form);
 

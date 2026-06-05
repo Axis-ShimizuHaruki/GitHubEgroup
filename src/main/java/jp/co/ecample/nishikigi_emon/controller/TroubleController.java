@@ -153,12 +153,21 @@ public class TroubleController {
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")
-	public String list(@RequestParam(required = false) Integer siteId, @ModelAttribute TroubleSearchForm form,
+	public String list(@RequestParam(required = false) Integer siteId,
+			@RequestParam(required = false) Boolean fromTitleBar, @ModelAttribute TroubleSearchForm form,
 			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
+		if (fromTitleBar == null || !fromTitleBar) {
+			session.removeAttribute("hidePortalBack");
+		}
+
 		if (siteId != null) {
 			session.setAttribute("portalSiteId", siteId);
+		}
+
+		if (Boolean.TRUE.equals(fromTitleBar)) {
+			session.setAttribute("hidePortalBack", true);
 		}
 
 		// Sessionから前回検索条件を取得

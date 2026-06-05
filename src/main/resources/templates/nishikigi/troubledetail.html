@@ -100,7 +100,10 @@
 				</div>
 
 				<!-- ポータルへ戻る -->
-				<div class="back-area" th:if="${session.loginUser.roll == 0 && portalSiteId != null}">
+				<div class="back-area"
+				     th:if="${session.loginUser.roll == 0 
+				             && portalSiteId != null 
+				             && session.hidePortalBack != true}">
 					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
 						現場ポータルへ戻る
 					</a>
@@ -298,7 +301,7 @@
 			<!-- 対応状況を進める -->
 
 			<button type="button" class="btn btn-gray"
-				th:onclick="|location.href='@{/trouble/list(portalSiteId=${portalSiteId})}'|">
+				th:onclick="|location.href='@{/trouble/list(portalSiteId=${portalSiteId}, fromTitleBar=${session.hidePortalBack})}'|">
 				一覧へ戻る
 			</button>
 

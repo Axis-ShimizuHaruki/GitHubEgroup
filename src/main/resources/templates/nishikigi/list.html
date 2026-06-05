@@ -71,7 +71,7 @@
 				安全点検一覧
 			</a>
 
-			<a th:href="@{/trouble/list}">
+			<a th:href="@{/trouble/list(fromTitleBar=true)}">
 				トラブル一覧
 			</a>
 
@@ -504,17 +504,17 @@
 					// 通知タイプで分岐
 					if (data.type === "reload") {
 
-					    location.reload();
+						location.reload();
 
 					} else if (data.type === "safety") {
 
-					    showSafetyNotification(data);
+						showSafetyNotification(data);
 
 					} else {
 
-					    showNotification(data);
+						showNotification(data);
 					}
-					
+
 					location.reload();
 				}
 			);
@@ -660,7 +660,7 @@
 			container.prepend(notification);
 		}
 
-	
+
 		document.addEventListener('click', function (e) {
 
 			const link = e.target.closest('a');
@@ -681,7 +681,7 @@
 				}
 			}
 		});
-		
+
 		document.addEventListener('submit', function (e) {
 
 			if (!hasNotification) {

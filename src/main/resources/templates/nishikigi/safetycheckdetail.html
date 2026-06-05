@@ -271,6 +271,13 @@
 			    ホームへ戻る
 			</a>
 
+			<!-- 現場ポータルへ戻る -->
+			<a th:if="${session.fromThisSiteId != null and fromList == null}"
+			th:href="@{/portal/{id}(id=${session.fromThisSiteId})}"
+			class="btn-gray">
+			    現場ポータルへ戻る
+			</a>
+
 			<!-- 一覧へ戻る -->
 			<a th:if="${fromList != null}" th:href="@{/safetyinspection/search(
 			    sCreatedAt=${session.sCreatedAtForSearch},

@@ -81,7 +81,7 @@
 				<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
 
 					<!-- 現場管理者・閲覧者 -->
-					<span th:if="${session.loginUser.roll != 0}" th:text="${siteName}">
+					<span th:text="${siteName}">
 						担当現場名
 					</span>
 					<!-- 本社＋現場絞り込み -->
@@ -91,11 +91,11 @@
 					</span>
 
 					<!-- 本社＋全体表示 -->
-					<span th:if="${session.loginUser.roll == 0
-					              && (troubleSearchForm.siteName == null
-					              || troubleSearchForm.siteName == '')}">
-						全現場対象エリア
-					</span>
+					<!-- <span th:if="${session.loginUser.roll == 0 -->
+					<!--              && (troubleSearchForm.siteName == null-->
+					 <!--             || troubleSearchForm.siteName == '')}"> -->
+					<!--	全現場対象エリア-->
+				<!--	</span> -->
 
 				</div>
 

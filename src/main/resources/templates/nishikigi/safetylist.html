@@ -78,7 +78,9 @@
 		<!-- 下段 -->
 		<div class="page-title-bar">
 			<!-- 現場ポータルへ戻る -->
-			<a th:if="${siteId != null}" th:href="@{/portal/{id}(id=${siteId})}" class="btn_back">
+			<a th:if="${session.fromThisSiteId != null and session.loginUser.roll == 0}"
+				th:href="@{/portal/{id}(id=${session.fromThisSiteId})}"
+				class="btn_back">
 				現場ポータルへ戻る
 			</a>
 		</div>
@@ -104,7 +106,7 @@
 					<!-- 登録日 -->
 					<div class="search-item">
 						<label>登録日</label>
-						<input type="date" name="sCreatedAt" th:value="${sCreatedAt}">
+						<input type="date" name="sCreatedAt" th:value="${session.sCreatedAtForSearch}">
 					</div>
 
 					<div th:if="${session.loginUser.roll == 0}" class="search-item">
@@ -114,7 +116,7 @@
 							<option value="">すべて</option>
 
 							<option th:each="site : ${siteList}" th:value="${site.siteId}" th:text="${site.siteName}"
-								th:selected="${site.siteId == siteId}">
+								th:selected="${site.siteId == session.sSiteIdForSearch}">
 							</option>
 						</select>
 					</div>
@@ -126,15 +128,15 @@
 					<div class="search-item">
 						<label>判定</label>
 						<select name="judgement">
-							<option value="" th:selected="${judgement == null or judgement == ''}">
+							<option value="" th:selected="${session.judgementForSearch == null or session.judgementForSearch == ''}">
 								すべて
 							</option>
 
-							<option value="良好" th:selected="${judgement == '良好'}">
+							<option value="良好" th:selected="${session.judgementForSearch == '良好'}">
 								良好
 							</option>
 
-							<option value="要対応" th:selected="${judgement == '要対応'}">
+							<option value="要対応" th:selected="${session.judgementForSearch == '要対応'}">
 								要対応
 							</option>
 						</select>
@@ -145,14 +147,25 @@
 						検索
 					</button>
 
-					<button type="button" class="search-btn" th:onclick="|location.href='@{/safetyinspection/list}'|">
+					<a th:href="@{/safetyinspection/list}" class="search-btn">
 						リセット
-					</button>
+					</a>
+<!--					<button type="submit"-->
+<!--							class="search-btn"-->
+<!--							th:onclick="|location.href='@{/safetyinspection/list}'|">-->
+<!--						リセット-->
+<!--					</button>-->
 				</div>
 
 			</div>
 
 		</form>
+		
+<!--		<form th:action="@{/safetyinspection/list}" method="get">-->
+<!--			<button type="submit" class="search-btn">-->
+<!--				リセット-->
+<!--			</button>-->
+<!--		</form>-->
 		<!-- テーブル -->
 		<div class="table-wrap">
 

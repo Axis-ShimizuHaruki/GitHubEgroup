@@ -60,6 +60,28 @@ public class SafetyController {
 			return "redirect:/login";
 		}
 		
+		LocalDate sCreatedAtForSearch = (LocalDate)session.getAttribute("sCreatedAtForSearch");
+		Integer sSiteIdForSearch = (Integer)session.getAttribute("sSiteIdForSearch");
+		String judgementForSearch = (String)session.getAttribute("judgementForSearch");
+		
+		if(sCreatedAtForSearch != null) {
+			session.removeAttribute("sCreatedAtForSearch");
+		}
+		if(sSiteIdForSearch != null) {
+			session.removeAttribute("sSiteIdForSearch");
+		}
+		if(judgementForSearch != null) {
+			session.removeAttribute("judgementForSearch");
+		}
+		
+//		// fromThisSiteIdを初期化
+//		if((Integer)session.getAttribute("fromThisSiteId") != null)
+//			session.removeAttribute("fromThisSiteId");
+		
+//		// sSiteIdForSearchを初期化
+//		if((Integer)session.getAttribute("sSiteIdForSearch") != null)
+//			session.removeAttribute("sSiteIdForSearch");
+		
 		List<SafetyList> safetyList;
 
 		List<Site> siteList = siteService.selectAll();
@@ -71,6 +93,8 @@ public class SafetyController {
 		} else if (user.getRoll() == 0 && siteId != null) {
 			// 現場ポータルから
 			safetyList = service.search(null, siteId, null);
+			session.setAttribute("fromThisSiteId", siteId);
+			session.setAttribute("sSiteIdForSearch", siteId);
 		} else {
 			siteId = (Integer) session.getAttribute("siteId");
 			safetyList = service.search(null, siteId, null);
@@ -93,16 +117,13 @@ public class SafetyController {
 			@RequestParam(required = false) String judgement,
 			Model model,
 			HttpSession session) {
-		//		if(session.getAttribute("loginUser") == null) {
-		//			return "redirect:/login";
-		//		}
 		User loginUser = (User) session.getAttribute("loginUser");
-		
+
 		// ログインしていない
 		if (loginUser == null) {
 			return "redirect:/login";
 		}
-
+		
 		// 管理者以外は強制的に自分の現場にする
 		if (loginUser.getRoll() != 0) {
 			siteId = (Integer) session.getAttribute("siteId");
@@ -120,6 +141,13 @@ public class SafetyController {
 		model.addAttribute("sCreatedAt", sCreatedAt);
 		model.addAttribute("siteId", siteId);
 		model.addAttribute("judgement", judgement);
+		session.setAttribute("sCreatedAtForSearch", sCreatedAt);
+		session.setAttribute("sSiteIdForSearch", siteId);
+		session.setAttribute("judgementForSearch", judgement);
+		
+		System.out.println("sCreatedAt=" + sCreatedAt);
+		System.out.println("siteId=" + siteId);
+		System.out.println("judgement=" + judgement);
 
 		return "nishikigi/safetylist";
 	}
@@ -361,6 +389,20 @@ public class SafetyController {
 		model.addAttribute("safety", safety);
 
 		return "nishikigi/safetyeditcheck";
+	}
+	
+	@PostMapping("/safetyinspection/{id}/edit/back")
+	public String backToEdit(
+	        @ModelAttribute SafetyForm safety,
+	        @RequestParam(required = false) String previewImage,
+	        @RequestParam(required = false) String contentType,
+	        Model model) {
+
+	    model.addAttribute("safety", safety);
+	    model.addAttribute("previewImage", previewImage);
+	    model.addAttribute("contentType", contentType);
+
+	    return "nishikigi/safetyedit";
 	}
 
 	// 安全点検編集処理

@@ -265,8 +265,13 @@
 		<!-- ボタン -->
 		<div class="btn-area">
 			<!-- 一覧へ戻る -->
-			<a th:href="@{/safetyinspection/list}" class="btn_back">
-				一覧へ戻る
+			<a th:href="@{/safetyinspection/search(
+			    sCreatedAt=${session.sCreatedAtForSearch},
+			    siteId=${session.sSiteIdForSearch},
+			    judgement=${session.judgementForSearch}
+			)}"
+			class="btn_back">
+			    一覧へ戻る
 			</a>
 
 			<!-- role=1のみ -->

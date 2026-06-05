@@ -289,7 +289,6 @@ public class TroubleController {
 		model.addAttribute("trouble", trouble);
 		model.addAttribute("portalSiteId", portalSiteId);
 		model.addAttribute("role", loginUser.getRoll());
-		model.addAttribute("siteList", siteService.selectAll());
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleSearchForm", new TroubleSearchForm());
 		model.addAttribute("siteName", trouble.getSite().getSiteName());

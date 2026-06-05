@@ -124,9 +124,9 @@
 					<span class="badge low" th:if="${trouble.priority == 1}">
 						低
 					</span>
-<!--					<span class="badge low" th:if="${trouble.priority == 0}">-->
-<!--						対応済-->
-<!--					</span>-->
+					<!--					<span class="badge low" th:if="${trouble.priority == 0}">-->
+					<!--						対応済-->
+					<!--					</span>-->
 
 				</div>
 
@@ -258,13 +258,24 @@
 		<div class="btn-area">
 
 			<!-- 対応状況を進める -->
+
+			<button type="button" class="btn btn-gray"
+				th:onclick="|location.href='@{/trouble/list(portalSiteId=${portalSiteId})}'|">
+				一覧へ戻る
+			</button>
+
+			<button type="button" class="btn btn" th:if="${role != 2}"
+				th:onclick="|location.href='@{/trouble/{id}/edit(id=${trouble.troubleId})}'|">
+				編集
+			</button>
+
 			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post" th:if="${role == 0}">
 
-				<button type="submit" class="btn btn-gray" th:if="${trouble.tStatusFlag == 0}">
+				<button type="submit" class="btn btn" th:if="${trouble.tStatusFlag == 0}">
 					確認完了
 				</button>
 
-				<button type="submit" class="btn btn-gray" th:if="${trouble.tStatusFlag == 1}">
+				<button type="submit" class="btn btn" th:if="${trouble.tStatusFlag == 1}">
 					対応完了
 				</button>
 
@@ -280,15 +291,8 @@
 
 			<!--			</form>-->
 
-			<button type="button" class="btn btn-gray" th:if="${role != 2}"
-				th:onclick="|location.href='@{/trouble/{id}/edit(id=${trouble.troubleId})}'|">
-				編集
-			</button>
 
-			<button type="button" class="btn btn-gray"
-				th:onclick="|location.href='@{/trouble/list(portalSiteId=${portalSiteId})}'|">
-				トラブル一覧へ
-			</button>
+
 
 		</div>
 

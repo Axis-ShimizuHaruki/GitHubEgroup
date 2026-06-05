@@ -225,7 +225,7 @@
 			   siteId=${param.siteId}, 
 			   workDetails=${param.workDetails}, 
 			   dStatusFlag=${param.dStatusFlag}
-			)}" th:if="${from == 'list'}" class="btn_h">一覧画面へ戻る</a>
+			)}" th:if="${from == 'list'}" class="btn_h">一覧へ戻る</a>
 			
 			<a th:href="@{/portal/{siteId}(siteId=${report.site.siteId})}" th:if="${from == 'portal'}" class="btn_h">現場ポータルへ戻る</a>
 	        

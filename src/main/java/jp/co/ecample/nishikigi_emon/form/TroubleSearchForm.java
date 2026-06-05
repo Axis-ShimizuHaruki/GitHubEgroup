@@ -2,8 +2,11 @@ package jp.co.ecample.nishikigi_emon.form;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class TroubleSearchForm {
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate occurredDate;
 
 	private String siteName;

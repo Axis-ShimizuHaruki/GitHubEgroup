@@ -32,6 +32,12 @@ header {
 	flex-wrap: wrap;
 }
 
+.logo-area {
+	display: flex;
+	align-items: center;
+	gap: 14px; /* ロゴと文字の間の余白（お好みで調整してください） */
+}
+
 .logo-area a {
 	display: flex;
 	align-items: center;

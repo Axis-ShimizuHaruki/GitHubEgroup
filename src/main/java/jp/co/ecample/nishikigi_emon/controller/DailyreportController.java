@@ -49,7 +49,7 @@ public class DailyreportController {
 
 	@Autowired
 	private SiteService siteService;
-	
+
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
 
@@ -338,21 +338,20 @@ public class DailyreportController {
 	//               日報：詳細表示機能
 	// ==========================================
 
-	
 	/**
-     * 動作：日報詳細画面（検索パラメータを引数に追加して回収）
-     */
-    @GetMapping("/{id}")
-    public String showDetail(
-            @PathVariable("id") Integer reportId, 
-            @RequestParam(name = "from", required = false, defaultValue = "list") String from, 
-            @RequestParam(name = "targetDate", required = false) String targetDate,
-            @RequestParam(name = "siteId", required = false) Integer siteId,
-            @RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
-            @RequestParam(name = "workDetails", required = false) String workDetails,
-            HttpSession session, Model model) {
-    	
-    	String redirect = checkLogin(session);
+	 * 動作：日報詳細画面（検索パラメータを引数に追加して回収）
+	 */
+	@GetMapping("/{id}")
+	public String showDetail(
+			@PathVariable("id") Integer reportId,
+			@RequestParam(name = "from", required = false, defaultValue = "list") String from,
+			@RequestParam(name = "targetDate", required = false) String targetDate,
+			@RequestParam(name = "siteId", required = false) Integer siteId,
+			@RequestParam(name = "dStatusFlag", required = false) Integer dStatusFlag,
+			@RequestParam(name = "workDetails", required = false) String workDetails,
+			HttpSession session, Model model) {
+
+		String redirect = checkLogin(session);
 		if (redirect != null)
 			return redirect;
 
@@ -365,37 +364,37 @@ public class DailyreportController {
 		String accessRedirect = checkSiteAccess(session, report.getSite().getSiteId());
 		if (accessRedirect != null)
 			return accessRedirect;
-        
-        // データベース内の画像（byte[]バイナリ）をHTMLにimg表示させるためにBase64へエンコード変換
-        model.addAttribute("photoBeforeBase64", encodeBase64(report.getPhotoBefore()));
-        model.addAttribute("photoDuringBase64", encodeBase64(report.getPhotoDuring()));
-        model.addAttribute("photoAfterBase64", encodeBase64(report.getPhotoAfter()));
-        model.addAttribute("photoInspectionBase64", encodeBase64(report.getPhotoInspection()));
-        model.addAttribute("photoSafetyBase64", encodeBase64(report.getPhotoSafety()));
-        
-        model.addAttribute("report", report); 
-        model.addAttribute("from", from);
-        
-        model.addAttribute("siteList", siteService.selectAll());
-        
-        // 🌟【修正】現場ポータルの戻り先ID（headerSiteId）を決定
-        // 一覧からの引き継ぎ（siteId）が空なら、表示する日報の現場IDを自動でセットして救済する！
-        Integer headerSiteId = siteId;
-        if (headerSiteId == null && report.getSite() != null) {
-            headerSiteId = report.getSite().getSiteId();
-        }
-        model.addAttribute("headerSiteId", headerSiteId);
-        
-        // 一覧から引き継いだ純粋な検索条件としての現場IDを別途保管（HTMLでの表記分岐用）
-        model.addAttribute("searchSiteId", siteId); 
-        
-     // 一覧画面から引き継いできた現在の「検索絞り込み条件」を詳細画面のModelにしっかり保管（戻るボタン用）
-        model.addAttribute("targetDate", targetDate);
-        model.addAttribute("dStatusFlag", dStatusFlag);
-        model.addAttribute("workDetails", workDetails);
-        
-        return "nishikigi/dailyreportdetail";
-    }
+
+		// データベース内の画像（byte[]バイナリ）をHTMLにimg表示させるためにBase64へエンコード変換
+		model.addAttribute("photoBeforeBase64", encodeBase64(report.getPhotoBefore()));
+		model.addAttribute("photoDuringBase64", encodeBase64(report.getPhotoDuring()));
+		model.addAttribute("photoAfterBase64", encodeBase64(report.getPhotoAfter()));
+		model.addAttribute("photoInspectionBase64", encodeBase64(report.getPhotoInspection()));
+		model.addAttribute("photoSafetyBase64", encodeBase64(report.getPhotoSafety()));
+
+		model.addAttribute("report", report);
+		model.addAttribute("from", from);
+
+		model.addAttribute("siteList", siteService.selectAll());
+
+		// 🌟【修正】現場ポータルの戻り先ID（headerSiteId）を決定
+		// 一覧からの引き継ぎ（siteId）が空なら、表示する日報の現場IDを自動でセットして救済する！
+		Integer headerSiteId = siteId;
+		if (headerSiteId == null && report.getSite() != null) {
+			headerSiteId = report.getSite().getSiteId();
+		}
+		model.addAttribute("headerSiteId", headerSiteId);
+
+		// 一覧から引き継いだ純粋な検索条件としての現場IDを別途保管（HTMLでの表記分岐用）
+		model.addAttribute("searchSiteId", siteId);
+
+		// 一覧画面から引き継いできた現在の「検索絞り込み条件」を詳細画面のModelにしっかり保管（戻るボタン用）
+		model.addAttribute("targetDate", targetDate);
+		model.addAttribute("dStatusFlag", dStatusFlag);
+		model.addAttribute("workDetails", workDetails);
+
+		return "nishikigi/dailyreportdetail";
+	}
 
 	// ==========================================
 	//               日報：編集・更新機能
@@ -604,6 +603,11 @@ public class DailyreportController {
 		boolean isSuccess = dailyreportService.confirmReport(reportId);
 		if (!isSuccess)
 			return "error/404";
+
+		// これだけでOK
+		messagingTemplate.convertAndSend(
+				"/topic/notice",
+				"{\"type\":\"reload\"}");
 
 		// 本社ホーム(homeoffice)から押されたならホームへ、それ以外なら日報一覧へ戻す
 		return "home".equals(from) ? "redirect:/homeoffice" : "redirect:/dailyreport/list";

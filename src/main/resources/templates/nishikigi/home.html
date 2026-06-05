@@ -76,13 +76,13 @@
 
 			<!-- 日報 -->
 			<div class="menu-group">
-				
-				
+
+
 				<a th:href="@{/dailyreport/new}" th:if="${session.loginUser.roll != 2}" class="menu-button">
 					日報作成
 				</a>
-				
-				
+
+
 
 				<a th:href="@{/dailyreport/list}" class="sub-button">
 					日報一覧
@@ -91,7 +91,7 @@
 
 			<!-- 安全点検 -->
 			<div class="menu-group">
-				<a th:href="@{/safetyinspection/new}"th:if="${session.loginUser.roll != 2}" class="menu-button">
+				<a th:href="@{/safetyinspection/new}" th:if="${session.loginUser.roll != 2}" class="menu-button">
 					安全点検作成
 				</a>
 
@@ -127,17 +127,15 @@
 		               ? 'message-row me'
 		               : 'message-row other'">
 
-					   <div class="message-wrapper">
+					<div class="message-wrapper">
 
-					           <div class="message"
-					                th:text="${chat.message}">
-					           </div>
+						<div class="message" th:text="${chat.message}">
+						</div>
 
-							   <div class="message-time"
-							        th:text="${#temporals.format(chat.dateTime, 'yyyy/MM/dd HH:mm')}">
-							   </div>
+						<div class="message-time" th:text="${#temporals.format(chat.dateTime, 'yyyy/MM/dd HH:mm')}">
+						</div>
 
-					       </div>
+					</div>
 
 				</div>
 
@@ -147,10 +145,7 @@
 
 			<!-- 入力欄 -->
 			<div class="chat-input" th:if="${session.loginUser.roll != 2}">
-				<textarea
-				        id="messageInput"
-				        placeholder="メッセージを入力"
-				        rows="3"></textarea>
+				<textarea id="messageInput" placeholder="メッセージを入力" rows="3"></textarea>
 
 				<button type="button" onclick="sendMessage()">
 					送信
@@ -161,73 +156,73 @@
 		</div>
 
 	</main>
-	
-	
-	
+
+
+
 
 	<!-- ===== 左下ステータス ===== -->
 
-		<div class="status-bubble">
+	<div class="status-bubble">
 
-			<!-- 日報 -->
-			<div class="status-item">
+		<!-- 日報 -->
+		<div class="status-item">
 
-				<span class="status-title">
-					日報
-				</span>
+			<span class="status-title">
+				日報
+			</span>
 
-				<span th:if="${dailyStatus == '確認済'}" class="checked">
+			<span th:if="${dailyStatus == '確認済'}" class="checked">
 
-					✔ 確認済
+				✔ 確認済
 
-				</span>
+			</span>
 
-				<span th:if="${dailyStatus == '未確認'}" class="unchecked">
+			<span th:if="${dailyStatus == '未確認'}" class="unchecked">
 
-					▲ 未確認
+				▲ 未確認
 
-				</span>
+			</span>
 
-				<span th:if="${dailyStatus == '未提出'}" class="unchecked">
+			<span th:if="${dailyStatus == '未提出'}" class="unchecked">
 
-					✖ 未提出
+				✖ 未提出
 
-				</span>
-
-			</div>
-
-			<!-- 安全点検 -->
-			<div class="status-item">
-
-				<span class="status-title">
-					安全点検
-				</span>
-
-				<span th:if="${safetyStatus == '確認済'}" class="checked">
-
-					✔ 確認済
-
-				</span>
-
-				<span th:if="${safetyStatus == '未確認'}" class="unchecked">
-
-					▲ 未確認
-
-				</span>
-
-				<span th:if="${safetyStatus == '未提出'}" class="unchecked">
-
-					✖ 未提出
-
-				</span>
-
-			</div>
+			</span>
 
 		</div>
 
-	
-	
-	
+		<!-- 安全点検 -->
+		<div class="status-item">
+
+			<span class="status-title">
+				安全点検
+			</span>
+
+			<span th:if="${safetyStatus == '確認済'}" class="checked">
+
+				✔ 確認済
+
+			</span>
+
+			<span th:if="${safetyStatus == '未確認'}" class="unchecked">
+
+				▲ 未確認
+
+			</span>
+
+			<span th:if="${safetyStatus == '未提出'}" class="unchecked">
+
+				✖ 未提出
+
+			</span>
+
+		</div>
+
+	</div>
+
+
+
+
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
 
@@ -251,39 +246,52 @@
 					const msg = JSON.parse(message.body);
 
 					addMessage(
-					    msg.message,
-					    msg.senderSiteId == senderSiteId
-						);
-						        }
-						    );
+						msg.message,
+						msg.senderSiteId == senderSiteId
+					);
+				}
+			);
 
-						});
+			stompClient.subscribe(
+				'/topic/notice',
+				function (message) {
+
+					console.log("受信");
+					console.log(message.body);
+
+					const data =
+						JSON.parse(message.body);
+						location.reload();
+				}
+			);
+
+		});
 
 	</script>
 	<script>
 
 		function addMessage(text, isMe) {
 
-		    const row =
-		        document.createElement("div");
+			const row =
+				document.createElement("div");
 
-		    row.className =
-		        isMe
-		            ? "message-row me"
-		            : "message-row other";
+			row.className =
+				isMe
+					? "message-row me"
+					: "message-row other";
 
-		    const message =
-		        document.createElement("div");
+			const message =
+				document.createElement("div");
 
-		    message.className = "message";
-		    message.textContent = text;
+			message.className = "message";
+			message.textContent = text;
 
-		    row.appendChild(message);
+			row.appendChild(message);
 
-		    document
-		        .getElementById("chatMessages")
-		        .appendChild(row);
-				location.reload();
+			document
+				.getElementById("chatMessages")
+				.appendChild(row);
+			location.reload();
 		}
 
 	</script>
@@ -309,7 +317,7 @@
 					message: text
 				})
 			);
-			
+
 
 
 
@@ -318,73 +326,73 @@
 
 	</script>
 	<script>
-	window.addEventListener('load', function () {
-	    const chatArea = document.querySelector('.chat-messages');
-	    if (chatArea) {
-	        chatArea.scrollTop = chatArea.scrollHeight;
-	    }
-	});
+		window.addEventListener('load', function () {
+			const chatArea = document.querySelector('.chat-messages');
+			if (chatArea) {
+				chatArea.scrollTop = chatArea.scrollHeight;
+			}
+		});
 	</script>
-	
+
 	<script th:inline="javascript" th:if="${session.loginUser.roll == 1}">
-			
-			// コントローラーから渡されているステータスをJavaScriptで受け取る
-			const dailyStatus = /*[[${dailyStatus}]]*/ '未提出';
-			const safetyStatus = /*[[${safetyStatus}]]*/ '未提出';
 
-			// どちらか1つでも「未提出」なら true になる
-			const hasUnsubmitted = (dailyStatus === '未提出' || safetyStatus === '未提出');
+		// コントローラーから渡されているステータスをJavaScriptで受け取る
+		const dailyStatus = /*[[${dailyStatus}]]*/ '未提出';
+		const safetyStatus = /*[[${safetyStatus}]]*/ '未提出';
 
-			
-			
-			// リンクをクリックして他の画面に行こうとしたときの処理
-			document.addEventListener('click', function (e) {
-				const link = e.target.closest('a');
-				if (!link) return;
+		// どちらか1つでも「未提出」なら true になる
+		const hasUnsubmitted = (dailyStatus === '未提出' || safetyStatus === '未提出');
 
-				//「日報作成」と「安全点検作成」へのリンクは、提出するための移動なので警告を免除する
-				const href = link.getAttribute('href') || '';
-				
-				// すでに今日の安全点検が提出されているのに「安全点検作成」を押した場合
-				if (href.includes('/safetyinspection/new') && safetyStatus !== '未提出') {
-					alert('本日の安全点検は既に登録されています。');
-					e.preventDefault(); // 登録画面へ行かせずに、その場（現場ホーム）に留まらせる
-						return;
+
+
+		// リンクをクリックして他の画面に行こうとしたときの処理
+		document.addEventListener('click', function (e) {
+			const link = e.target.closest('a');
+			if (!link) return;
+
+			//「日報作成」と「安全点検作成」へのリンクは、提出するための移動なので警告を免除する
+			const href = link.getAttribute('href') || '';
+
+			// すでに今日の安全点検が提出されているのに「安全点検作成」を押した場合
+			if (href.includes('/safetyinspection/new') && safetyStatus !== '未提出') {
+				alert('本日の安全点検は既に登録されています。');
+				e.preventDefault(); // 登録画面へ行かせずに、その場（現場ホーム）に留まらせる
+				return;
+			}
+
+			if (href.includes('/dailyreport/new') || href.includes('/safetyinspection/new')) {
+				return;
+			}
+
+			// 未提出がある場合のポップアップ処理
+			if (hasUnsubmitted) {
+				let msg = '⚠️ 以下の項目が「未提出」です。\n';
+				if (dailyStatus === '未提出') msg += '・今日の日報\n';
+				if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
+				msg += '\n提出せずに他の画面へ移動してもよろしいですか？';
+
+				const ok = confirm(msg);
+				if (!ok) {
+					e.preventDefault(); // キャンセルを押したら移動をストップ
 				}
-								
-				if (href.includes('/dailyreport/new') || href.includes('/safetyinspection/new')) {
-					return;
+			}
+		});
+
+		// ログアウトボタン（form送信）を押したときの処理
+		document.addEventListener('submit', function (e) {
+			if (hasUnsubmitted) {
+				let msg = '⚠️ 以下の項目が「未提出」です。\n';
+				if (dailyStatus === '未提出') msg += '・今日の日報\n';
+				if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
+				msg += '\n提出せずにログアウトしてもよろしいですか？';
+
+				const ok = confirm(msg);
+				if (!ok) {
+					e.preventDefault(); // キャンセルを押したらログアウトをストップ
 				}
-
-				// 未提出がある場合のポップアップ処理
-				if (hasUnsubmitted) {
-					let msg = '⚠️ 以下の項目が「未提出」です。\n';
-					if (dailyStatus === '未提出') msg += '・今日の日報\n';
-					if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
-					msg += '\n提出せずに他の画面へ移動してもよろしいですか？';
-
-					const ok = confirm(msg);
-					if (!ok) {
-						e.preventDefault(); // キャンセルを押したら移動をストップ
-					}
-				}
-			});
-
-			// ログアウトボタン（form送信）を押したときの処理
-			document.addEventListener('submit', function (e) {
-				if (hasUnsubmitted) {
-					let msg = '⚠️ 以下の項目が「未提出」です。\n';
-					if (dailyStatus === '未提出') msg += '・今日の日報\n';
-					if (safetyStatus === '未提出') msg += '・今日の安全点検\n';
-					msg += '\n提出せずにログアウトしてもよろしいですか？';
-
-					const ok = confirm(msg);
-					if (!ok) {
-						e.preventDefault(); // キャンセルを押したらログアウトをストップ
-					}
-				}
-			});
-		</script>
-	</body>
+			}
+		});
+	</script>
+</body>
 
 </html>

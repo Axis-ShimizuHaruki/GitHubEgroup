@@ -469,3 +469,31 @@ main {
     color: #555;
     margin-bottom: 30px;
 }
+
+/* テーブルを囲むコンテナのスクロール設定 */
+.table-container {
+    border-radius: 12px;     
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+    
+    /* 🌟対策1: テスト用に、最大高さを一度「300px」など低く設定してみてください */
+    max-height: 500px; 
+    
+    /* 🌟対策2: 「auto」から「scroll」に変更すると、データが少なくても常に右側にスクロールバー（または溝）が表示されるようになります */
+    overflow-y: scroll; 
+}
+
+/* スクロールしてもテーブルの「見出し（ヘッダー）」を一番上に固定する設定 */
+.report-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* 既存の .report-table から不要になった設定をクリア */
+.report-table {
+    margin-top: 0 !important; 
+    box-shadow: none !important;
+    
+    /* 🌟対策3: 既存のCSS（239行目付近）にある「overflow: hidden;」がスクロールを邪魔しないように上書き */
+    overflow: visible !important; 
+}

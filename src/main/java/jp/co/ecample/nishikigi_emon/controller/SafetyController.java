@@ -1,6 +1,9 @@
 package jp.co.ecample.nishikigi_emon.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -425,6 +428,7 @@ public class SafetyController {
 			@ModelAttribute("safety") Safety safety,
 			@RequestParam("previewImage") String previewImage,
 			@RequestParam("fileName") String fileName,
+			Model model,
 			HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
@@ -446,6 +450,22 @@ public class SafetyController {
 
 		if (previewImage != null && previewImage != "") {
 			photo = service.savePhoto(bytes, fileName);
+			
+			if (photo != null && photo.length() > 100) {
+				model.addAttribute("safety", safety);
+		        model.addAttribute("errorMessage", "ファイル名を短くしてください");
+		        
+	            try {
+	                Path deletePath = Paths.get("src/main/resources/static", photo);
+
+	                Files.deleteIfExists(deletePath);
+
+	            } catch (Exception e) {
+	                System.out.println("画像削除失敗: " + e.getMessage());
+	            }
+		        
+		        return "nishikigi/safetyedit"; // 編集画面のテンプレート名
+		    }
 		}
 
 		service.updateSafety(

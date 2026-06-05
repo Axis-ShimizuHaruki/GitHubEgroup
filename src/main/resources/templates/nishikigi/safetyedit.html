@@ -233,6 +233,8 @@
 				</div>
 
 				<input type="hidden" th:field="*{photo}">
+				<input type="hidden" th:field="*{site}">
+
 
 				<!-- 点検写真 -->
 				<div class="section">
@@ -262,6 +264,9 @@
 							</div>
 						</div>
 						<input type="file" name="photoFile" id="photoFile" accept="image/*">
+					</div>
+					<div th:if="${errorMessage}" class="error-message">
+					    <span th:text="${errorMessage}" style="color: red;"></span>
 					</div>
 				</div>
 

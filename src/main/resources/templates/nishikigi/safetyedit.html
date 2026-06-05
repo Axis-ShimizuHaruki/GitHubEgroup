@@ -261,7 +261,6 @@
 								<img id="preview" width="500" style="display:none;">
 							</div>
 						</div>
-
 						<input type="file" name="photoFile" id="photoFile" accept="image/*">
 					</div>
 				</div>
@@ -284,26 +283,7 @@
 		<script>
 			document.getElementById("photoFile")
 				.addEventListener("change", function (event) {
-
-					const file = event.target.files[0];
-
-					if (!file) {
-						document.getElementById("preview").style.display = "none";
-						document.getElementById("previewLabel").style.display = "none";
-						return;
-					}
-
-					const reader = new FileReader();
-
-					reader.onload = function (e) {
-
-						document.getElementById("preview").src = e.target.result;
-						document.getElementById("preview").style.display = "block";
-
-						document.getElementById("previewLabel").style.display = "block";
-					};
-
-					reader.readAsDataURL(file);
+					const file = event.target.files[0]; if (!file) {document.getElementById("preview").style.display = "none"; document.getElementById("previewLabel").style.display = "none"; return;} const reader = new FileReader(); reader.onload = function (e) {document.getElementById("preview").src = e.target.result; document.getElementById("preview").style.display = "block"; document.getElementById("previewLabel").style.display = "block";}; reader.readAsDataURL(file);
 				});
 		</script>
 </body>

@@ -66,7 +66,7 @@
 
 		<!-- 下段 -->
 		<div class="page-title-bar">
-<!--			安全点検編集確認-->
+			<!--			安全点検編集確認-->
 		</div>
 
 	</header>
@@ -228,34 +228,23 @@
      添付画像
 ========================= -->
 		<div th:if="${previewImage == null and safety.photo != null}" class="section">
-			<!--			<div class="section-title">-->
-			<!--				添付画像確認-->
-			<!--			</div>-->
-
+			<!-- <div class="section-title">--> <!-- 添付画像確認--> <!-- </div>-->
 			<div class="item">
-				<div class="label">
-					点検時の画像
-				</div>
-
+				<div class="label"> 点検時の画像 </div>
 				<div>
 					<img th:src="@{${safety.photo}}" width="500">
 				</div>
 			</div>
 		</div>
-
-		<div th:if="${previewImage != null}" class="section">
-			<!--			<div class="section-title">-->
-			<!--				添付画像確認-->
-			<!--			</div>-->
-
+		<div th:if="${previewImage != null}" class="section"> <!-- <div class="section-title">--> <!-- 添付画像確認-->
+			<!-- </div>-->
 			<div class="item">
-				<div class="label">
-					アップロード画像
-				</div>
-
-				<div class="value">
-					<!-- 保存する画像表示 -->
-					<img th:src="'data:' + ${contentType} + ';base64,' + ${previewImage}" width="500">
+				<div class="label"> アップロード画像 </div>
+				<div class="value"> <!-- 保存する画像表示 -->
+					<img
+						th:src="'data:' + ${contentType} + ';base64,' + ${previewImage}"
+						width="500"
+					>
 				</div>
 			</div>
 		</div>
@@ -263,26 +252,9 @@
 		<!-- ボタン -->
 		<div class="btn-area">
 			<!--修正-->
-			<form
-			    th:action="@{/safetyinspection/{id}/edit/back(id=${safety.safetyId})}"
-			    method="post">
-				<input type="hidden" th:field="*{safetyId}">
-				<input type="hidden" th:field="*{scaffolding}">
-				<input type="hidden" th:field="*{protectingOpenings}">
-				<input type="hidden" th:field="*{safetyHarness}">
-				<input type="hidden" th:field="*{equipmentInspection}">
-				<input type="hidden" th:field="*{fireExtinguisher}">
-				<input type="hidden" th:field="*{organization}">
-				<input type="hidden" th:field="*{electricalInsulation}">
-				<input type="hidden" th:field="*{photo}">
-
-			    <input type="hidden" name="previewImage" th:value="${previewImage}">
-			    <input type="hidden" name="contentType" th:value="${contentType}">
-
-			    <button type="submit" class="btn btn-secondary">
-			        修正
-			    </button>
-			</form>
+			<button class="btn btn-secondary" onclick="history.back()">
+				修正
+			</button>
 			<!-- 登録 -->
 			<form th:action="@{/safetyinspection/{id}/edit/confirmed(id=${safety.safetyId})}" th:object="${safety}"
 				method="post">

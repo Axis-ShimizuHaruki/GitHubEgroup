@@ -58,6 +58,11 @@ public class OfficeController {
 		if (loginUser.getRoll() != 0) {
 			return "redirect:/login";
 		}
+		
+		// fromThisSiteIdをリセット
+		if((Integer)session.getAttribute("fromThisSiteId") != null) {
+			session.removeAttribute("fromThisSiteId");
+		}
 
 		// 通知用
 		List<Trouble> noticeList = Tservice.getActiveTroubles();
@@ -222,6 +227,9 @@ public class OfficeController {
 		if (loginUser.getRoll() != 0) {
 			return "redirect:/login";
 		}
+		
+		// siteIdを保存
+		session.setAttribute("fromThisSiteId", siteId);
 
 		Site site = siteRepository.findById(siteId)
 				.orElseThrow(() -> new RuntimeException("現場が存在しません"));

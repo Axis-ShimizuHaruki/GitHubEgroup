@@ -93,7 +93,6 @@ public class SafetyController {
 		} else if (user.getRoll() == 0 && siteId != null) {
 			// 現場ポータルから
 			safetyList = service.search(null, siteId, null);
-			session.setAttribute("fromThisSiteId", siteId);
 			session.setAttribute("sSiteIdForSearch", siteId);
 		} else {
 			siteId = (Integer) session.getAttribute("siteId");
@@ -391,19 +390,21 @@ public class SafetyController {
 		return "nishikigi/safetyeditcheck";
 	}
 	
-	@PostMapping("/safetyinspection/{id}/edit/back")
-	public String backToEdit(
-	        @ModelAttribute SafetyForm safety,
-	        @RequestParam(required = false) String previewImage,
-	        @RequestParam(required = false) String contentType,
-	        Model model) {
-
-	    model.addAttribute("safety", safety);
-	    model.addAttribute("previewImage", previewImage);
-	    model.addAttribute("contentType", contentType);
-
-	    return "nishikigi/safetyedit";
-	}
+//	@PostMapping("/safetyinspection/{id}/edit/back")
+//	public String backToEdit(
+//	        @ModelAttribute SafetyForm safety,
+//	        @RequestParam(required = false) String previewImage,
+//	        @RequestParam(required = false) String fileName,
+//	        @RequestParam(required = false) String contentType,
+//	        Model model) {
+//
+//	    model.addAttribute("safety", safety);
+//	    model.addAttribute("previewImage", previewImage);
+//	    model.addAttribute("fileName", fileName);
+//	    model.addAttribute("contentType", contentType);
+//
+//	    return "nishikigi/safetyedit";
+//	}
 
 	// 安全点検編集処理
 	@PostMapping("/safetyinspection/{id}/edit/confirmed")

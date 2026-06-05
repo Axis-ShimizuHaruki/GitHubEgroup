@@ -217,39 +217,70 @@
        ボタン
     ========================= */
 
+ /* ボタンエリア */
  .btn-area {
- 	text-align: right;
- 	margin-top: 20px;
+ 	text-align: center;
+ 	margin-top: 40px;
  	display: flex;
- 	justify-content: flex-end;
- 	gap: 12px;
  	flex-wrap: wrap;
+ 	justify-content: center;
+ 	gap: 15px;
  }
 
- .btn {
- 	background: #1f3c88;
- 	color: white;
+ /* 共通ボタンの基本スタイル */
+ .btn,
+ .btn-gray,
+ .btn-secondary,
+ .btn_h {
+ 	display: inline-block;
+ 	padding: 14px 35px;
  	border: none;
- 	padding: 14px 24px;
  	border-radius: 10px;
- 	cursor: pointer;
- 	font-size: 15px;
+ 	font-size: 16px;
  	font-weight: bold;
+ 	cursor: pointer;
  	transition: 0.2s;
+ 	text-decoration: none;
  	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+ 	text-align: center;
  }
 
+ /* 各種ボタンカラー */
+ .btn {
+ 	background: #28a745 !important;
+ 	color: #fff !important;
+ }
+
+ /* 通常の確定・保存・緑 */
  .btn:hover {
- 	background: #16306d;
+ 	background: #218838 !important;
  	transform: translateY(-2px);
  }
 
- .btn-secondary {
- 	background: #6c757d;
+ .btn-primary-blue {
+ 	background: #1f3c88 !important;
+ 	color: #fff !important;
  }
 
- .btn-secondary:hover {
- 	background: #5a6268;
+ /* 案内・詳細用青ボタン */
+ .btn-primary-blue:hover {
+ 	background: #16306d !important;
+ 	transform: translateY(-2px);
+ }
+
+ .btn-gray,
+ .btn-secondary,
+ .btn_h {
+ 	background: #6c757d !important;
+ 	color: #fff !important;
+ }
+
+ /* 戻る・修正・グレー */
+ .btn-gray:hover,
+ .btn-secondary:hover,
+ .btn_h:hover {
+ 	background: #5a6268 !important;
+ 	transform: translateY(-2px);
  }
 
  /* =========================

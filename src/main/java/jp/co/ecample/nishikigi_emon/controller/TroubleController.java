@@ -203,6 +203,14 @@ public class TroubleController {
 
 			form.setSiteName(site.getSiteName());
 		}
+
+		if (loginUser.getRoll() == 1 || loginUser.getRoll() == 2) {
+			Integer sessionSiteId = (Integer) session.getAttribute("siteId");
+			Site site = siteService.findById(sessionSiteId);
+
+			model.addAttribute("siteName", site.getSiteName());
+		}
+
 		List<Trouble> troubleList = service.search(
 				form.getOccurredDate(),
 				form.getSiteName(),

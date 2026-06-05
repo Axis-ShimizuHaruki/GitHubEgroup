@@ -94,7 +94,7 @@
 	  </div>
 
       <div class="search-item">
-        <label class="search-label">本社確認</label>
+        <label class="search-label">本社対応</label>
         <select name="dStatusFlag" class="search-select">
           <option value="">すべて</option>
           <option value="0" th:selected="${#strings.equals(param.dStatusFlag, '0')}">未確認</option>
@@ -115,7 +115,7 @@
           <th>日付</th>
           <th th:if="${session.loginUser.roll == 0}">現場名</th>
           <th>当日作業内容</th>
-          <th>本社確認</th>
+          <th>本社対応</th>
           <th>詳細</th>
         </tr>
       </thead>

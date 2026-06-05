@@ -191,13 +191,23 @@ main {
        テーブル
     ========================= */
 
-.table-wrap {
-	background: white;
-	border-radius: 14px;
-	overflow: hidden;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-}
+	.table-wrap {
+		background: white;
+		border-radius: 14px;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 
+		max-height: 550px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+
+	.check-table thead th {
+		position: sticky;
+		top: 0;
+		background-color: #1f3c88;
+		z-index: 10;
+	}
+	
 .check-table {
 	width: 100%;
 	border-collapse: collapse;

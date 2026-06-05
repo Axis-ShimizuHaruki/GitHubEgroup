@@ -23,7 +23,6 @@
 			<!-- 左：ロゴ -->
 			<div class="logo-area">
 
-
 				<!-- 本社 -->
 				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
@@ -39,6 +38,9 @@
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
 
+				<div class="pageTitle">
+					トラブル一覧
+				</div>
 			</div>
 
 			<!-- 右：ユーザ -->
@@ -105,9 +107,6 @@
 						現場ポータルへ戻る
 					</a>
 				</div>
-
-				<a th:href="@{/trouble/list}" class="nav-link active"> トラブル一覧
-				</a>
 
 			</div>
 		</div>

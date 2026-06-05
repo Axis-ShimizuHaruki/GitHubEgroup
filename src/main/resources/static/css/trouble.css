@@ -239,6 +239,21 @@ textarea {
 	text-align: center;
 }
 
+.detail-btn {
+	display: inline-block;
+	background-color: #1f3c88;
+	color: white;
+	padding: 8px 14px;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 14px;
+	transition: 0.2s;
+}
+
+.detail-btn:hover {
+	background-color: #16316f;
+}
+
 /* 各種ボタンカラー */
 .btn { background: #28a745 !important; color: #fff !important; } /* 通常の確定・保存・緑 */
 .btn:hover { background: #218838 !important; transform: translateY(-2px); }

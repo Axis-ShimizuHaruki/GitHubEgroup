@@ -54,34 +54,34 @@ public class SafetyController {
 			Model model,
 			HttpSession session) {
 		User user = (User) session.getAttribute("loginUser");
-		
+
 		// ログインしていない
 		if (user == null) {
 			return "redirect:/login";
 		}
-		
-		LocalDate sCreatedAtForSearch = (LocalDate)session.getAttribute("sCreatedAtForSearch");
-		Integer sSiteIdForSearch = (Integer)session.getAttribute("sSiteIdForSearch");
-		String judgementForSearch = (String)session.getAttribute("judgementForSearch");
-		
-		if(sCreatedAtForSearch != null) {
+
+		LocalDate sCreatedAtForSearch = (LocalDate) session.getAttribute("sCreatedAtForSearch");
+		Integer sSiteIdForSearch = (Integer) session.getAttribute("sSiteIdForSearch");
+		String judgementForSearch = (String) session.getAttribute("judgementForSearch");
+
+		if (sCreatedAtForSearch != null) {
 			session.removeAttribute("sCreatedAtForSearch");
 		}
-		if(sSiteIdForSearch != null) {
+		if (sSiteIdForSearch != null) {
 			session.removeAttribute("sSiteIdForSearch");
 		}
-		if(judgementForSearch != null) {
+		if (judgementForSearch != null) {
 			session.removeAttribute("judgementForSearch");
 		}
-		
-//		// fromThisSiteIdを初期化
-//		if((Integer)session.getAttribute("fromThisSiteId") != null)
-//			session.removeAttribute("fromThisSiteId");
-		
-//		// sSiteIdForSearchを初期化
-//		if((Integer)session.getAttribute("sSiteIdForSearch") != null)
-//			session.removeAttribute("sSiteIdForSearch");
-		
+
+		//		// fromThisSiteIdを初期化
+		//		if((Integer)session.getAttribute("fromThisSiteId") != null)
+		//			session.removeAttribute("fromThisSiteId");
+
+		//		// sSiteIdForSearchを初期化
+		//		if((Integer)session.getAttribute("sSiteIdForSearch") != null)
+		//			session.removeAttribute("sSiteIdForSearch");
+
 		List<SafetyList> safetyList;
 
 		List<Site> siteList = siteService.selectAll();
@@ -122,7 +122,7 @@ public class SafetyController {
 		if (loginUser == null) {
 			return "redirect:/login";
 		}
-		
+
 		// 管理者以外は強制的に自分の現場にする
 		if (loginUser.getRoll() != 0) {
 			siteId = (Integer) session.getAttribute("siteId");
@@ -143,7 +143,7 @@ public class SafetyController {
 		session.setAttribute("sCreatedAtForSearch", sCreatedAt);
 		session.setAttribute("sSiteIdForSearch", siteId);
 		session.setAttribute("judgementForSearch", judgement);
-		
+
 		System.out.println("sCreatedAt=" + sCreatedAt);
 		System.out.println("siteId=" + siteId);
 		System.out.println("judgement=" + judgement);
@@ -183,14 +183,14 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
-		
+
 		// 今日の安全点検が既にあれば拒否
-		if((boolean)session.getAttribute("todaysSafety")) {
+		if ((boolean) session.getAttribute("todaysSafety")) {
 			return "redirect:/homesite";
 		}
 
@@ -213,9 +213,9 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
 
@@ -239,9 +239,9 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
 
@@ -267,12 +267,12 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
-		
+
 		service.saveSafety(
 				safety.getScaffolding(),
 				safety.getProtectingOpenings(),
@@ -318,9 +318,13 @@ public class SafetyController {
 					"/topic/notice",
 					(Object) notice);
 		}
-		
+
+		// これだけでOK
+		messagingTemplate.convertAndSend(
+				"/topic/notice",
+				"{\"type\":\"reload\"}");
 		session.setAttribute("todaysSafety", true);
-		
+
 		return "redirect:/complete";
 	}
 
@@ -338,9 +342,9 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
 
@@ -367,9 +371,9 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
 
@@ -379,15 +383,14 @@ public class SafetyController {
 
 		if (!safety.getPhotoFile().isEmpty()) {
 			MultipartFile photoFile = safety.getPhotoFile();
-		    byte[] bytes;
-		    String previewImageStr;
+			byte[] bytes;
+			String previewImageStr;
 			try {
 				bytes = safety.getPhotoFile().getBytes();
-			    previewImageStr =
-				        Base64.getEncoder().encodeToString(bytes);
-			    model.addAttribute("previewImage", previewImageStr);
-			    model.addAttribute("fileName", photoFile.getOriginalFilename());
-			    model.addAttribute("contentType", photoFile.getContentType());
+				previewImageStr = Base64.getEncoder().encodeToString(bytes);
+				model.addAttribute("previewImage", previewImageStr);
+				model.addAttribute("fileName", photoFile.getOriginalFilename());
+				model.addAttribute("contentType", photoFile.getContentType());
 			} catch (IOException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -397,22 +400,22 @@ public class SafetyController {
 
 		return "nishikigi/safetyeditcheck";
 	}
-	
-//	@PostMapping("/safetyinspection/{id}/edit/back")
-//	public String backToEdit(
-//	        @ModelAttribute SafetyForm safety,
-//	        @RequestParam(required = false) String previewImage,
-//	        @RequestParam(required = false) String fileName,
-//	        @RequestParam(required = false) String contentType,
-//	        Model model) {
-//
-//	    model.addAttribute("safety", safety);
-//	    model.addAttribute("previewImage", previewImage);
-//	    model.addAttribute("fileName", fileName);
-//	    model.addAttribute("contentType", contentType);
-//
-//	    return "nishikigi/safetyedit";
-//	}
+
+	//	@PostMapping("/safetyinspection/{id}/edit/back")
+	//	public String backToEdit(
+	//	        @ModelAttribute SafetyForm safety,
+	//	        @RequestParam(required = false) String previewImage,
+	//	        @RequestParam(required = false) String fileName,
+	//	        @RequestParam(required = false) String contentType,
+	//	        Model model) {
+	//
+	//	    model.addAttribute("safety", safety);
+	//	    model.addAttribute("previewImage", previewImage);
+	//	    model.addAttribute("fileName", fileName);
+	//	    model.addAttribute("contentType", contentType);
+	//
+	//	    return "nishikigi/safetyedit";
+	//	}
 
 	// 安全点検編集処理
 	@PostMapping("/safetyinspection/{id}/edit/confirmed")
@@ -429,14 +432,14 @@ public class SafetyController {
 		}
 		// 現場管理者でなければそれぞれのホームに戻す
 		if (loginUser.getRoll() != 1) {
-			if(loginUser.getRoll() == 0)
+			if (loginUser.getRoll() == 0)
 				return "redirect:/homeoffice";
-			if(loginUser.getRoll() == 2)
+			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
 
 		byte[] bytes = Base64.getDecoder().decode(previewImage);
-		
+
 		String photo = safety.getPhoto();
 
 		if (previewImage != null && previewImage != "") {

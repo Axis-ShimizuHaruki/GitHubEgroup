@@ -355,6 +355,12 @@ public class TroubleController {
 
 		service.update(trouble);
 
+		// これだけでOK
+		messagingTemplate.convertAndSend(
+			    "/topic/notice",
+			    "{\"type\":\"reload\"}"
+			);
+
 		return "redirect:/complete";
 	}
 

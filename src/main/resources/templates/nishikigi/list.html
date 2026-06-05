@@ -502,13 +502,17 @@
 						JSON.parse(message.body);
 
 					// 通知タイプで分岐
-					if (data.type === "safety") {
+					if (data.type === "reload") {
 
-						showSafetyNotification(data);
+					    location.reload();
+
+					} else if (data.type === "safety") {
+
+					    showSafetyNotification(data);
 
 					} else {
 
-						showNotification(data);
+					    showNotification(data);
 					}
 					
 					location.reload();

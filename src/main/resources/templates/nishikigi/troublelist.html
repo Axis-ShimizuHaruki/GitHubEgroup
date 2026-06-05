@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>トラブル一覧</title>
-	<link rel="stylesheet" th:href="@{/css/trouble/troublelist.css}" />
+	<link rel="stylesheet" th:href="@{/css/trouble.css}" />
 
 	<style>
 
@@ -182,7 +182,7 @@
 
 					<input type="hidden" name="siteId" th:value="${portalSiteId}">
 
-					<button type="button" th:onclick="|location.href='@{/trouble/list/reset}'|" class="search-btn">
+					<button type="button" th:onclick="|location.href='@{/trouble/list/reset}'|" class="search-btn btn-reset-gray">
 						リセット
 					</button>
 

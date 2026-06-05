@@ -155,6 +155,7 @@ public class SafetyController {
 	@GetMapping("/safetyinspection/{id}")
 	public String showSafetyDetail(
 			@PathVariable Integer id,
+			@RequestParam(required = false) Integer fromList,
 			Model model,
 			HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
@@ -168,6 +169,7 @@ public class SafetyController {
 		Safety safety = result.get();
 
 		model.addAttribute("safety", safety);
+		model.addAttribute("fromList", fromList);
 
 		return "nishikigi/safetycheckdetail";
 	}

@@ -264,8 +264,15 @@
 		</div>
 		<!-- ボタン -->
 		<div class="btn-area">
+			<!-- ホームへ戻る -->
+			<a th:if="${session.fromThisSiteId == null and fromList == null}"
+			th:href="@{/homeoffice}"
+			class="btn-gray">
+			    ホームへ戻る
+			</a>
+
 			<!-- 一覧へ戻る -->
-			<a th:href="@{/safetyinspection/search(
+			<a th:if="${fromList != null}" th:href="@{/safetyinspection/search(
 			    sCreatedAt=${session.sCreatedAtForSearch},
 			    siteId=${session.sSiteIdForSearch},
 			    judgement=${session.judgementForSearch}

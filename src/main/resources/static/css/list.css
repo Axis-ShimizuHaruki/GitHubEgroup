@@ -222,9 +222,13 @@ header {
 .trouble-section {
 	margin-top: 18px;
 	padding: 14px;
+
 	border-radius: 10px;
 	background: #fff3e0;
 	border: 1px solid #ffcc80;
+
+	max-height: 200px;
+	overflow-y: auto;
 }
 
 .trouble-title {

@@ -141,12 +141,19 @@ public class TroubleController {
 			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
-		if (siteId != null) {
-			session.setAttribute("portalSiteId", siteId);
-		}
-
 		// Sessionから前回検索条件を取得
 		TroubleSearchForm sessionForm = (TroubleSearchForm) session.getAttribute("troubleSearchForm");
+
+		// パラメータが何もない場合は前回条件を復元
+		if (sessionForm != null
+				&& form.getSiteName() == null
+				&& form.getOccurredDate() == null
+				&& form.getPriority() == null
+				&& form.getTroubleType() == null
+				&& form.getStatusFlag() == null) {
+
+			form = sessionForm;
+		}
 
 		// 現場ポータルから遷移時の初回表示
 		if (siteId != null
@@ -158,18 +165,9 @@ public class TroubleController {
 
 			Site site = siteService.findById(siteId);
 
+			session.setAttribute("portalSiteId", siteId);
+
 			form.setSiteName(site.getSiteName());
-		}
-
-		// パラメータが何もない場合は前回条件を復元
-		if (sessionForm != null
-				&& form.getSiteName() == null
-				&& form.getOccurredDate() == null
-				&& form.getPriority() == null
-				&& form.getTroubleType() == null
-				&& form.getStatusFlag() == null) {
-
-			form = sessionForm;
 		}
 
 		// 現場管理者の初回表示
@@ -226,7 +224,6 @@ public class TroubleController {
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
 		model.addAttribute("portalSiteId", session.getAttribute("portalSiteId"));
-		session.removeAttribute("troubleSearchForm");
 
 		return "nishikigi/troublelist";
 	}
@@ -240,12 +237,6 @@ public class TroubleController {
 		if (trouble == null) {
 			return "redirect:/trouble/list";
 		}
-
-		if (portalSiteId == null && trouble.getSite() != null) {
-			portalSiteId = trouble.getSite().getSiteId();
-		}
-
-		session.setAttribute("portalSiteId", portalSiteId);
 
 		User loginUser = (User) session.getAttribute("loginUser");
 

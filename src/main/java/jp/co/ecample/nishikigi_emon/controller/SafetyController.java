@@ -159,7 +159,7 @@ public class SafetyController {
 			HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
-		// ログインしていない
+		// ログインしていないとき
 		if (loginUser == null) {
 			return "redirect:/login";
 		}

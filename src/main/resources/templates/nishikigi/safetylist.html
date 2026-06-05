@@ -241,6 +241,12 @@
 							</a>
 						</td>
 					</tr>
+					
+					<tr th:if="${#lists.isEmpty(safetyList)}">
+						<td colspan="8" style="text-align: center; color: #718096;">
+							該当する安全点検データが見つかりません。
+						</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>

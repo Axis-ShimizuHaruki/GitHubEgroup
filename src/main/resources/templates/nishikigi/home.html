@@ -335,13 +335,23 @@
 			// どちらか1つでも「未提出」なら true になる
 			const hasUnsubmitted = (dailyStatus === '未提出' || safetyStatus === '未提出');
 
+			
+			
 			// リンクをクリックして他の画面に行こうとしたときの処理
 			document.addEventListener('click', function (e) {
 				const link = e.target.closest('a');
 				if (!link) return;
 
-				// 【重要】「日報作成」と「安全点検作成」へのリンクは、提出するための移動なので警告を免除する
+				//「日報作成」と「安全点検作成」へのリンクは、提出するための移動なので警告を免除する
 				const href = link.getAttribute('href') || '';
+				
+				// すでに今日の安全点検が提出されているのに「安全点検作成」を押した場合
+				if (href.includes('/safetyinspection/new') && safetyStatus !== '未提出') {
+					alert('本日の安全点検は既に登録されています。');
+					e.preventDefault(); // 登録画面へ行かせずに、その場（現場ホーム）に留まらせる
+						return;
+				}
+								
 				if (href.includes('/dailyreport/new') || href.includes('/safetyinspection/new')) {
 					return;
 				}

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +31,7 @@ public class DailyreportForm {
 
     /** 対象日付 */
     @NotNull(message = "日付を入力してください")
+    @PastOrPresent(message = "未来の日付は登録できません")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate targetDate;
 

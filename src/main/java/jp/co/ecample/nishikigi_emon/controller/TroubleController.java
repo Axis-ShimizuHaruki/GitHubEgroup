@@ -256,13 +256,17 @@ public class TroubleController {
 				null,
 				null);
 
-		List<Site> siteList = siteService.selectAll();
+		List<Site> siteList = siteService.selectAll()
+		        .stream()
+		        .filter(site -> site.getSiteId() != 1)
+		        .toList();
 
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
 		model.addAttribute("troubleSearchForm", form);
 		model.addAttribute("portalSiteId", session.getAttribute("portalSiteId"));
 		session.removeAttribute("troubleSearchForm");
+		session.removeAttribute("portalSiteId");
 
 		return "nishikigi/troublelist";
 	}

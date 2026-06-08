@@ -120,7 +120,7 @@ public class TroubleController {
 		// 現場取得
 		Site savedSite = siteService.findById(siteId);
 
-		// ★追加：本社は登録不可
+		// 本社は登録不可
 		if (siteId != null && siteId == 1) {
 			return "redirect:/error"; // or エラーページ or メッセージ
 		}
@@ -157,6 +157,14 @@ public class TroubleController {
 			@RequestParam(required = false) Boolean fromTitleBar, @ModelAttribute TroubleSearchForm form,
 			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
+
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
+		if (loginUser.getRoll() == 0 || loginUser.getRoll() == 2) {
+			return "redirect:/login";
+		}
 
 		if (fromTitleBar == null || !fromTitleBar) {
 			session.removeAttribute("hidePortalBack");
@@ -257,9 +265,9 @@ public class TroubleController {
 				null);
 
 		List<Site> siteList = siteService.selectAll()
-		        .stream()
-		        .filter(site -> site.getSiteId() != 1)
-		        .toList();
+				.stream()
+				.filter(site -> site.getSiteId() != 1)
+				.toList();
 
 		model.addAttribute("siteList", siteList);
 		model.addAttribute("troubleList", troubleList);
@@ -280,6 +288,14 @@ public class TroubleController {
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		Integer sessionSiteId = (Integer) session.getAttribute("siteId");
+
+		// ログインチャック
+		if (session.getAttribute("loginUser") == null) {
+			return "redirect:/login";
+		}
+		if (loginUser.getRoll() == 0 || loginUser.getRoll() == 2) {
+			return "redirect:/login";
+		}
 
 		if (trouble == null) {
 			return "redirect:/trouble/list";

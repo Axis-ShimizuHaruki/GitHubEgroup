@@ -193,6 +193,7 @@ textarea {
     border-radius: 10px;
     white-space: pre-wrap;
     line-height: 1.6;
+	word-break: break-all;
 }
 
 /* 配置用レイアウト */

@@ -189,6 +189,8 @@ public class DailyreportController {
 		if (userSiteId != null) {
 			form.setSiteId(userSiteId);
 		}
+		
+		form.setProgressPercent(50);
 
 		model.addAttribute("dailyreport", form);
 		model.addAttribute("siteList", siteService.selectAll());
@@ -211,9 +213,12 @@ public class DailyreportController {
 		// 【個別チェック1】出面情報（JSON文字列）が正しく入力されているか空文字検知
 		String wd = form.getWorkerDetails();
 		if (wd == null || wd.isEmpty() || "[]".equals(wd)) {
-			bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+		    bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
 		} else if (wd.contains("\"company\":\"\"") || wd.contains("\"count\":\"\"") || wd.contains("\"names\":\"\"")) {
-			bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+		    bindingResult.rejectValue("workerDetails", "", "出面情報は、協力会社・職人数・作業員氏名をすべて入力してください");
+		} else if (wd.contains("\"count\":\"0\"") || wd.contains("\"count\":\"-") || wd.contains("\"count\":0")) {
+		    // 職人数が0、またはマイナス（-）が含まれるJSON文字列を検知して弾く
+		    bindingResult.rejectValue("workerDetails", "", "職人数には1以上の数値を入力してください");
 		}
 
 		// 【個別チェック2】同じ現場で同じ日付の日報がすでに登録されていないか、DBを二重登録チェック

@@ -114,17 +114,19 @@
         <textarea id="workDetails" th:field="*{workDetails}" placeholder="鉄筋・型枠・コンクリ打設・設備などの作業内容" maxlength="500"></textarea>
       </div>
 
-      <div class="section">
-        <div class="section-title">出面（協力会社別）</div>
-        <input type="hidden" th:field="*{workerDetails}" id="workerDetails">
-		<div th:if="${#fields.hasErrors('workerDetails')}" th:errors="*{workerDetails}" style="color: #e74c3c; font-size: 13px; margin-bottom: 10px; font-weight: bold;"></div>
+	  <div class="section">
+	    <div class="section-title">出面（協力会社別）</div>
+	    <input type="hidden" th:field="*{workerDetails}" id="workerDetails">
+	    <div th:if="${#fields.hasErrors('workerDetails')}" th:errors="*{workerDetails}" style="color: #e74c3c; font-size: 13px; margin-bottom: 10px; font-weight: bold;"></div>
+	    
+	    <div id="jsWorkerError" style="color: #e74c3c; font-size: 13px; margin-bottom: 10px; font-weight: bold;"></div>
 
-        <div class="sub-box" id="worker-rows">
+	    <div class="sub-box" id="worker-rows"></div>
           <div class="worker-row">
             <label>会社名</label>
             <input type="text" class="input-company" placeholder="例：錦木組">
             <label>職人数</label>
-            <input type="number" class="input-count" placeholder="例：3">
+            <input type="number" class="input-count" placeholder="例：2" min="1">
             <label>氏名</label>
             <input type="text" class="input-names" placeholder="例：山田、佐藤">
           </div>
@@ -136,8 +138,8 @@
         <div class="section-title">工程進捗</div>
         <label for="progressPercent">全体進捗（%）</label>
         <div th:if="${#fields.hasErrors('progressPercent')}" th:errors="*{progressPercent}" style="color: #e74c3c; font-size: 13px; margin-bottom: 5px; font-weight: bold;"></div>
-        <input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
-        <span id="rangeVal">50%</span>
+		<input type="range" id="progressPercent" th:field="*{progressPercent}" min="0" max="100" oninput="document.getElementById('rangeVal').innerText = this.value + '%'">
+		<span id="rangeVal" th:text="*{progressPercent} + '%'">50%</span>
       </div>
 
 	  <div class="section">
@@ -289,7 +291,7 @@
         <label>会社名</label>
         <input type="text" class="input-company" value="${company}" placeholder="例：錦木組">
         <label>職人数</label>
-        <input type="number" class="input-count" value="${count}" placeholder="例：3">
+        <input type="number" class="input-count" value="${count}" placeholder="例：2" min="1">
         <label>氏名</label>
         <input type="text" class="input-names" value="${names}" placeholder="例：山田、佐藤">
       `;
@@ -313,11 +315,41 @@
       document.getElementById('workerDetails').value = JSON.stringify(workerList);
     }
 
-    document.getElementById('reportForm').addEventListener('submit', function(e) {
-      serializeWorkerDetails(); 
-    });
+	document.getElementById('reportForm').addEventListener('submit', function(e) {
+		      // 先に出面情報をJSONにまとめる
+		      serializeWorkerDetails(); 
+		      
+		      // 職人数に 0 やマイナスがないか送信直前に一斉チェック
+		      const countInputs = document.querySelectorAll('.input-count');
+		      let hasError = false;
+		      
+		      countInputs.forEach(input => {
+		        const val = parseInt(input.value, 10);
+		        // 入力が空、または1未満（0やマイナス）の場合
+		        if (isNaN(val) || val < 1) {
+		          hasError = true;
+		          input.style.border = "2px solid #e74c3c"; // 対象の入力欄を赤枠にして分かりやすくする
+		        } else {
+		          input.style.border = ""; // 正常なら枠線を戻す
+		        }
+		      });
+		      
+			  // 1箇所でも0以下の不備があれば、送信を強制ストップする
+			        if (hasError) {
+			          e.preventDefault(); // 確認画面への遷移を絶対に阻止
+			          
+			          // 🌟【変更】ポップアップの代わりに、画面の専用エリアに赤文字を表示する
+			          document.getElementById('jsWorkerError').innerText = "職人数には1以上の数値を入力してください。";
+			          
+			          // 画面の一番上までスクロールして、エラーが起きたことをユーザーに知らせる
+			          window.scrollTo({ top: 0, behavior: 'smooth' });
+			        } else {
+			          // エラーがない場合はメッセージを消す
+			          document.getElementById('jsWorkerError').innerText = "";
+			        }
+		    });
 
-    // 🌟【新規実装】写真のリアルタイムプレビュー処理
+    // 写真のリアルタイムプレビュー処理
     document.querySelectorAll('.photo-input').forEach(input => {
       input.addEventListener('change', function() {
         const file = this.files[0];

@@ -290,9 +290,6 @@ public class TroubleController {
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/login";
 		}
-		if (loginUser.getRoll() == 0 || loginUser.getRoll() == 2) {
-			return "redirect:/login";
-		}
 
 		if (trouble == null) {
 			return "redirect:/trouble/list";

@@ -128,8 +128,11 @@ public class TroubleController {
 
 	// トラブル一覧表示
 	@GetMapping("/trouble/list")
-	public String list(@RequestParam(required = false) Integer siteId,
-			@RequestParam(required = false) Boolean fromTitleBar, @ModelAttribute TroubleSearchForm form,
+	public String list(
+			@RequestParam(required = false) Integer siteId,
+			@RequestParam(required = false) Boolean fromTitleBar, 
+			@RequestParam(required = false) Boolean init,
+			@ModelAttribute TroubleSearchForm form,
 			Model model, HttpSession session) {
 		User loginUser = (User) session.getAttribute("loginUser");
 
@@ -154,6 +157,10 @@ public class TroubleController {
 
 		    // 現場ポータル情報も不要なら削除
 		    session.removeAttribute("portalSiteId");
+		}
+		
+		if (Boolean.TRUE.equals(init)) {
+		    session.removeAttribute("troubleSearchForm");
 		}
 
 		// Sessionから前回検索条件を取得

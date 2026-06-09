@@ -130,7 +130,7 @@ public class TroubleController {
 	@GetMapping("/trouble/list")
 	public String list(
 			@RequestParam(required = false) Integer siteId,
-			@RequestParam(required = false) Boolean fromTitleBar, 
+			@RequestParam(required = false) Boolean fromTitleBar,
 			@RequestParam(required = false) Boolean init,
 			@ModelAttribute TroubleSearchForm form,
 			Model model, HttpSession session) {
@@ -150,17 +150,17 @@ public class TroubleController {
 		}
 
 		if (Boolean.TRUE.equals(fromTitleBar)) {
-		    session.setAttribute("hidePortalBack", true);
+			session.setAttribute("hidePortalBack", true);
 
-		    // 前回検索条件をクリア
-		    session.removeAttribute("troubleSearchForm");
+			// 前回検索条件をクリア
+			session.removeAttribute("troubleSearchForm");
 
-		    // 現場ポータル情報も不要なら削除
-		    session.removeAttribute("portalSiteId");
+			// 現場ポータル情報も不要なら削除
+			session.removeAttribute("portalSiteId");
 		}
-		
+
 		if (Boolean.TRUE.equals(init)) {
-		    session.removeAttribute("troubleSearchForm");
+			session.removeAttribute("troubleSearchForm");
 		}
 
 		// Sessionから前回検索条件を取得
@@ -181,14 +181,14 @@ public class TroubleController {
 
 		// パラメータが何もない場合は前回条件を復元
 		if (!Boolean.TRUE.equals(fromTitleBar)
-		        && sessionForm != null
-		        && form.getSiteName() == null
-		        && form.getOccurredDate() == null
-		        && form.getPriority() == null
-		        && form.getTroubleType() == null
-		        && form.getStatusFlag() == null) {
+				&& sessionForm != null
+				&& form.getSiteName() == null
+				&& form.getOccurredDate() == null
+				&& form.getPriority() == null
+				&& form.getTroubleType() == null
+				&& form.getStatusFlag() == null) {
 
-		    form = sessionForm;
+			form = sessionForm;
 		}
 
 		// 現場管理者の初回表示
@@ -260,7 +260,6 @@ public class TroubleController {
 		model.addAttribute("troubleSearchForm", form);
 		model.addAttribute("portalSiteId", session.getAttribute("portalSiteId"));
 		session.removeAttribute("troubleSearchForm");
-		session.removeAttribute("portalSiteId");
 
 		return "nishikigi/troublelist";
 	}

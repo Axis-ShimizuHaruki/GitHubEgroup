@@ -35,9 +35,9 @@
 
 		<div class="site-info">
 			<span th:if="${session.loginUser.roll == 0}">本社管理者アカウント</span>
-			
-			<span th:if="${session.loginUser.roll != 0}" 
-			      th:text="${session.siteName != null ? session.siteName : '現場管理アカウント'}">対象現場名</span>
+
+			<span th:if="${session.loginUser.roll != 0}"
+				th:text="${session.siteName != null ? session.siteName : '現場管理アカウント'}">対象現場名</span>
 		</div>
 	</header>
 

@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>トラブル編集確認</title>
-	<link rel="stylesheet" th:href="@{/css/trouble.css}" />
+	<link rel="stylesheet" th:href="@{/css/trouble/troubledetail.css}" />
 
 
 	<style>
@@ -42,9 +42,9 @@
 				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
 					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
 				</a>
-				
+
 				<div class="site-system-name">
-				  トラブル編集確認
+					トラブル編集確認
 				</div>
 
 			</div>
@@ -80,7 +80,7 @@
 
 		<!-- 下段 -->
 		<div class="page-title-bar">
-<!--			トラブル編集確認-->
+			<!--			トラブル編集確認-->
 		</div>
 
 	</header>
@@ -107,32 +107,28 @@
 			<div class="section-title">
 				トラブル内容
 			</div>
+			<div class="item">
+				<div class="label">緊急度</div>
 
-			<div class="grid-2">
-
-				<div class="item">
-					<div class="label">緊急度</div>
-
-					<div class="value">
-						<span th:if="${form.priority == 3}">高</span>
-						<span th:if="${form.priority == 2}">中</span>
-						<span th:if="${form.priority == 1}">低</span>
-					</div>
+				<div class="value">
+					<span class="badge high" th:if="${form.priority == 3}">高</span>
+					<span class="badge middle" th:if="${form.priority == 2}">中</span>
+					<span class="badge low" th:if="${form.priority == 1}">低</span>
 				</div>
-
-				<div class="item">
-					<div class="label">トラブル種別</div>
-
-					<div class="value">
-						<span th:if="${form.troubleType == 1}">事故</span>
-						<span th:if="${form.troubleType == 2}">資材不足</span>
-						<span th:if="${form.troubleType == 3}">納品遅れ</span>
-						<span th:if="${form.troubleType == 4}">工程遅延</span>
-						<span th:if="${form.troubleType == 5}">その他</span>
-					</div>
-				</div>
-
 			</div>
+
+			<div class="item">
+				<div class="label">トラブル種別</div>
+
+				<div class="value">
+					<span th:if="${form.troubleType == 1}">事故</span>
+					<span th:if="${form.troubleType == 2}">資材不足</span>
+					<span th:if="${form.troubleType == 3}">納品遅れ</span>
+					<span th:if="${form.troubleType == 4}">工程遅延</span>
+					<span th:if="${form.troubleType == 5}">その他</span>
+				</div>
+			</div>
+
 
 			<div class="item">
 				<div class="label">一言で表す</div>

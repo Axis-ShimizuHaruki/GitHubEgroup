@@ -25,21 +25,10 @@ public class TroubleService {
 		return troubleRepository.findAll();
 	}
 
-	//	// トラブル登録処理
-	//	public void register(Trouble trouble) {
-	//
-	//		trouble.setOccurredAt(LocalDateTime.now());
-	//		trouble.settStatusFlag(0);
-	//		trouble.settCreatedAt(LocalDateTime.now());
-	//		trouble.settUpdatedAt(LocalDateTime.now());
-	//
-	//		troubleRepository.save(trouble);
-	//	}
-
 	// トラブル登録処理
 	public Trouble register(Trouble trouble) {
 
-		// ★追加：本社は登録禁止
+		// 本社は登録禁止
 		if (trouble.getSite() != null && trouble.getSite().getSiteId() == 1) {
 			throw new IllegalArgumentException("本社はトラブル登録できません");
 		}
@@ -124,6 +113,7 @@ public class TroubleService {
 	//		troubleRepository.save(trouble);
 	//	}
 
+	// 編集した内容をDBに登録
 	@Transactional
 	public void update(Trouble input) {
 

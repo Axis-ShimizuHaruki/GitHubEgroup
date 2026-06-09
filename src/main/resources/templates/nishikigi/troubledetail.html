@@ -104,9 +104,10 @@
 				     th:if="${session.loginUser.roll == 0 
 				             && portalSiteId != null 
 				             && session.hidePortalBack != true}">
-					<a th:href="@{/portal/{id}(id=${portalSiteId})}">
-						現場ポータルへ戻る
-					</a>
+							 <a th:if="${portalSiteId != null}"
+							    th:href="@{/portal/{id}(id=${portalSiteId})}">
+							     現場ポータルへ戻る
+							 </a>
 				</div>
 
 			</div>

@@ -164,8 +164,12 @@
 
 					<div th:each="trouble : ${view.site.troubleList}" class="trouble-item">
 
-						<a th:if="${trouble.tStatusFlag != 2}" th:href="@{/trouble/{id}(id=${trouble.troubleId})}"
-							th:text="${trouble.overview}">
+						<a th:if="${trouble.tStatusFlag != 2}"
+						   th:href="@{/trouble/{id}(
+						        id=${trouble.troubleId},
+						        portalSiteId=${view.site.siteId}
+						   )}"
+						   th:text="${trouble.overview}">
 						</a>
 
 					</div>

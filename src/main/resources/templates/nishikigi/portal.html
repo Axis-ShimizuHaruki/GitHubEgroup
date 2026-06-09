@@ -83,8 +83,8 @@
 				安全点検一覧
 			</a>
 
-			<a th:href="@{/trouble/list}">
-				トラブル一覧
+			<a th:href="@{/trouble/list(siteId=${view.site.siteId})}">
+			    トラブル一覧
 			</a>
 
 		</div>

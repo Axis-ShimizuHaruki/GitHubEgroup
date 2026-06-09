@@ -70,30 +70,6 @@ public class TroubleController {
 	}
 
 	// トラブル登録画面のフォーム送信
-	//	@PostMapping("/troubles")
-	//	public String register(@ModelAttribute TroubleForm form, HttpSession session) {
-	//
-	//		Integer siteId = (Integer) session.getAttribute("siteId");
-	//
-	//		System.out.println("siteId = " + siteId);
-	//
-	//		Trouble trouble = new Trouble();
-	//
-	//		trouble.setPriority(form.getPriority());
-	//		trouble.setTroubleType(form.getTroubleType());
-	//		trouble.setOverview(form.getOverview());
-	//		trouble.setDetail(form.getDetail());
-	//
-	//		Site site = new Site();
-	//		site.setSiteId(siteId);
-	//
-	//		trouble.setSite(site);
-	//
-	//		service.register(trouble);
-	//		return "redirect:/complete";
-	//	}
-
-	// トラブル登録画面のフォーム送信
 	@PostMapping("/troubles")
 	public String register(@ModelAttribute TroubleForm form,
 			HttpSession session) {
@@ -143,7 +119,6 @@ public class TroubleController {
 		notice.put("troubleId", savedTrouble.getTroubleId());
 		notice.put("createdAt", createdAt);
 
-		// これだけでOK
 		messagingTemplate.convertAndSend(
 				"/topic/notice",
 				(Object) notice);
@@ -286,6 +261,8 @@ public class TroubleController {
 
 		Integer sessionSiteId = (Integer) session.getAttribute("siteId");
 
+		Integer sessionPortalSiteId = (Integer) session.getAttribute("portalSiteId");
+
 		// ログインチャック
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/login";
@@ -295,8 +272,10 @@ public class TroubleController {
 			return "redirect:/trouble/list";
 		}
 
-		if (portalSiteId == null && trouble.getSite() != null) {
-			portalSiteId = trouble.getSite().getSiteId();
+		if (portalSiteId != null) {
+			session.setAttribute("portalSiteId", portalSiteId);
+		} else {
+			portalSiteId = sessionPortalSiteId;
 		}
 
 		// =========================
@@ -314,8 +293,6 @@ public class TroubleController {
 					.filter(s -> s.getSiteId().equals(sessionSiteId))
 					.toList();
 		}
-
-		session.setAttribute("portalSiteId", portalSiteId);
 
 		model.addAttribute("trouble", trouble);
 		model.addAttribute("portalSiteId", portalSiteId);
@@ -416,7 +393,6 @@ public class TroubleController {
 
 		service.update(trouble);
 
-		// これだけでOK
 		messagingTemplate.convertAndSend(
 				"/topic/notice",
 				"{\"type\":\"reload\"}");

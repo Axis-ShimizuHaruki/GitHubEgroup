@@ -121,7 +121,7 @@
 	    
 	    <div id="jsWorkerError" style="color: #e74c3c; font-size: 13px; margin-bottom: 10px; font-weight: bold;"></div>
 
-	    <div class="sub-box" id="worker-rows"></div>
+	    <div class="sub-box" id="worker-rows">
           <div class="worker-row">
             <label>会社名</label>
             <input type="text" class="input-company" placeholder="例：錦木組">
@@ -338,7 +338,7 @@
 			        if (hasError) {
 			          e.preventDefault(); // 確認画面への遷移を絶対に阻止
 			          
-			          // 🌟【変更】ポップアップの代わりに、画面の専用エリアに赤文字を表示する
+			          // ポップアップの代わりに、画面の専用エリアに赤文字を表示する
 			          document.getElementById('jsWorkerError').innerText = "職人数には1以上の数値を入力してください。";
 			          
 			          // 画面の一番上までスクロールして、エラーが起きたことをユーザーに知らせる

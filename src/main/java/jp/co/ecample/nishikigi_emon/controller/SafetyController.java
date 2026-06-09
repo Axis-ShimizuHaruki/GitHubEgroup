@@ -277,6 +277,11 @@ public class SafetyController {
 			if (loginUser.getRoll() == 2)
 				return "redirect:/homesite";
 		}
+		
+		// すでに安全点検があれば一覧画面に遷移
+		if((boolean)session.getAttribute("todaysSafety")) {
+			return "redirect:/safetyinspection/list";
+		}
 
 		service.saveSafety(
 				safety.getScaffolding(),

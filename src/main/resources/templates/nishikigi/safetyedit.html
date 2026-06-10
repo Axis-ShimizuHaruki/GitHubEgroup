@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>安全点検編集</title>
+	<link rel="stylesheet" th:href="@{/css/safety/safetyedit.css}">
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+				<a th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<div class="pageTitle">
+					安全点検編集
+				</div>
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			<!--			安全点検編集-->
+		</div>
+
+	</header>
+
+	<!-- =========================
+       コンテンツ
+  ========================= -->
+
+	<div class="container">
+		<!-- 基本情報 -->
+		<div class="section">
+			<div class="section-title">
+				点検情報
+			</div>
+
+			<div class="summary-box">
+				<!-- 登録日時 -->
+				<div>
+					登録日時：
+					<span th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
+				</div>
+				<!-- 更新日時（登録日時と異なる場合のみ表示） -->
+				<div th:if="${safety.sUpdatedAt != null and !safety.sCreatedAt.equals(safety.sUpdatedAt)}">
+					更新日時：
+					<span th:text="${#temporals.format(safety.sUpdatedAt, 'yyyy/MM/dd HH:mm:ss')}">
+					</span>
+				</div>
+				<div>
+					現場名：
+					<span th:text="${safety.site.siteName}">
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- サマリー -->
+		<div class="section">
+
+			<div class="section-title">
+				点検結果サマリー
+			</div>
+
+			<div class="summary-box">
+
+				<!--				<div class="summary-title">-->
+				<!--					確認内容-->
+				<!--				</div>-->
+
+				点検項目：7件<br>
+
+				良好：
+				<span th:text="${
+		      (safety.scaffolding == 0 ? 1 : 0) +
+		      (safety.protectingOpenings == 0 ? 1 : 0) +
+		      (safety.safetyHarness == 0 ? 1 : 0) +
+		      (safety.equipmentInspection == 0 ? 1 : 0) +
+		      (safety.fireExtinguisher == 0 ? 1 : 0) +
+		      (safety.organization == 0 ? 1 : 0) +
+		      (safety.electricalInsulation == 0 ? 1 : 0)
+		  }"></span>件
+				<br>
+
+				不備：
+				<span th:text="${
+		      (safety.scaffolding == 1 ? 1 : 0) +
+		      (safety.protectingOpenings == 1 ? 1 : 0) +
+		      (safety.safetyHarness == 1 ? 1 : 0) +
+		      (safety.equipmentInspection == 1 ? 1 : 0) +
+		      (safety.fireExtinguisher == 1 ? 1 : 0) +
+		      (safety.organization == 1 ? 1 : 0) +
+		      (safety.electricalInsulation == 1 ? 1 : 0)
+		  }"></span>件
+
+			</div>
+		</div>
+
+		<!-- 点検項目 -->
+		<div class="section">
+
+			<div class="section-title">
+				点検項目編集
+			</div>
+
+			<form th:action="@{/safetyinspection/{id}/edit/confirm(id=${safety.safetyId})}" method="post"
+				enctype="multipart/form-data" th:object="${safety}">
+
+				<input type="hidden" th:field="*{safetyId}">
+				<input type="hidden" th:field="*{sCreatedAt}">
+				<input type="hidden" th:field="*{sUpdatedAt}">
+				<input type="hidden" th:field="*{site.siteName}">
+
+				<input type="hidden" th:field="*{scaffolding}">
+				<input type="hidden" th:field="*{protectingOpenings}">
+				<input type="hidden" th:field="*{safetyHarness}">
+				<input type="hidden" th:field="*{equipmentInspection}">
+				<input type="hidden" th:field="*{fireExtinguisher}">
+				<input type="hidden" th:field="*{organization}">
+				<input type="hidden" th:field="*{electricalInsulation}">
+				<!--				<input th:if="*{photo != null}" type="hidden" th:field="*{photo}">-->
+
+
+				<div class="check-item">
+					<label>足場（手すり・幅木・滑り止め）</label>
+
+					<input th:value="*{scaffolding == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('scaffolding')}" th:errors="*{scaffolding}" style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>開口部養生</label>
+
+
+					<input th:value="*{protectingOpenings == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('protectingOpenings')}" th:errors="*{protectingOpenings}"
+						style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>高所作業の安全帯使用</label>
+
+
+					<input th:value="*{safetyHarness == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('safetyHarness')}" th:errors="*{safetyHarness}" style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>重機点検記録</label>
+
+					<input th:value="*{equipmentInspection == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('equipmentInspection')}" th:errors="*{equipmentInspection}"
+						style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>火気使用時の消火器配置</label>
+
+
+					<input th:value="*{fireExtinguisher == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('fireExtinguisher')}" th:errors="*{fireExtinguisher}"
+						style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>整理整頓（つまずきリスク）</label>
+
+					<input th:value="*{organization == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('organization')}" th:errors="*{organization}" style="color:red">
+					</div>
+				</div>
+
+				<div class="check-item">
+					<label>仮設電気の絶縁</label>
+
+					<input th:value="*{electricalInsulation == 0 ? '良好' : '不備'}" readonly></input>
+					<div th:if="${#fields.hasErrors('electricalInsulation')}" th:errors="*{electricalInsulation}"
+						style="color:red">
+					</div>
+				</div>
+
+				<input type="hidden" th:field="*{photo}">
+				<input type="hidden" th:field="*{site}">
+
+
+				<!-- 点検写真 -->
+				<div class="section">
+					<div class="section-title">
+						点検写真アップロード
+					</div>
+
+					<div class="item">
+						<!-- 現在の画像表示 -->
+						<div th:if="${safety.photo != null}">
+							<div class="label">
+								変更前画像
+							</div>
+
+							<div>
+								<img th:src="@{${safety.photo}}" width="500">
+							</div>
+						</div>
+
+						<!-- 新しく選択した画像のプレビュー -->
+						<div>
+							<div id="previewLabel" class="label" style="display:none;">
+								アップロード画像
+							</div>
+							<div>
+								<img id="preview" width="500" style="display:none;">
+							</div>
+						</div>
+						<input type="file" name="photoFile" id="photoFile" accept="image/*">
+					</div>
+					<div th:if="${errorMessage}" class="error-message">
+					    <span th:text="${errorMessage}" style="color: red;"></span>
+					</div>
+				</div>
+
+				<!-- ボタン -->
+				<div class="btn-area">
+
+					<button type="button" class="btn btn-gray"
+						th:onclick="|location.href='@{/safetyinspection/{id}(id=${safety.safetyId})}'|">
+						キャンセル
+					</button>
+
+					<button type="submit" class="btn">
+						確認
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<script>
+			document.getElementById("photoFile")
+				.addEventListener("change", function (event) {
+					const file = event.target.files[0]; if (!file) {document.getElementById("preview").style.display = "none"; document.getElementById("previewLabel").style.display = "none"; return;} const reader = new FileReader(); reader.onload = function (e) {document.getElementById("preview").src = e.target.result; document.getElementById("preview").style.display = "block"; document.getElementById("previewLabel").style.display = "block";}; reader.readAsDataURL(file);
+				});
+		</script>
+</body>
+
+</html>

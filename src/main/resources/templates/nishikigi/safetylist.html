@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>安全点検一覧</title>
+	<link rel="stylesheet" th:href="@{/css/safety/safetylist.css}">
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<div class="pageTitle">
+					安全点検一覧
+				</div>
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">
+			<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
+			    <span th:if="${session.loginUser.roll != 0}">
+			        <span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+			    </span>
+			    <span th:if="${session.loginUser.roll == 0}">
+			        <span th:if="${session.sSiteIdForSearch != null && session.sSiteIdForSearch != ''}">
+			            <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, session.sSiteIdForSearch)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+			        </span>
+			        <span th:if="${session.sSiteIdForSearch == null || session.sSiteIdForSearch == ''}">全現場対象エリア</span>
+			    </span>
+			</div>
+			<!-- 現場ポータルへ戻る -->
+			<a th:if="${session.fromThisSiteId != null and session.loginUser.roll == 0}"
+				th:href="@{/portal/{id}(id=${session.fromThisSiteId})}"
+				class="btn_back">
+				現場ポータルへ戻る
+			</a>
+		</div>
+
+	</header>
+
+	<!-- =========================
+       メイン
+  ========================= -->
+
+	<main>
+
+		<form th:action="@{/safetyinspection/search}" method="get">
+
+			<div class="search-box">
+
+				<div class="search-title">
+					検索条件
+				</div>
+
+				<div class="search-grid">
+
+					<!-- 登録日 -->
+					<div class="search-item">
+						<label>登録日</label>
+						<input type="date" name="sCreatedAt" th:value="${session.sCreatedAtForSearch}">
+					</div>
+
+					<div th:if="${session.loginUser.roll == 0}" class="search-item">
+						<label>現場名</label>
+
+						<select name="siteId">
+							<option value="">すべて</option>
+
+							<option th:each="site : ${siteList}" th:value="${site.siteId}" th:text="${site.siteName}"
+								th:selected="${site.siteId == session.sSiteIdForSearch}">
+							</option>
+						</select>
+					</div>
+					<!-- 一般ユーザー -->
+					<input th:if="${session.loginUser.roll != 0}" type="hidden" name="siteId"
+						th:value="${session.siteId}">
+
+					<!-- 判定 -->
+					<div class="search-item">
+						<label>判定</label>
+						<select name="judgement">
+							<option value="" th:selected="${session.judgementForSearch == null or session.judgementForSearch == ''}">
+								すべて
+							</option>
+
+							<option value="良好" th:selected="${session.judgementForSearch == '良好'}">
+								良好
+							</option>
+
+							<option value="要対応" th:selected="${session.judgementForSearch == '要対応'}">
+								要対応
+							</option>
+						</select>
+					</div>
+
+					<!-- ボタン -->
+					<button type="submit" class="search-btn">
+						検索
+					</button>
+
+					<a th:href="@{/safetyinspection/list}" class="search-btn">
+						リセット
+					</a>
+<!--					<button type="submit"-->
+<!--							class="search-btn"-->
+<!--							th:onclick="|location.href='@{/safetyinspection/list}'|">-->
+<!--						リセット-->
+<!--					</button>-->
+				</div>
+
+			</div>
+
+		</form>
+		
+<!--		<form th:action="@{/safetyinspection/list}" method="get">-->
+<!--			<button type="submit" class="search-btn">-->
+<!--				リセット-->
+<!--			</button>-->
+<!--		</form>-->
+		<!-- テーブル -->
+		<div class="table-wrap">
+
+			<table class="check-table">
+
+				<thead>
+					<tr>
+						<th>登録日</th>
+						<th>現場名</th>
+						<th>点検項目数</th>
+						<th>良好</th>
+						<th>不備</th>
+						<th>判定</th>
+						<th>本社対応</th>
+						<th>詳細</th>
+					</tr>
+				</thead>
+
+				<tbody>
+
+					<tr th:each="safety : ${safetyList}">
+
+						<!-- 登録日 -->
+						<td th:text="${#temporals.format(safety.sCreatedAt, 'yyyy/MM/dd')}">
+							2026/05/26
+						</td>
+
+						<!-- 現場名 -->
+						<td th:text="${safety.site.siteName}">
+						</td>
+
+						<!-- 点検項目数 -->
+						<td>7件</td>
+
+						<!-- 良好 -->
+						<td class="status-ok">
+							<span th:text="${safety.goodCount} + '件'"></span>
+						</td>
+
+						<!-- 不備 -->
+						<td class="status-ng">
+							<span th:text="${safety.badCount} + '件'"></span>
+						</td>
+
+						<!-- 判定 -->
+						<td>
+							<span th:text="${safety.judgement}">
+								良好
+							</span>
+						</td>
+
+						<!-- 確認ステータス -->
+						<td>
+							<span th:text="${safety.sStatusFlag == 0 ? '提出済み' : '確認済み'}">
+							</span>
+						</td>
+
+						<!-- 詳細 -->
+						<td>
+							<a th:href="@{/safetyinspection/{id}(id=${safety.safetyId}, fromList=1)}" class="detail-btn">
+								詳細
+							</a>
+						</td>
+					</tr>
+					
+					<tr th:if="${#lists.isEmpty(safetyList)}">
+						<td colspan="8" style="text-align: center; color: #718096;">
+							該当する安全点検データが見つかりません。
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		
+		<!-- ボタン -->
+<!--		<div class="btn-area">-->
+<!--			 一覧へ戻る -->
+<!--			<a th:if="${siteId != null}" th:href="@{/portal/{id}(id=${siteId})}" class="btn_back">-->
+<!--				一覧へ戻る-->
+<!--			</a>-->
+<!--		</div>-->
+
+	</main>
+
+	</body>
+
+</html>

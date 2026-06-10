@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>日報詳細</title>
+  <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
+
+<style></style>
+
+</head>
+
+<body>
+
+	<header class="system-header">
+
+	    <div class="header-top">
+
+			<div class="logo-area">
+			        
+			        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+			        </a>
+			        
+			        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
+			          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+			        </a>
+					
+	        <div class="site-system-name">
+	          日報詳細
+	        </div>
+	      </div>
+
+	      <div class="user-area">
+	        <div th:if="${session.loginUser != null}" class="user-info-box">
+	          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
+	          <form th:action="@{/logout}" method="post" style="display: inline;">
+	            <button type="submit" class="logout-btn">ログアウト</button>
+	          </form>
+	        </div>
+
+	        <div th:unless="${session.loginUser != null}">
+	          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
+	        </div>
+	      </div>
+
+	    </div>
+
+		<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">	  
+		    <div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">	 
+		        <span th:if="${session.loginUser.roll != 0}">
+		            <span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+		        </span>
+		        <span th:if="${session.loginUser.roll == 0}">
+		            <!-- 一覧から特定の現場で絞り込んできた場合のみ「（絞り込み中）」と表示 -->
+		            <span th:if="${from == 'list' && searchSiteId != null && searchSiteId != ''}">
+		                <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, searchSiteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+		            </span>
+		            <!-- ホームから直接、または一覧で現場「すべて」の状態で来た場合は、この日報の現場名を表示 -->
+		            <span th:if="${from != 'list' || searchSiteId == null || searchSiteId == ''}" th:text="${report.site.siteName}">対象現場名</span>
+		        </span>
+		    </div>
+		    
+		    <!-- headerSiteIdが日報データから自動補完されるため、ホーム直接ルートでも確実に表示されるようになります -->
+		    <a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
+		       th:href="@{/portal/{id}(id=${headerSiteId})}" 
+		       class="nav-link" 
+		       style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
+		       ◀ 現場ポータルへ戻る
+		    </a>
+		    
+		    <!-- 一覧に戻るときの条件。ホーム直接のときは検索条件（searchSiteId=null）を渡すことで、綺麗に全現場一覧へ戻れます -->
+		    <a th:href="@{/dailyreport/list(targetDate=${targetDate}, siteId=${searchSiteId}, workDetails=${workDetails}, dStatusFlag=${dStatusFlag})}" class="nav-link active">日報一覧</a>				  
+		</div>
+
+	  </header>
+
+  <div class="container" th:object="${report}">
+
+    <div class="section">
+      <div class="section-title">基本情報</div>
+      <div class="grid-2">
+        <div class="item">
+          <div class="label">現場名</div>
+          <div class="value" th:text="*{site.siteName}">新宿ビル新築工事</div>
+        </div>
+        <div class="item">
+          <div class="label">工事番号</div>
+          <div class="value" th:text="*{projectNumber}">A-1024</div>
+        </div>
+        <div class="item">
+          <div class="label">日付</div>
+          <div class="value" th:text="${#temporals.format(report.targetDate, 'yyyy-MM-dd')}">2026-05-26</div>
+        </div>
+        <div class="item">
+          <div class="label">天候</div>
+          <div class="value" th:text="*{weather == 1 ? '晴れ' : (weather == 2 ? '曇り' : (weather == 3 ? '雨' : '雪'))}">晴れ</div>
+        </div>
+        <div class="item">
+          <div class="label">気温</div>
+          <div class="value" th:text="*{temperature} + ' ℃'">25℃</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">作業内容</div>
+      <div class="item">
+        <div class="label">本日の作業</div>
+        <div class="value" style="white-space: pre-wrap;" th:text="*{workDetails}">作業内容</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">出面情報</div>
+      <input type="hidden" id="hiddenWorkerDetails" th:value="*{workerDetails}">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>協力会社</th>
+            <th>人数</th>
+            <th>作業員氏名</th>
+          </tr>
+        </thead>
+        <tbody id="worker-table-body">
+          </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">工程進捗</div>
+      <div class="item">
+        <div class="label">全体進捗率</div>
+        <div class="value" th:text="*{progressPercent} + ' %'">65%</div>
+      </div>
+    </div>
+
+	<div class="section">
+		      <div class="section-title">写真記録</div>
+		      <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+		        
+		        <div th:if="${photoBeforeBase64 != null}">
+		          <div class="label" style="font-weight: bold;">着工前</div>
+		          <img th:src="'data:image/jpeg;base64,' + ${photoBeforeBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		        </div>
+		        
+		        <div th:if="${photoDuringBase64 != null}">
+		          <div class="label" style="font-weight: bold;">施工中</div>
+		          <img th:src="'data:image/jpeg;base64,' + ${photoDuringBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		        </div>
+		        
+		        <div th:if="${photoAfterBase64 != null}">
+		          <div class="label" style="font-weight: bold;">完了</div>
+		          <img th:src="'data:image/jpeg;base64,' + ${photoAfterBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		        </div>
+		        
+		        <div th:if="${photoInspectionBase64 != null}">
+		          <div class="label" style="font-weight: bold;">配筋検査</div>
+		          <img th:src="'data:image/jpeg;base64,' + ${photoInspectionBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		        </div>
+		        
+		        <div th:if="${photoSafetyBase64 != null}">
+		          <div class="label" style="font-weight: bold;">安全帯使用状況</div>
+		          <img th:src="'data:image/jpeg;base64,' + ${photoSafetyBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		        </div>
+
+		      </div>
+		    </div>
+		
+    <div class="section">
+      <div class="section-title">安全管理</div>
+      <div class="grid-2">
+        <div class="item">
+          <div class="label">KY項目</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{safetyKy}" ></div>
+        </div>
+        <div class="item">
+          <div class="label">安全対策</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{safetyMeasure}"></div>
+        </div>
+        <div class="item">
+          <div class="label">新規入場者教育</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{safetyEducation}"></div>
+        </div>
+        <div class="item">
+          <div class="label">ヒヤリハット</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{nearMiss}"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">資材・機材</div>
+      <div class="item">
+        <div class="label">搬入物</div>
+        <div class="value" style="white-space: pre-wrap;" th:text="*{materials}"></div>
+      </div>
+      <div class="item">
+        <div class="label">使用機材</div>
+        <div class="value" style="white-space: pre-wrap;" th:text="*{equipments}"></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">問題・調整事項</div>
+      <div class="value">
+        <p th:text="'【設計変更指示】 ' + *{designChange}"></p>
+        <p th:text="'【客先追加要望】 ' + *{customerRequest}"></p>
+        <p th:text="'【協力会社調整】 ' + *{partnerCoordination}"></p>
+        <p th:text="'【翌日予定】 ' + *{nextDaySchedule}"></p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">現場コメント</div>
+      <div class="value" style="white-space: pre-wrap;" th:text="*{notes}"></div>
+    </div>
+
+	<div class="btn-area" th:if="${session.loginUser != null}">
+
+	      <span th:if="${#strings.equals(session.loginUser.roll, '0')}" style="display: flex; gap: 15px;">
+	        
+	        <a th:href="@{/homeoffice}" th:if="${from == 'home'}" class="btn_h">本社ホームへ</a>
+	        
+			<a th:href="@{/dailyreport/list(
+			   from='list', 
+			   targetDate=${param.targetDate}, 
+			   siteId=${param.siteId}, 
+			   workDetails=${param.workDetails}, 
+			   dStatusFlag=${param.dStatusFlag}
+			)}" th:if="${from == 'list'}" class="btn_h">一覧へ戻る</a>
+			
+			<a th:href="@{/portal/{siteId}(siteId=${report.site.siteId})}" th:if="${from == 'portal'}" class="btn_h">現場ポータルへ戻る</a>
+	        
+	        <form th:action="@{/dailyreport/{id}/confirm(id=*{reportId}, from=${from})}" method="post" style="display: inline;">
+	          <button type="submit" class="btn">確認完了</button>
+	        </form>
+	      </span>
+
+	      <span th:if="${#strings.equals(session.loginUser.roll, '1')}" style="display: flex; gap: 15px;">
+	        <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
+	        <a th:href="@{/dailyreport/{id}/edit(id=*{reportId})}" class="btn" style="background-color: #3182ce;">編集</a>
+	      </span>
+		  
+		  <span th:if="${#strings.equals(session.loginUser.roll, '2')}" style="display: flex; gap: 15px;">
+		    <a th:href="@{/dailyreport/list}" class="btn_h">一覧画面へ戻る</a>
+		  </span>
+
+	    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const jsonStr = document.getElementById("hiddenWorkerDetails").value;
+      const tbody = document.getElementById("worker-table-body");
+      
+      if (jsonStr) {
+        try {
+          const workerList = JSON.parse(jsonStr);
+          if (workerList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#718096;">出面情報なし</td></tr>';
+            return;
+          }
+          
+          let html = "";
+          workerList.forEach(worker => {
+            html += `
+              <tr>
+                <td><strong>${worker.company || '未入力'}</strong></td>
+                <td>${worker.count || 0} 名</td>
+                <td>${worker.names || '未入力'}</td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        } catch (e) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:red;">データの展開に失敗しました</td></tr>';
+        }
+      } else {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#718096;">出面情報なし</td></tr>';
+      }
+    });
+  </script>
+
+</body>
+</html>

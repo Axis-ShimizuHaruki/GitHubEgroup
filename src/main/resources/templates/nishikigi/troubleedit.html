@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>トラブル編集</title>
+	<link rel="stylesheet" th:href="@{/css/trouble.css}" />
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+				
+				<div class="site-system-name">
+					トラブル編集
+				</div>
+
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+<!--			トラブル編集-->
+		</div>
+
+	</header>
+
+	<div class="container">
+
+		<!-- サマリー -->
+		<div class="section">
+
+			<div class="section-title">
+				編集内容サマリー
+			</div>
+
+			<div class="summary-box">
+				登録済みのトラブル内容を編集できます。<br>
+				内容確認後、「保存」を押してください。
+			</div>
+
+		</div>
+
+
+		<form th:action="@{/trouble/{id}/edit/confirm(id=${trouble.troubleId})}" th:object="${troubleForm}"
+			method="post">
+
+			<input type="hidden" name="troubleId" th:value="${trouble.troubleId}">
+
+			<!-- トラブル内容 -->
+			<div class="section">
+
+				<div class="section-title">
+					トラブル内容編集
+				</div>
+
+				<div class="grid-2">
+
+					<div class="item">
+						<div class="label">緊急度</div>
+
+
+						<select th:field="*{priority}" th:if="${role == 1}">
+							<option value="3" th:selected="${trouble.priority == 3}">高</option>
+							<option value="2" th:selected="${trouble.priority == 2}">中</option>
+							<option value="1" th:selected="${trouble.priority == 1}">低</option>
+						</select>
+
+						<div class="error" th:if="${#fields.hasErrors('priority')}" th:errors="*{priority}"></div>
+
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
+						<input type="hidden" name="priority" th:if="${role == 0}" th:value="${trouble.priority}">
+					</div>
+
+					<div class="item">
+						<div class="label">トラブル種別</div>
+
+						<select th:field="*{troubleType}" th:if="${role == 1}">
+							<option value="1" th:selected="${trouble.troubleType == 1}">事故</option>
+							<option value="2" th:selected="${trouble.troubleType == 2}">資材不足</option>
+							<option value="3" th:selected="${trouble.troubleType == 3}">納品遅れ</option>
+							<option value="4" th:selected="${trouble.troubleType == 4}">工程遅延</option>
+							<option value="5" th:selected="${trouble.troubleType == 5}">その他</option>
+						</select>
+
+						<div class="error" th:if="${#fields.hasErrors('troubleType')}" th:errors="*{troubleType}">
+						</div>
+
+						<div class="value" th:if="${role == 0}" th:text="${trouble.priority}"></div>
+						<input type="hidden" name="troubleType" th:if="${role == 0}" th:value="${trouble.troubleType}">
+					</div>
+
+				</div>
+
+				<div class="item">
+					<div class="label">一言で表す</div>
+
+					<input type="text" th:field="*{overview}" maxlength="100" th:if="${role == 1}">
+
+					<div class="error" th:if="${#fields.hasErrors('overview')}" th:errors="*{overview}">
+					</div>
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.overview}"></div>
+					<input type="hidden" name="overview" th:if="${role == 0}" th:value="${trouble.overview}">
+				</div>
+
+			</div>
+
+			<!-- 詳細 -->
+			<div class="section">
+
+				<div class="section-title">
+					詳細内容
+				</div>
+
+				<div class="item">
+
+					<textarea th:field="*{detail}" maxlength="500" th:if="${role == 1}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('detail')}" th:errors="*{detail}"></div>
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.detail}"></div>
+
+					<input type="hidden" name="detail" th:if="${role == 0}" th:value="${trouble.detail}">
+
+				</div>
+
+			</div>
+
+			<!-- 対応状況 -->
+			<div class="section">
+
+
+				<!-- 現場対応メモ -->
+				<div class="item">
+
+					<div class="label">現場対応メモ</div>
+
+					<textarea th:field="*{siteMemo}" th:if="${role == 1}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('siteMemo')}" th:errors="*{siteMemo}"></div>
+
+					<div class="value" th:if="${role == 0}" th:text="${trouble.siteMemo}"></div>
+
+					<input type="hidden" name="siteMemo" th:if="${role == 0}" th:value="${trouble.siteMemo}">
+
+				</div>
+
+				<!-- 本社対応メモ -->
+				<div class="item">
+
+					<div class="label">本社対応メモ</div>
+
+					<textarea th:field="*{hqMemo}" th:if="${role == 0}"></textarea>
+
+					<div class="error" th:if="${#fields.hasErrors('hqMemo')}" th:errors="*{hqMemo}"></div>
+
+					<div class="value" th:if="${role == 1}" th:text="${trouble.hqMemo}"></div>
+
+					<input type="hidden" name="hqMemo" th:if="${role == 1}" th:value="${trouble.hqMemo}">
+
+				</div>
+
+			</div>
+
+
+			<!-- ボタン -->
+			<div class="btn-area">
+
+				<button type="button" class="btn btn-gray"
+					th:onclick="|location.href='@{/trouble/{id}(id=${trouble.troubleId})}'|">
+					キャンセル
+				</button>
+
+				<button type="submit" class="btn" th:if="${role == 0 or role == 1}">
+					保存
+				</button>
+
+			</div>
+
+		</form>
+	</div>
+</body>
+
+</html>

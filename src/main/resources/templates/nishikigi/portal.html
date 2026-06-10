@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>現場ポータル</title>
+
+	<link rel="stylesheet" th:href="@{/css/portal.css}" />
+</head>
+
+<body>
+
+	<!-- ===== ヘッダー ===== -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左：ロゴ -->
+			<div class="logo-area">
+
+				<a th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+
+				</a>
+
+				<div class="site-system-name">
+					現場ポータル
+				</div>
+			</div>
+
+			<!-- 右：ユーザー -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span>
+
+					さん
+
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+
+						ログアウト
+
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+
+					<a th:href="@{/login}" class="logout-btn">
+
+						ログイン
+
+					</a>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+
+			<span th:text="${view.site.siteName}">
+			</span>
+
+			<a th:href="@{/dailyreport/list(portalSiteId=${view.site.siteId}, from='header')}">日報一覧</a>
+
+			<a th:href="@{/safetyinspection/list}">
+				安全点検一覧
+			</a>
+
+			<a th:href="@{/trouble/list(siteId=${view.site.siteId})}">
+			    トラブル一覧
+			</a>
+
+		</div>
+
+	</header>
+
+	<main>
+
+		<!-- ===== 左メニュー ===== -->
+
+		<div class="button-area">
+
+			<!-- 日報 -->
+			<div class="menu-group">
+
+				<a th:if="${view.todayReport != null}"
+					th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='portal')}" class="menu-button">
+
+					今日の日報
+
+				</a>
+
+				<span th:if="${view.todayReport == null}" class="menu-button">
+					今日の日報
+				</span>
+
+				<a th:href="@{/dailyreport/list(portalSiteId=${view.site.siteId})}" class="sub-button">
+					日報一覧
+				</a>
+
+			</div>
+
+			<!-- 安全点検 -->
+			<div class="menu-group">
+
+				<a th:if="${view.todaySafety != null}"
+					th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}" class="menu-button">
+
+					今日の安全点検
+
+				</a>
+
+				<span th:if="${view.todaySafety == null}" class="menu-button">
+					今日の安全点検
+				</span>
+
+				<a th:href="@{/safetyinspection/list(siteId=${siteId})}" class="sub-button">
+
+					安全点検一覧
+
+				</a>
+
+			</div>
+
+			<!-- トラブル -->
+			<div class="menu-group">
+
+				<a th:href="@{/trouble/list(
+				        siteId=${view.site.siteId},
+				        occurredDate=${#temporals.format(#temporals.createNow(),'yyyy-MM-dd')}
+				    )}" class="menu-button">
+					今日のトラブル
+				</a>
+
+				<a th:href="@{/trouble/list(siteId=${view.site.siteId})}" class="sub-button">
+					トラブル一覧
+				</a>
+			</div>
+
+		</div>
+
+		<!-- ===== 右側チャット ===== -->
+
+		<div class="chat-panel">
+
+			<div class="chat-header">
+				現場チャット
+			</div>
+
+			<div class="chat-messages" id="chatMessages">
+
+				<div th:each="chat : ${chatList}" th:class="${chat.senderSite.siteId == loginSiteId}
+			                  ? 'message-row other'
+			                  : 'message-row me'">
+
+							  <div class="message-wrapper">
+
+							          <div class="message"
+							               th:text="${chat.message}">
+							          </div>
+
+							          <div class="message-time"
+							               th:text="${#temporals.format(chat.dateTime,'yyyy/MM/dd HH:mm')}">
+							          </div>
+
+							      </div>
+				</div>
+
+			</div>
+
+			<div class="chat-input">
+
+				<textarea id="messageInput" placeholder="メッセージを入力" rows="3"></textarea>
+
+				<button type="button" onclick="sendMessage()">
+					送信
+				</button>
+
+			</div>
+
+		</div>
+
+	</main>
+
+	<!-- ===== 左下ステータス ===== -->
+
+	<div class="status-bubble">
+
+		<!-- 日報 -->
+		<div class="status-item">
+
+			<span class="status-title">
+				日報
+			</span>
+
+			<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+
+				✔ 確認済
+
+			</span>
+
+			<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+
+				▲ 未確認
+
+			</span>
+
+			<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+
+				✖ 未提出
+
+			</span>
+
+		</div>
+
+		<!-- 安全点検 -->
+		<div class="status-item">
+
+			<span class="status-title">
+				安全点検
+			</span>
+
+			<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+
+				✔ 確認済
+
+			</span>
+
+			<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+
+				▲ 未確認
+
+			</span>
+
+			<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+
+				✖ 未提出
+
+			</span>
+
+		</div>
+
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+
+	<script th:inline="javascript">
+
+		const siteId =
+	    /*[[${view.site.siteId}]]*/ 0;
+
+		const senderSiteId =
+	    /*[[${view.site.siteId}]]*/ 0;
+
+	</script>
+
+	<script>
+
+		const socket =
+			new SockJS('/nishikigi/chat');
+
+		const stompClient =
+			Stomp.over(socket);
+
+		stompClient.connect({}, function () {
+
+			stompClient.subscribe(
+				'/topic/chat/' + siteId,
+
+				function (message) {
+
+					const msg =
+						JSON.parse(message.body);
+
+					addMessage(
+						msg.message,
+						msg.senderSiteId == senderSiteId
+					);
+				}
+			);
+		});
+
+	</script>
+
+	<script>
+
+		function addMessage(text, isMe) {
+
+			const row =
+				document.createElement("div");
+
+			row.className =
+				isMe
+					? "message-row other"
+					: "message-row me";
+
+			const message =
+				document.createElement("div");
+
+			message.className =
+				"message";
+
+			message.textContent =
+				text;
+
+			row.appendChild(message);
+
+			document
+				.getElementById(
+					"chatMessages")
+				.appendChild(row);
+				location.reload();
+		}
+
+	</script>
+
+	<script>
+
+		function sendMessage() {
+
+			const input =
+				document.getElementById(
+					"messageInput");
+
+			const text =
+				input.value.trim();
+
+			if (text === "") {
+				return;
+			}
+
+			stompClient.send(
+				"/app/send",
+				{},
+				JSON.stringify({
+
+					siteId:
+						siteId,
+
+					senderSiteId:
+						1,
+
+					message:
+						text
+				})
+			);
+
+			input.value = "";
+		}
+
+	</script>
+
+	<script>
+		window.addEventListener('load', function () {
+			const chatArea = document.querySelector('.chat-messages');
+			if (chatArea) {
+				chatArea.scrollTop = chatArea.scrollHeight;
+			}
+		});
+	</script>
+
+</body>
+
+</html>

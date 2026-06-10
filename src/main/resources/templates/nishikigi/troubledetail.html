@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>トラブル詳細</title>
+	<link rel="stylesheet" th:href="@{/css/trouble/troubledetail.css}" />
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<div class="site-system-name">
+					トラブル詳細
+				</div>
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			<!--			トラブル詳細-->
+			<div class="page-title-bar"
+				style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">
+
+				<div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">
+
+					<!-- 現場管理者・閲覧者 -->
+					<span th:text="${siteName}">
+						担当現場名
+					</span>
+					<!-- 本社＋現場絞り込み -->
+					<span th:if="${session.loginUser.roll == 0
+					              && troubleSearchForm.siteName != null
+					              && troubleSearchForm.siteName != ''}" th:text="${troubleSearchForm.siteName + '（絞り込み中）'}">
+					</span>
+
+					<!-- 本社＋全体表示 -->
+					<!-- <span th:if="${session.loginUser.roll == 0 -->
+					<!--              && (troubleSearchForm.siteName == null-->
+					<!--             || troubleSearchForm.siteName == '')}"> -->
+					<!--	全現場対象エリア-->
+					<!--	</span> -->
+
+				</div>
+
+				<!-- ポータルへ戻る -->
+				<div class="back-area" th:if="${session.loginUser.roll == 0 
+				             && portalSiteId != null 
+				             && session.hidePortalBack != true}">
+					<a th:if="${portalSiteId != null}" th:href="@{/portal/{id}(id=${portalSiteId})}">
+						現場ポータルへ戻る
+					</a>
+				</div>
+
+			</div>
+
+
+		</div>
+
+	</header>
+
+	<!-- コンテナ -->
+	<div class="container">
+
+		<!-- サマリー -->
+		<div class="section">
+
+			<div class="section-title">
+				登録内容サマリー
+			</div>
+
+			<div class="summary-box">
+
+				<div class="summary-title">
+					入力内容
+				</div>
+
+				登録されたトラブル内容を確認してください。<br>
+				問題がなければ「確認完了」を押してください。
+
+			</div>
+
+		</div>
+
+		<!-- トラブル情報 -->
+		<div class="section">
+
+			<div class="section-title">
+				トラブル情報
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					緊急度
+				</div>
+
+				<div class="value">
+
+					<span class="badge high" th:if="${trouble.priority == 3}">
+						高
+					</span>
+
+					<span class="badge middle" th:if="${trouble.priority == 2}">
+						中
+					</span>
+
+					<span class="badge low" th:if="${trouble.priority == 1}">
+						低
+					</span>
+					<!--					<span class="badge low" th:if="${trouble.priority == 0}">-->
+					<!--						対応済-->
+					<!--					</span>-->
+
+				</div>
+
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					現場名
+				</div>
+
+				<div class="value" th:text="${trouble.site.siteName}">
+				</div>
+
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					トラブル種別
+				</div>
+
+				<div class="value">
+
+					<span th:if="${trouble.troubleType == 1}">
+						事故
+					</span>
+
+					<span th:if="${trouble.troubleType == 2}">
+						資材不足
+					</span>
+
+					<span th:if="${trouble.troubleType == 3}">
+						納品遅れ
+					</span>
+
+					<span th:if="${trouble.troubleType == 4}">
+						工程遅延
+					</span>
+
+					<span th:if="${trouble.troubleType == 5}">
+						その他
+					</span>
+
+				</div>
+
+			</div>
+
+			<div class="item">
+				<div class="label">
+					発生日
+				</div>
+				<div class="value" th:text="${#temporals.format(trouble.occurredAt,'yyyy/MM/dd HH:mm')}">
+				</div>
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					一言で表す
+				</div>
+				<div class="value" th:text="${trouble.overview}">
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 詳細 -->
+		<div class="section">
+
+			<div class="section-title">
+				詳細内容
+			</div>
+
+			<div class="value" th:text="${trouble.detail}">
+			</div>
+
+		</div>
+
+		<!-- 対応メモ -->
+		<div class="section">
+
+			<div class="section-title">
+				対応メモ
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					現場対応メモ
+				</div>
+
+				<div class="value" th:text="${#strings.isEmpty(trouble.siteMemo) ? '未入力' : trouble.siteMemo}">
+				</div>
+
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					本社対応メモ
+				</div>
+
+				<div class="value" th:text="${#strings.isEmpty(trouble.hqMemo) ? '未入力' : trouble.hqMemo}">
+				</div>
+
+			</div>
+
+		</div>
+
+
+
+		<!-- 確認ステータス -->
+		<!--		<div class="section">-->
+
+		<!--			<div class="section-title">-->
+		<!--				確認ステータス-->
+		<!--			</div>-->
+
+		<!--			<div class="value">-->
+		<!--				登録内容に問題がないことを確認してください。-->
+		<!--				必要に応じて管理者へ共有されます。-->
+		<!--			</div>-->
+
+		<!--		</div>-->
+
+		<!-- ボタン -->
+		<div class="btn-area">
+
+			<!-- 対応状況を進める -->
+
+			<button type="button" class="btn btn-gray" th:onclick="|location.href='@{/trouble/list(
+			        init=true,
+			        fromTitleBar=${session.hidePortalBack}
+			    )}'|">
+				一覧へ戻る
+			</button>
+
+			<button type="button" class="btn btn" th:if="${role != 2}"
+				th:onclick="|location.href='@{/trouble/{id}/edit(id=${trouble.troubleId})}'|">
+				編集
+			</button>
+
+			<form th:action="@{/trouble/status/{id}(id=${trouble.troubleId})}" method="post" th:if="${role == 0}">
+
+				<button type="submit" class="btn btn" th:if="${trouble.tStatusFlag == 0}">
+					確認完了
+				</button>
+
+				<button type="submit" class="btn btn" th:if="${trouble.tStatusFlag == 1}">
+					対応完了
+				</button>
+
+			</form>
+
+			<!-- 対応状況を戻す -->
+			<!--			<form th:if="${trouble.tStatusFlag > 0}" th:action="@{/trouble/status/back/{id}(id=${trouble.troubleId})}"-->
+			<!--				method="post">-->
+
+			<!--				<button type="submit">-->
+			<!--					一段階戻す-->
+			<!--				</button>-->
+
+			<!--			</form>-->
+
+
+
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

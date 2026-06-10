@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日報編集確認</title>
+  <link rel="stylesheet" th:href="@{/css/dailyreport.css}">
+
+  <style></style>
+</head>
+
+<body>
+
+	<header class="system-header">
+
+				    <div class="header-top">
+
+						<div class="logo-area">
+						        
+						        <a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+						          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+						        </a>
+						        
+						        <a th:unless="${session.loginUser.roll == 0}" th:href="@{/homesite}">
+						          <img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+						        </a>
+								
+				        <div class="site-system-name">
+				          日報編集確認
+				        </div>
+				      </div>
+
+				      <div class="user-area">
+				        <div th:if="${session.loginUser != null}" class="user-info-box">
+				          <span class="user-name-text"><strong th:text="${session.loginUser.username}">田中 太郎</strong> さん</span>
+				          <form th:action="@{/logout}" method="post" style="display: inline;">
+				            <button type="submit" class="logout-btn">ログアウト</button>
+				          </form>
+				        </div>
+
+				        <div th:unless="${session.loginUser != null}">
+				          <a th:href="@{/login}" class="logout-btn" style="text-decoration: none; display: inline-block; text-align: center;">ログイン</a>
+				        </div>
+				      </div>
+
+				    </div>
+
+					<div class="page-title-bar" style="display: flex; align-items: center; justify-content: flex-start; gap: 40px; padding: 0 20px;">	  
+					    <div class="header-site-name" style="font-weight: bold; font-size: 15px; color: #1f3c88;">	 
+					        <span th:if="${session.loginUser.roll != 0}">
+					            <span th:each="s : ${siteList}" th:if="${s.siteId == session.siteId}" th:text="${s.siteName}">担当現場名</span>
+					        </span>
+					        <span th:if="${session.loginUser.roll == 0}">
+					            <span th:if="${headerSiteId != null && headerSiteId != ''}">
+					                <span th:each="s : ${siteList}" th:if="${#strings.equals(s.siteId, headerSiteId)}" th:text="${s.siteName} + '（絞り込み中）'">ポータル現場名</span>
+					            </span>
+					            <span th:if="${headerSiteId == null || headerSiteId == ''}">全現場対象エリア</span>
+					        </span>
+					    </div>
+					    
+					    <a th:if="${session.loginUser.roll == 0 && headerSiteId != null && headerSiteId != ''}" 
+					       th:href="@{/portal/{id}(id=${headerSiteId})}" 
+					       class="nav-link" 
+					       style="color: #1f3c88 !important; font-size: 15px; font-weight: normal !important;">
+					       ◀ 現場ポータルへ戻る
+					    </a>
+					    <a th:href="@{/dailyreport/list}" class="nav-link active">日報一覧</a>				  
+					</div>
+
+				  </header>
+
+  <div class="container">
+
+    <form th:action="@{/dailyreport/{id}/update(id=${dailyreport.reportId})}" th:object="${dailyreport}" method="post">
+
+      <input type="hidden" th:field="*{reportId}" />
+      <input type="hidden" th:field="*{dStatusFlag}" />
+      <input type="hidden" th:field="*{siteId}" />
+	  <input type="hidden" th:field="*{projectNumber}" />
+      <input type="hidden" th:field="*{targetDate}" />
+      <input type="hidden" th:field="*{weather}" />
+      <input type="hidden" th:field="*{temperature}" />
+      <input type="hidden" th:field="*{workDetails}" />
+      <input type="hidden" th:field="*{workerDetails}" id="hiddenWorkerDetails" />
+      <input type="hidden" th:field="*{progressPercent}" />
+<!--      <input type="hidden" th:field="*{photoBefore}" />-->
+<!--      <input type="hidden" th:field="*{photoDuring}" />-->
+<!--      <input type="hidden" th:field="*{photoAfter}" />-->
+<!--      <input type="hidden" th:field="*{photoInspection}" />-->
+<!--      <input type="hidden" th:field="*{photoSafety}" />-->
+
+<!--画像データはサーバーのセッションから送るようになったため、HTMLから巨大なデータを送信する hidden タグをすべて消し去ります。-->
+<!--（画面に画像を描画した後に送信データを空にするイメージ-->
+<!--	  <input type="hidden" th:field="*{photoBeforeBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoDuringBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoAfterBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoInspectionBase64}" />-->
+<!--      <input type="hidden" th:field="*{photoSafetyBase64}" />-->
+
+      <input type="hidden" th:field="*{safetyKy}" />
+      <input type="hidden" th:field="*{safetyMeasure}" />
+      <input type="hidden" th:field="*{safetyEducation}" />
+      <input type="hidden" th:field="*{nearMiss}" />
+      <input type="hidden" th:field="*{materials}" />
+      <input type="hidden" th:field="*{equipments}" />
+      <input type="hidden" th:field="*{designChange}" />
+      <input type="hidden" th:field="*{customerRequest}" />
+      <input type="hidden" th:field="*{partnerCoordination}" />
+      <input type="hidden" th:field="*{nextDaySchedule}" />
+      <input type="hidden" th:field="*{notes}" />
+
+      <div class="section">
+        <div class="section-title">基本情報</div>
+        <div class="grid-2">
+          <div class="item">
+            <div class="label">現場名</div>
+            <div class="value" th:text="${chosenSiteName}">現場名</div>
+          </div>
+
+          <div class="item">
+            <div class="label">工事番号</div>
+            <div class="value" th:text="*{projectNumber}">A-1024</div>
+          </div>
+
+          <div class="item">
+            <div class="label">日付</div>
+            <div class="value" th:text="${#temporals.format(dailyreport.targetDate, 'yyyy-MM-dd')}">2026-05-26</div>
+          </div>
+
+          <div class="item">
+            <div class="label">天候</div>
+            <div class="value" th:text="*{weather == 1 ? '晴れ' : (weather == 2 ? '曇り' : (weather == 3 ? '雨' : '雪'))}">晴れ</div>
+          </div>
+
+          <div class="item">
+            <div class="label">気温</div>
+            <div class="value" th:text="*{temperature} + ' ℃'">25℃</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">作業内容</div>
+        <div class="value" style="white-space: pre-wrap;" th:text="*{workDetails}">作業内容</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">出面情報</div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>協力会社</th>
+              <th>人数</th>
+              <th>作業員氏名</th>
+            </tr>
+          </thead>
+          <tbody id="worker-table-body">
+            </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <div class="section-title">工程進捗</div>
+        <div class="item">
+          <div class="label">全体進捗率</div>
+          <div class="value" th:text="*{progressPercent} + ' %'">65%</div>
+        </div>
+        </div>
+
+		<div class="section">
+		        <div class="section-title">写真記録</div>
+		        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+		          
+		          <div th:if="*{!#strings.isEmpty(photoBeforeBase64)}">
+		            <div class="label" style="font-weight: bold;">着工前</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoBeforeBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoDuringBase64)}">
+		            <div class="label" style="font-weight: bold;">施工中</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoDuringBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoAfterBase64)}">
+		            <div class="label" style="font-weight: bold;">完了</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoAfterBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoInspectionBase64)}">
+		            <div class="label" style="font-weight: bold;">配筋検査</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoInspectionBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+		          
+		          <div th:if="*{!#strings.isEmpty(photoSafetyBase64)}">
+		            <div class="label" style="font-weight: bold;">安全帯使用状況</div>
+		            <img th:src="'data:image/jpeg;base64,' + *{photoSafetyBase64}" style="max-width: 250px; border-radius: 8px; border: 1px solid #ccc;">
+		          </div>
+
+		        </div>
+		      </div>
+
+      <div class="section">
+        <div class="section-title">安全管理</div>
+        <div class="grid-2">
+          <div class="item">
+            <div class="label">KY項目</div>
+            <div class="value" style="white-space: pre-wrap;" th:text="*{safetyKy}"></div>
+          </div>
+
+          <div class="item">
+            <div class="label">対策</div>
+            <div class="value" style="white-space: pre-wrap;" th:text="*{safetyMeasure}"></div>
+          </div>
+
+          <div class="item">
+            <div class="label">新規入場者教育</div>
+            <div class="value" style="white-space: pre-wrap;" th:text="*{safetyEducation}"></div>
+          </div>
+
+          <div class="item">
+            <div class="label">ヒヤリハット</div>
+            <div class="value" style="white-space: pre-wrap;" th:text="*{nearMiss}"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">資材・機材</div>
+        <div class="item">
+          <div class="label">搬入物</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{materials}"></div>
+        </div>
+
+        <div class="item">
+          <div class="label">機材</div>
+          <div class="value" style="white-space: pre-wrap;" th:text="*{equipments}"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">問題・調整事項</div>
+        <div class="value">
+          <p th:text="'【設計変更指示】 ' + *{designChange}"></p>
+          <p th:text="'【客先追加要望】 ' + *{customerRequest}"></p>
+          <p th:text="'【協力会社調整】 ' + *{partnerCoordination}"></p>
+          <p th:text="'【翌日予定】 ' + *{nextDaySchedule}"></p>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">コメント</div>
+        <div class="value" style="white-space: pre-wrap;" th:text="*{notes}"></div>
+      </div>
+
+      <div class="btn-area">
+        <button type="button" class="btn btn-gray" onclick="history.back()">
+          修正する
+        </button>
+        <button type="submit" class="btn">
+          確認
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const jsonStr = document.getElementById("hiddenWorkerDetails").value;
+      const tbody = document.getElementById("worker-table-body");
+      
+      if (jsonStr) {
+        try {
+          const workerList = JSON.parse(jsonStr);
+          if (workerList.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#718096;">出面情報なし</td></tr>';
+            return;
+          }
+          
+          let html = "";
+          workerList.forEach(worker => {
+            html += `
+              <tr>
+                <td><strong>${worker.company || '未入力'}</strong></td>
+                <td>${worker.count || 0} 名</td>
+                <td>${worker.names || '未入力'}</td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        } catch (e) {
+          tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:red;">データの展開に失敗しました</td></tr>';
+        }
+      } else {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#718096;">出面情報なし</td></tr>';
+      }
+    });
+  </script>
+
+</body>
+</html>

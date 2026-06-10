@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>トラブル登録確認</title>
+	<link rel="stylesheet" th:href="@{/css/trouble.css}" />
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+				
+				<div class="site-system-name">
+					トラブル登録確認
+				</div>
+
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+<!--			トラブル登録確認-->
+		</div>
+
+	</header>
+
+	<!-- =========================
+       メイン
+  ========================= -->
+
+	<div class="container">
+
+		<!-- サマリー -->
+		<div class="section">
+
+			<div class="section-title">
+				入力内容確認
+			</div>
+
+			<div class="summary-box">
+				<div class="summary-title">
+					確認内容
+				</div>
+
+				登録内容を確認してください。<br>
+				問題がなければ「登録」を押してください。
+
+			</div>
+
+		</div>
+
+		<!-- 基本情報 -->
+		<div class="section">
+
+			<div class="section-title">
+				トラブル情報
+			</div>
+
+			<div class="item">
+
+				<!-- 緊急度 -->
+				<div class="item">
+					<div class="label">
+						緊急度
+					</div>
+					<div class="value" th:text="${form.priority == 3 ? '高' :
+					               form.priority == 2 ? '中' :
+					               form.priority == 1 ? '低' : ''}">
+					</div>
+				</div>
+
+				<!-- トラブル種別 -->
+				<div class="item">
+					<div class="label">
+						トラブル種別
+					</div>
+
+					<div class="value" th:text="${form.troubleType == 1 ? '事故' :
+					               form.troubleType == 2 ? '資材不足' :
+					               form.troubleType == 3 ? '納品遅れ' :
+					               form.troubleType == 4 ? '工程遅延' :
+					               form.troubleType == 5 ? 'その他' : ''}">
+					</div>
+				</div>
+
+				<!-- 一言 -->
+				<div class="item">
+					<div class="label">
+						一言で表す
+					</div>
+
+					<div class="value" th:text="${form.overview}">
+						サーバに接続できない
+					</div>
+				</div>
+
+			</div>
+
+			<!-- 詳細 -->
+			<div class="section">
+
+				<div class="section-title">
+					具体的な内容
+				</div>
+
+				<div class="value" th:text="${form.detail}">
+					サーバへのアクセスが断続的に失敗しており、
+					業務システムにログインできない状態。
+				</div>
+
+			</div>
+
+			<!-- ボタン -->
+			<form th:action="@{/troubles}" method="post">
+
+				<input type="hidden" name="priority" th:value="${form.priority}">
+
+				<input type="hidden" name="troubleType" th:value="${form.troubleType}">
+
+				<input type="hidden" name="overview" th:value="${form.overview}">
+
+				<input type="hidden" name="detail" th:value="${form.detail}">
+
+				<div class="btn-area">
+
+					<button type="button" class="btn btn-secondary" onclick="history.back()">
+						修正する
+					</button>
+
+					<button type="submit" class="btn">
+						登録
+					</button>
+
+				</div>
+
+			</form>
+
+		</div>
+
+</body>
+
+</html>

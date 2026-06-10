@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>トラブル編集確認</title>
+	<link rel="stylesheet" th:href="@{/css/trouble/troubledetail.css}" />
+
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<!-- =========================
+       ヘッダー
+  ========================= -->
+
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左 -->
+			<div class="logo-area">
+
+
+				<!-- 本社 -->
+				<a th:if="${session.loginUser.roll == 0}" th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場 -->
+				<a th:if="${session.loginUser.roll == 1}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<!-- 現場閲覧者 -->
+				<a th:if="${session.loginUser.roll == 2}" th:href="@{/homesite}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+
+				<div class="site-system-name">
+					トラブル編集確認
+				</div>
+
+			</div>
+
+			<!-- 右 -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+			<!--			トラブル編集確認-->
+		</div>
+
+	</header>
+
+	<div class="container">
+
+		<!-- サマリー -->
+		<div class="section">
+
+			<div class="section-title">
+				編集内容確認
+			</div>
+
+			<div class="summary-box">
+				以下の内容でトラブル情報を更新します。<br>
+				内容をご確認のうえ、「この内容で更新する」を押してください。
+			</div>
+
+		</div>
+
+		<!-- トラブル内容 -->
+		<div class="section">
+
+			<div class="section-title">
+				トラブル内容
+			</div>
+			<div class="item">
+				<div class="label">緊急度</div>
+
+				<div class="value">
+					<span class="badge high" th:if="${form.priority == 3}">高</span>
+					<span class="badge middle" th:if="${form.priority == 2}">中</span>
+					<span class="badge low" th:if="${form.priority == 1}">低</span>
+				</div>
+			</div>
+
+			<div class="item">
+				<div class="label">トラブル種別</div>
+
+				<div class="value">
+					<span th:if="${form.troubleType == 1}">事故</span>
+					<span th:if="${form.troubleType == 2}">資材不足</span>
+					<span th:if="${form.troubleType == 3}">納品遅れ</span>
+					<span th:if="${form.troubleType == 4}">工程遅延</span>
+					<span th:if="${form.troubleType == 5}">その他</span>
+				</div>
+			</div>
+
+
+			<div class="item">
+				<div class="label">一言で表す</div>
+
+				<div class="value" th:text="${form.overview}">
+				</div>
+			</div>
+
+		</div>
+
+		<!-- 詳細 -->
+		<div class="section">
+
+			<div class="section-title">
+				詳細内容
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					トラブル詳細
+				</div>
+
+				<div class="value" th:text="${form.detail}">
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 対応状況 -->
+		<div class="section">
+
+			<div class="section-title">
+				対応状況
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					現場対応メモ
+				</div>
+
+				<div class="value" th:text="${form.siteMemo}"></div>
+
+			</div>
+
+			<div class="item">
+
+				<div class="label">
+					本社対応メモ
+				</div>
+
+				<div class="value" th:text="${form.hqMemo}"></div>
+
+			</div>
+
+		</div>
+
+
+		<!-- ボタン -->
+		<form th:action="@{/trouble/{id}/edit/complete(id=${form.troubleId})}" method="post" class="btn-area">
+
+			<input type="hidden" name="troubleId" th:value="${form.troubleId}">
+
+			<input type="hidden" name="priority" th:value="${form.priority}">
+
+			<input type="hidden" name="troubleType" th:value="${form.troubleType}">
+
+			<input type="hidden" name="overview" th:value="${form.overview}">
+
+			<input type="hidden" name="detail" th:value="${form.detail}">
+
+			<input type="hidden" name="siteMemo" th:value="${form.siteMemo}">
+
+			<input type="hidden" name="hqMemo" th:value="${form.hqMemo}">
+
+			<button type="button" onclick="history.back()" class="btn-gray">
+				修正する
+			</button>
+
+			<button type="submit" class="btn">
+				この内容で更新する
+			</button>
+
+		</form>
+
+	</div>
+
+</body>
+
+</html>

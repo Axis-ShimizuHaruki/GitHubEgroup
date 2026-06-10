@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>本社ホーム</title>
+	<link rel="stylesheet" href="css/list.css" />
+</head>
+
+
+
+
+<body>
+
+	<!-- ===== ヘッダー ===== -->
+	<header>
+
+		<!-- 上段 -->
+		<div class="header-top">
+
+			<!-- 左：ロゴ -->
+			<div class="logo-area">
+
+				<a th:href="@{/homeoffice}">
+					<img th:src="@{/images/icon.png}" alt="ロゴ" class="logo-img">
+				</a>
+				<div class="site-system-name">
+					本社ホーム
+				</div>
+
+			</div>
+
+			<!-- 右：ユーザー -->
+			<div class="user-area">
+
+				<!-- ログイン中 -->
+				<div th:if="${session.loginUser != null}">
+					<span th:text="${session.loginUser.username}">
+						ゲスト
+					</span> さん
+				</div>
+
+				<form th:if="${session.loginUser != null}" th:action="@{/logout}" method="post">
+
+					<button type="submit" class="logout-btn">
+						ログアウト
+					</button>
+
+				</form>
+
+				<!-- 未ログイン -->
+				<div th:unless="${session.loginUser != null}">
+					<a th:href="@{/login}" class="logout-btn">
+						ログイン
+					</a>
+				</div>
+
+			</div>
+
+		</div>
+
+		<!-- 下段 -->
+		<div class="page-title-bar">
+
+			<a th:href="@{/dailyreport/list}">
+				日報一覧
+			</a>
+
+			<a th:href="@{/safetyinspection/list}">
+				安全点検一覧
+			</a>
+
+			<a th:href="@{/trouble/list(fromTitleBar=true)}">
+				トラブル一覧
+			</a>
+
+		</div>
+
+	</header>
+
+	<!-- ===== 優先度高 ===== -->
+	<div class="section">
+
+		<div class="section-title high">
+			優先度高
+		</div>
+
+		<div class="site-list">
+
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 3 && view.tStatusFlag != 2}"
+				class="site-card high">
+				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
+				</a>
+
+				<div class="status">
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
+							</a>
+
+							<span th:if="${view.todayReport == null}">
+								日報確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
+								安全点検確認
+							</a>
+
+							<span th:if="${view.todaySafety == null}">
+								安全点検確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+
+				<!-- トラブル -->
+				<div class="trouble-section">
+
+					<div class="trouble-title">
+						トラブル内容
+					</div>
+
+					<div th:each="trouble : ${view.site.troubleList}" class="trouble-item">
+
+						<a th:if="${trouble.tStatusFlag != 2}" th:href="@{/trouble/{id}(
+						        id=${trouble.troubleId},
+						        portalSiteId=${view.site.siteId}
+						   )}" th:text="${trouble.overview}">
+						</a>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- ===== 優先度中 ===== -->
+	<div class="section">
+
+		<div class="section-title medium">
+			優先度中
+		</div>
+
+		<div class="site-list">
+
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 2 && view.tStatusFlag != 2}"
+				class="site-card medium">
+
+				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
+				</a>
+
+				<div class="status">
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
+							</a>
+
+							<span th:if="${view.todayReport == null}">
+								日報確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
+								安全点検確認
+							</a>
+
+							<span th:if="${view.todaySafety == null}">
+								安全点検確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="trouble-section">
+
+					<div class="trouble-title">
+						トラブル内容
+					</div>
+
+					<div th:each="trouble : ${view.site.troubleList}" class="trouble-item">
+
+						<a th:if="${trouble.tStatusFlag != 2}" th:href="@{/trouble/{id}(
+												        id=${trouble.troubleId},
+												        portalSiteId=${view.site.siteId}
+												   )}" th:text="${trouble.overview}">
+						</a>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- ===== 優先度低 ===== -->
+	<div class="section">
+
+		<div class="section-title low">
+			優先度低
+		</div>
+
+		<div class="site-list">
+
+			<div th:each="view : ${siteViews}" th:if="${view.maxPriority == 1 && view.tStatusFlag != 2}"
+				class="site-card low">
+
+				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
+				</a>
+
+				<div class="status">
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
+							</a>
+
+							<span th:if="${view.todayReport == null}">
+								日報確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
+								安全点検確認
+							</a>
+
+							<span th:if="${view.todaySafety == null}">
+								安全点検確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="trouble-section">
+
+					<div class="trouble-title">
+						トラブル内容
+					</div>
+
+					<div th:each="trouble : ${view.site.troubleList}" class="trouble-item">
+
+						<a th:if="${trouble.tStatusFlag != 2}" th:href="@{/trouble/{id}(
+												        id=${trouble.troubleId},
+												        portalSiteId=${view.site.siteId}
+												   )}" th:text="${trouble.overview}">
+						</a>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+	<!-- ===== トラブルなし ===== -->
+	<div class="section">
+
+		<div class="section-title none">
+			トラブルなし
+		</div>
+
+		<div class="site-list">
+
+			<div th:each="view : ${siteViews}" th:if="${view.tStatusFlag == 2}" class="site-card none">
+
+				<a class="site-name" th:href="@{/portal/{id}(id=${view.site.siteId})}" th:text="${view.site.siteName}">
+				</a>
+
+				<div class="status">
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todayReport != null}"
+								th:href="@{/dailyreport/{id}(id=${view.todayReport.reportId}, from='home')}">
+								日報確認
+							</a>
+
+							<span th:if="${view.todayReport == null}">
+								日報確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.dailyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.dailyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.dailyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+					<div class="status-item">
+
+						<div>
+							<a th:if="${view.todaySafety != null}"
+								th:href="@{/safetyinspection/{id}(id=${view.todaySafety.safetyId})}">
+								安全点検確認
+							</a>
+
+							<span th:if="${view.todaySafety == null}">
+								安全点検確認
+							</span>
+						</div>
+
+						<div>
+							<span th:if="${view.safetyStatus == '確認済'}" class="checked">
+								✔ 確認済
+							</span>
+
+							<span th:if="${view.safetyStatus == '未確認'}" class="unchecked">
+								▲ 未確認
+							</span>
+
+							<span th:if="${view.safetyStatus == '未提出'}" class="unchecked">
+								✖ 未提出
+							</span>
+						</div>
+
+					</div>
+
+				</div>
+
+				<div class="no-trouble">
+					現在トラブルはありません
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- 通知表示エリア -->
+	<!-- トラブル通知 -->
+	<div id="notification-container"></div>
+
+	<!-- 安全点検通知 -->
+	<div id="safety-notification-container"></div>
+
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+
+
+	<script>
+
+		let hasNotification = false;
+
+		const socket =
+			new SockJS('/nishikigi/chat');
+
+		const stompClient =
+			Stomp.over(socket);
+
+		stompClient.connect({}, function () {
+
+			console.log("通知接続成功");
+
+			stompClient.subscribe(
+				'/topic/notice',
+				function (message) {
+
+					console.log("受信");
+					console.log(message.body);
+
+					const data =
+						JSON.parse(message.body);
+
+					// 通知タイプで分岐
+					if (data.type === "reload") {
+
+						location.reload();
+
+					} else if (data.type === "safety") {
+
+						showSafetyNotification(data);
+
+					} else {
+
+						showNotification(data);
+					}
+
+					location.reload();
+				}
+			);
+
+		});
+
+		// =========================
+		// トラブル通知
+		// =========================
+
+		function showNotification(data) {
+
+			// 通知あり
+			hasNotification = true;
+
+			const container =
+				document.getElementById(
+					"notification-container"
+				);
+
+			container.style.display = "flex";
+
+			const notification =
+				document.createElement("div");
+
+			notification.className =
+				"notification";
+
+			// 優先度保持
+			notification.dataset.priority =
+				data.priority;
+
+			// class付与
+			if (data.priority == 3) {
+
+				notification.classList.add("high");
+
+			} else if (data.priority == 2) {
+
+				notification.classList.add("medium");
+
+			} else {
+
+				notification.classList.add("low");
+			}
+
+			notification.innerHTML = `
+				<div class="notice-site">
+					${data.siteName}
+				</div>
+
+				<div class="notice-overview">
+					トラブル：${data.overview}
+				</div>
+
+				<div class="notice-time">
+					${data.createdAt}
+				</div>
+			`;
+
+			notification.onclick = () => {
+
+				// 通知画面へ行く時は警告しない
+				hasNotification = false;
+
+				location.href =
+					'/nishikigi/trouble/' +
+					data.troubleId;
+			};
+
+			// 一旦追加
+			container.appendChild(notification);
+
+			// =====================
+			// 優先度順に並び替え
+			// =====================
+
+			const notices =
+				Array.from(container.children);
+
+			notices.sort((a, b) => {
+
+				return b.dataset.priority
+					- a.dataset.priority;
+			});
+
+			// 再配置
+			notices.forEach(n => {
+
+				container.appendChild(n);
+			});
+		}
+
+		// =========================
+		// 安全点検通知
+		// =========================
+
+		function showSafetyNotification(data) {
+
+			// 通知あり
+			hasNotification = true;
+
+			console.log("安全通知");
+			console.log(data);
+
+			const container =
+				document.getElementById(
+					"safety-notification-container"
+				);
+
+			container.style.display = "flex";
+
+			const notification =
+				document.createElement("div");
+
+			notification.className =
+				"safety-notification";
+
+			notification.innerHTML = `
+				<div class="notice-site">
+					${data.siteName}
+				</div>
+
+				<div class="notice-overview">
+					安全点検で不備があります
+				</div>
+
+				<div class="notice-time">
+					${data.createdAt}
+				</div>
+			`;
+
+			notification.onclick = () => {
+
+				// 通知画面へ行く時は警告しない
+				hasNotification = false;
+
+				location.href =
+					'/nishikigi/safetyinspection/' +
+					data.safetyId;
+			};
+
+			container.prepend(notification);
+		}
+
+
+		document.addEventListener('click', function (e) {
+
+			const link = e.target.closest('a');
+
+			if (!link) {
+				return;
+			}
+
+			if (hasNotification) {
+
+				const ok = confirm(
+					'未確認の通知があります。\n本当に移動しますか？'
+				);
+
+				if (!ok) {
+
+					e.preventDefault();
+				}
+			}
+		});
+
+		document.addEventListener('submit', function (e) {
+
+			if (!hasNotification) {
+				return;
+			}
+
+			const ok = confirm(
+				'未確認の通知があります。\n本当に実行しますか？'
+			);
+
+			if (!ok) {
+
+				e.preventDefault();
+			}
+		});
+	</script>
+
+
+	<script th:inline="javascript">
+		window.addEventListener('load', function () {
+
+			/*[# th:each="trouble : ${noticeList}"]*/
+			showNotification({
+				siteName:  /*[[${trouble?.site?.siteName}]]*/ '',
+				overview:  /*[[${trouble?.overview}]]*/ '',
+				priority:  /*[[${trouble?.priority}]]*/ '',
+				troubleId: /*[[${trouble?.troubleId}]]*/ '',
+				// troubleの型に合わせてフォーマット。null安全に
+				createdAt: /*[[${trouble?.tCreatedAt != null ? #temporals.format(trouble.tCreatedAt, 'yyyy/MM/dd HH:mm') : ''}]]*/ ''
+			});
+			/*[/]*/
+
+
+			/*[# th:each="safety : ${defectList}"]*/
+			showSafetyNotification({
+				// safetyはMapなので、Java側でputしたキー名をそのまま指定
+				siteName:  /*[[${safety['siteName']}]]*/ '',
+				safetyId:  /*[[${safety['safetyId']}]]*/ '',
+
+				// 日付はすでにMapに入っているので直接取得。
+				createdAt: /*[[${safety?.createdAt != null ? #temporals.format(safety.createdAt, 'yyyy/MM/dd HH:mm') : ''}]]*/ ''
+			});
+			/*[/]*/
+
+		});
+	</script>
+
+
+
+
+
+</body>
+
+</html>

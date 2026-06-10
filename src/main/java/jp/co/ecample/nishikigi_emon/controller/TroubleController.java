@@ -149,20 +149,6 @@ public class TroubleController {
 			session.setAttribute("portalSiteId", siteId);
 		}
 
-		if (Boolean.TRUE.equals(fromTitleBar)) {
-			session.setAttribute("hidePortalBack", true);
-
-			// 前回検索条件をクリア
-			session.removeAttribute("troubleSearchForm");
-
-			// 現場ポータル情報も不要なら削除
-			session.removeAttribute("portalSiteId");
-		}
-
-		if (Boolean.TRUE.equals(init)) {
-			session.removeAttribute("troubleSearchForm");
-		}
-
 		// Sessionから前回検索条件を取得
 		TroubleSearchForm sessionForm = (TroubleSearchForm) session.getAttribute("troubleSearchForm");
 
@@ -189,6 +175,20 @@ public class TroubleController {
 				&& form.getStatusFlag() == null) {
 
 			form = sessionForm;
+		}
+		
+		if (Boolean.TRUE.equals(fromTitleBar)) {
+			session.setAttribute("hidePortalBack", true);
+
+			// 前回検索条件をクリア
+			session.removeAttribute("troubleSearchForm");
+
+			// 現場ポータル情報も不要なら削除
+			session.removeAttribute("portalSiteId");
+		}
+
+		if (Boolean.TRUE.equals(init)) {
+			session.removeAttribute("troubleSearchForm");
 		}
 
 		// 現場管理者の初回表示
